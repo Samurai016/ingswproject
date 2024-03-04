@@ -1,4 +1,4 @@
-package it.unibs;
+package it.unibs.ingswprojcet;
 
 public class Main {
     public static void main(String[] args) {
