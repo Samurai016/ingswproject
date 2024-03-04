@@ -1,4 +1,4 @@
-package it.unibs.ingswprojcet;
+package it.unibs.ingswproject;
 
 public class Main {
     public static void main(String[] args) {
