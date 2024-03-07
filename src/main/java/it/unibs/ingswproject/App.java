@@ -1,7 +1,7 @@
 package it.unibs.ingswproject;
 
-public class Main {
+public class App {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        // TODO: Avviare l'applicazione CLI
     }
 }
