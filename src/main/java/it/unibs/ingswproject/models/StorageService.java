@@ -3,7 +3,6 @@ package it.unibs.ingswproject.models;
 import io.ebean.DB;
 import io.ebean.Database;
 import it.unibs.ingswproject.models.entities.Comprensorio;
-import it.unibs.ingswproject.models.entities.Gerarchia;
 import it.unibs.ingswproject.models.entities.Nodo;
 
 import java.util.HashMap;
@@ -25,7 +24,6 @@ public class StorageService {
         Database db = DB.getDefault();
 
         this.repositories.put(Comprensorio.class, new EntityRepository<>(Comprensorio.class, db));
-        this.repositories.put(Gerarchia.class, new EntityRepository<>(Gerarchia.class, db));
         this.repositories.put(Nodo.class, new EntityRepository<>(Nodo.class, db));
     }
 
