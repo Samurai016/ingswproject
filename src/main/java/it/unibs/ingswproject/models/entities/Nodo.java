@@ -1,5 +1,6 @@
 package it.unibs.ingswproject.models.entities;
 
+import io.ebean.annotation.NotNull;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.UUID;
 public class Nodo {
     @Id
     private UUID id;
+    @NotNull
     private String nome;
     private String descrizione;
     private String nomeAttributo;
@@ -33,8 +35,8 @@ public class Nodo {
     public static Nodo createRoot(String nome, String descrizione, String nomeAttributo) {
         return new Nodo(nome, descrizione, nomeAttributo, null, null);
     }
-    public static Nodo createFoglia(String nome, String descrizione, String nomeAttributo, String valoreAttributo, Nodo parent) {
-        return new Nodo(nome, descrizione, nomeAttributo, valoreAttributo, parent);
+    public static Nodo createFoglia(String nome, String descrizione, String valoreAttributo, Nodo parent) {
+        return new Nodo(nome, descrizione, null, valoreAttributo, parent);
     }
 
     public boolean isFoglia() {
@@ -52,52 +54,63 @@ public class Nodo {
         return this.figli.stream().map(Nodo::getValoreAttributo).toArray(String[]::new);
     }
 
-    // GETTER AND SETTER
-    public String getNome() {
-        return this.nome;
+    // GETTERS
+    public UUID getId() {
+        return this.id;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public String getNome() {
+        return this.nome;
     }
 
     public String getDescrizione() {
         return this.descrizione;
     }
 
-    public void setDescrizione(String descrizione) {
-        this.descrizione = descrizione;
-    }
-
     public String getNomeAttributo() {
         return this.nomeAttributo;
-    }
-
-    public void setNomeAttributo(String nomeAttributo) {
-        this.nomeAttributo = nomeAttributo;
     }
 
     public String getValoreAttributo() {
         return this.valoreAttributo;
     }
 
-    public void setValoreAttributo(String valoreAttributo) {
-        this.valoreAttributo = valoreAttributo;
-    }
-
     public Nodo getParent() {
         return this.parent;
-    }
-
-    public void setParent(Nodo parent) {
-        this.parent = parent;
     }
 
     public List<Nodo> getFigli() {
         return this.figli;
     }
 
-    public void setFigli(ArrayList<Nodo> figli) {
+    // SETTERS (Builder pattern)
+    public Nodo setNome(String nome) {
+        this.nome = nome;
+        return this;
+    }
+
+    public Nodo setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
+        return this;
+    }
+
+    public Nodo setNomeAttributo(String nomeAttributo) {
+        this.nomeAttributo = nomeAttributo;
+        return this;
+    }
+
+    public Nodo setValoreAttributo(String valoreAttributo) {
+        this.valoreAttributo = valoreAttributo;
+        return this;
+    }
+
+    public Nodo setParent(Nodo parent) {
+        this.parent = parent;
+        return this;
+    }
+
+    public Nodo setFigli(List<Nodo> figli) {
         this.figli = figli;
+        return this;
     }
 }

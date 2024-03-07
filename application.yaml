@@ -2,11 +2,11 @@ ebean:
   migration:
     run: true
   ddl:
-    generate: false
-    run: false
+    generate: true
+    run: true
 
 datasource:
-  default: mysql_localhost
+  default: h2
   h2:
     username: root
     password: root

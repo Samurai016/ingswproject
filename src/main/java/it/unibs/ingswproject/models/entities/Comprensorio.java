@@ -20,7 +20,8 @@ public final class Comprensorio {
         return this.nome;
     }
 
-    public void setNome(String nome) {
+    public Comprensorio setNome(String nome) {
         this.nome = nome;
+        return this;
     }
 }
