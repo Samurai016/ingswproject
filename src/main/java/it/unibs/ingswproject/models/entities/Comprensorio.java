@@ -9,11 +9,11 @@ import jakarta.persistence.*;
 @Entity
 public class Comprensorio {
     @Id
-    @Length(64)
+    @Length(64) // Massimo 64 caratteri per poter utilizzare l'username come chiave primaria
     private String nome;
 
     public Comprensorio(String nome) {
-        this.nome = nome;
+        this.setNome(nome);
     }
 
     public String getNome() {

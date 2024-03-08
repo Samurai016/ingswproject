@@ -25,11 +25,11 @@ public class Nodo {
     private List<Nodo> figli = new ArrayList<>();
 
     protected Nodo(String nome, String descrizione, String nomeAttributo, String valoreAttributo, Nodo parent) {
-        this.nome = nome;
-        this.descrizione = descrizione;
-        this.nomeAttributo = nomeAttributo;
-        this.valoreAttributo = valoreAttributo;
-        this.parent = parent;
+        this.setNome(nome)
+            .setDescrizione(descrizione)
+            .setNomeAttributo(nomeAttributo)
+            .setValoreAttributo(valoreAttributo)
+            .setParent(parent);
     }
 
     public static Nodo createRoot(String nome, String descrizione, String nomeAttributo) {

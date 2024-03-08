@@ -3,7 +3,10 @@ package it.unibs.ingswproject.models.entities;
 import io.ebean.annotation.DbEnumValue;
 import io.ebean.annotation.Length;
 import it.unibs.ingswproject.auth.AuthService;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
 
 @Entity
 public class Utente {
@@ -17,11 +20,12 @@ public class Utente {
     }
 
     @Id
-    @Length(64)
+    @Length(64) // Massimo 64 caratteri per poter utilizzare l'username come chiave primaria
     private String username;
     private String password;
     @Enumerated(EnumType.STRING)
     private Ruolo ruolo;
+    Comprensorio comprensorio;
     private boolean hasMadeFirstLogin = false;
 
     public Utente(String username, String password, Ruolo ruolo) {
