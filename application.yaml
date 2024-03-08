@@ -2,11 +2,11 @@ ebean:
   migration:
     run: true
   ddl:
-    generate: true
-    run: true
+    generate: false
+    run: false
 
 datasource:
-  default: h2
+  default: sqlite
   h2:
     username: root
     password: root

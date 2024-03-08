@@ -1,13 +1,25 @@
 package it.unibs.ingswproject.auth;
 
+import it.unibs.ingswproject.models.StorageService;
+import it.unibs.ingswproject.models.entities.Utente;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
+import java.util.Base64;
+import java.util.Objects;
+
 /**
  * Questa classe è un servizio singleton che gestisce l'autenticazione degli utenti.
- * TODO: Implementare l'autenticazione degli utenti
- * @see AuthService
  * @author Nicolò Rebaioli
  */
 public class AuthService {
+    private static final String SALT = "mysupersecretsalt";
     public static AuthService instance;
+    private Utente currentUser;
 
     public static AuthService getInstance() {
         if (instance == null) {
@@ -17,6 +29,39 @@ public class AuthService {
     }
 
     public boolean login(String username, String password) {
-        return true;
+        // Search user by username
+        Utente user = StorageService.getInstance().getRepository(Utente.class).find(username);
+
+        // If user not found, return false
+        if (user == null) {
+            return false;
+        }
+
+        // If password is correct, set current user and return true
+        if (Objects.equals(hashPassword(password), user.getPassword())) {
+            this.currentUser = user;
+            return true;
+        }
+
+        return false;
+    }
+
+    public void logout() {
+        this.currentUser = null;
+    }
+
+    public Utente getCurrentUser() {
+        return this.currentUser;
+    }
+
+    public static String hashPassword(String password)  {
+        try {
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), SALT.getBytes(StandardCharsets.UTF_8), 65536, 128);
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            byte[] hash = factory.generateSecret(spec).getEncoded();
+            return Base64.getEncoder().encodeToString(hash);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            return null;
+        }
     }
 }
