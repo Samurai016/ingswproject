@@ -7,7 +7,7 @@ import jakarta.persistence.*;
  * @author Nicolò Rebaioli
  */
 @Entity
-public final class Comprensorio {
+public class Comprensorio {
     @Id
     @Length(64)
     private String nome;
