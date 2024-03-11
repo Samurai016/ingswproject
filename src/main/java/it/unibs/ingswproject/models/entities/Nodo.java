@@ -24,7 +24,11 @@ public class Nodo {
     @OneToMany(mappedBy = "parent")
     private List<Nodo> figli = new ArrayList<>();
 
+    public Nodo() {
+        // Costruttore vuoto per Ebean
+    }
     protected Nodo(String nome, String descrizione, String nomeAttributo, String valoreAttributo, Nodo parent) {
+        this();
         this.setNome(nome)
             .setDescrizione(descrizione)
             .setNomeAttributo(nomeAttributo)
@@ -110,7 +114,13 @@ public class Nodo {
     }
 
     public Nodo setFigli(List<Nodo> figli) {
-        this.figli = figli;
+        this.figli = figli==null ? new ArrayList<>() : figli;
         return this;
+    }
+
+    // OVERRIDE
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Nodo nodo && nodo.getId().equals(this.getId());
     }
 }

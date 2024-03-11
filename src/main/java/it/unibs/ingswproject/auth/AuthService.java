@@ -28,6 +28,12 @@ public class AuthService {
         return instance;
     }
 
+    /**
+     * Questo metodo permette di effettuare il login di un utente.
+     * @param username Username dell'utente
+     * @param password Password dell'utente
+     * @return true se il login è avvenuto con successo, false altrimenti
+     */
     public boolean login(String username, String password) {
         // Search user by username
         Utente user = StorageService.getInstance().getRepository(Utente.class).find(username);
@@ -54,7 +60,7 @@ public class AuthService {
         return this.currentUser;
     }
 
-    public static String hashPassword(String password)  {
+    public static String hashPassword(String password) {
         try {
             KeySpec spec = new PBEKeySpec(password.toCharArray(), SALT.getBytes(StandardCharsets.UTF_8), 65536, 128);
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");

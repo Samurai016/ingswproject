@@ -2,11 +2,11 @@ ebean:
   migration:
     run: true
   ddl:
-    generate: false
-    run: false
+    generate: true
+    run: true
 
 datasource:
-  default: sqlite
+  default: mysql_localhost
   h2:
     username: root
     password: root
@@ -14,11 +14,11 @@ datasource:
   mysql_localhost:
     username: guest
     password: guest
-    url: jdbc:mysql://localhost:3306/ingswproject
+    url: jdbc:mysql://localhost:3306/ingswproject?sessionVariables=default_storage_engine=InnoDB
   mysql_production:
     username: c0ingsw
     password: H4wFjkT!
-    url: jdbc:mysql://v00xpk-idea.sphostserver.com:3306/c0ingsw
+    url: jdbc:mysql://v00xpk-idea.sphostserver.com:3306/c0ingsw?sessionVariables=default_storage_engine=InnoDB
   sqlite:
     username: root
     password: root

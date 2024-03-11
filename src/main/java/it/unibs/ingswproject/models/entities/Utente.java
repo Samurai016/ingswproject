@@ -3,10 +3,7 @@ package it.unibs.ingswproject.models.entities;
 import io.ebean.annotation.DbEnumValue;
 import io.ebean.annotation.Length;
 import it.unibs.ingswproject.auth.AuthService;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Utente {
@@ -25,10 +22,15 @@ public class Utente {
     private String password;
     @Enumerated(EnumType.STRING)
     private Ruolo ruolo;
+    @ManyToOne()
     Comprensorio comprensorio;
     private boolean hasMadeFirstLogin = false;
 
+    public Utente() {
+        // Costruttore vuoto per Ebean
+    }
     public Utente(String username, String password, Ruolo ruolo) {
+        this();
         this.setUsername(username)
             .setPassword(password)
             .setRuolo(ruolo);
@@ -45,6 +47,10 @@ public class Utente {
 
     public Ruolo getRuolo() {
         return this.ruolo;
+    }
+
+    public Comprensorio getComprensorio() {
+        return this.comprensorio;
     }
 
     public boolean isHasMadeFirstLogin() {
@@ -64,6 +70,11 @@ public class Utente {
 
     public Utente setRuolo(Ruolo ruolo) {
         this.ruolo = ruolo;
+        return this;
+    }
+
+    public Utente setComprensorio(Comprensorio comprensorio) {
+        this.comprensorio = comprensorio;
         return this;
     }
 
