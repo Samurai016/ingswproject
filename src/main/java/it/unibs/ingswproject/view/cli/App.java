@@ -1,7 +1,6 @@
 package it.unibs.ingswproject.view.cli;
 
 import it.unibs.ingswproject.utils.Utils;
-import it.unibs.ingswproject.view.cli.pages.HomePage;
 import it.unibs.ingswproject.view.cli.pages.LoginPage;
 
 import java.util.Scanner;
@@ -14,7 +13,15 @@ import java.util.Stack;
  * @author Nicolò Rebaioli
  */
 public class App {
-    public static final String HEADER = "\n=== Ing. SW Project ===";
+    public static final String HEADER = """
+
+              _____               __  __    __     ___           _           _  \s
+              \\_   \\_ __   __ _  / _\\/ / /\\ \\ \\   / _ \\_ __ ___ (_) ___  ___| |_\s
+               / /\\/ '_ \\ / _` | \\ \\ \\ \\/  \\/ /  / /_)/ '__/ _ \\| |/ _ \\/ __| __|
+            /\\/ /_ | | | | (_| | _\\ \\ \\  /\\  /  / ___/| | | (_) | |  __/ (__| |_\s
+            \\____/ |_| |_|\\__, | \\__/  \\/  \\/   \\/    |_|  \\___// |\\___|\\___|\\__|
+                          |___/                               |__/              \s
+            """;
     public static final String BREADCRUMB_SEPARATOR = " > ";
 
     protected Stack<CliPage> history = new Stack<>();
