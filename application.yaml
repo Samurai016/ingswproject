@@ -6,7 +6,7 @@ ebean:
     run: true
 
 datasource:
-  default: mysql_localhost
+  default: sqlite
   h2:
     username: root
     password: root
