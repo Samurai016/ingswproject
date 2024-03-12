@@ -1,6 +1,7 @@
 package it.unibs.ingswproject.test.logic;
 
 import io.ebean.Transaction;
+import it.unibs.ingswproject.logic.FattoreDiConversioneHandler;
 import it.unibs.ingswproject.models.EntityRepository;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.FattoreDiConversione;
@@ -43,7 +44,7 @@ public class FattoriDiConversioneTest {
             repo.create(pera);
             root = repo.find(root.getId()); // Refresh root
 
-            List<FattoreDiConversione> FDCs = FattoreDiConversione.getFattoriDiConversionToSet(root);
+            List<FattoreDiConversione> FDCs = FattoreDiConversioneHandler.getFattoriDiConversionToSet(root);
             Assertions.assertEquals(2, FDCs.size());
             innerTransaction.rollback();
         }
@@ -80,7 +81,7 @@ public class FattoriDiConversioneTest {
             repoNodi.create(bananaAcerba);
             root = repoNodi.find(root.getId()); // Refresh root
 
-            List<FattoreDiConversione> FDCs = FattoreDiConversione.getFattoriDiConversionToSet(banana);
+            List<FattoreDiConversione> FDCs = FattoreDiConversioneHandler.getFattoriDiConversionToSet(banana);
             Assertions.assertEquals(2, FDCs.size());
             innerTransaction.rollback();
         }
@@ -124,7 +125,7 @@ public class FattoriDiConversioneTest {
             repoNodi.create(bananaMatura);
             repoNodi.create(bananaAcerba);
 
-            List<FattoreDiConversione> FDCs = FattoreDiConversione.getFattoriDiConversionToSet(banana);
+            List<FattoreDiConversione> FDCs = FattoreDiConversioneHandler.getFattoriDiConversionToSet(banana);
             Assertions.assertEquals(3, FDCs.size());
             innerTransaction.rollback();
         }
