@@ -1,5 +1,6 @@
 package it.unibs.ingswproject.view.cli;
 
+import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.utils.Utils;
 import it.unibs.ingswproject.view.cli.pages.LoginPage;
 
@@ -65,13 +66,18 @@ public class App {
      * @param page Pagina da renderizzare
      */
     protected void renderPage(CliPage page) {
-        // 1. Stampa dei breadcrumb e del header
+        // 1. Stampa del header, del nome utente e dei breadcrumb
         System.out.println(HEADER);
+        AuthService authService = AuthService.getInstance();
+        if (authService.isLoggedIn()) {
+            System.out.printf("%s (%s)\n", authService.getCurrentUser().getUsername(), authService.getCurrentUser().getRuolo());
+        }
         System.out.println(String.join(BREADCRUMB_SEPARATOR, this.getBreadcrumbs()));
+        System.out.println();
 
         // 2.1 Controlla autorizzazione
         if (!page.canView()) {
-            System.out.println("\nNon sei autorizzato a visualizzare questa pagina");
+            System.out.println("Non sei autorizzato a visualizzare questa pagina");
             waitForInput();
             this.goBack();
             return;

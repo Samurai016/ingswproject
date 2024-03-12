@@ -45,11 +45,11 @@ public class LoginPage extends CliPage {
 
     @Override
     public void render() {
-        System.out.println("\nBenvenuto! Effettua il login per accedere all'applicazione.");
+        System.out.println("Benvenuto! Effettua il login per accedere all'applicazione.");
         Scanner scanner = new Scanner(System.in);
 
         // Effettua il login
-        boolean loggedIn = false;
+        boolean loggedIn;
         do {
             System.out.print("Inserisci il tuo username: ");
             String username = scanner.nextLine();

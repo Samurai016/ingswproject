@@ -25,7 +25,7 @@ public class ComprensoriPage extends CliPage {
 
     @Override
     protected boolean canView() {
-        return AuthService.getInstance().getCurrentUser().isConfiguratore();
+        return AuthService.getInstance().isLoggedIn() && AuthService.getInstance().getCurrentUser().isConfiguratore();
     }
 
     @Override
@@ -53,5 +53,7 @@ public class ComprensoriPage extends CliPage {
                 System.out.println("\t" + (i + 1) + ". " + comprensorio.getNome());
             }
         }
+
+        System.out.println();
     }
 }

@@ -38,7 +38,6 @@ public abstract class CliPage {
         this.beforeRender();
 
         // 2. Stampa dei comandi
-        System.out.println();
         System.out.println("Comandi disponibili:");
         this.commands.forEach((key, value) -> System.out.println(key + ". " + value));
 

@@ -23,7 +23,7 @@ public class AddComprensorioPage extends CliPage {
 
     @Override
     protected boolean canView() {
-        return AuthService.getInstance().getCurrentUser().isConfiguratore();
+        return AuthService.getInstance().isLoggedIn() && AuthService.getInstance().getCurrentUser().isConfiguratore();
     }
 
     @Override

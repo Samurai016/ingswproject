@@ -1,5 +1,7 @@
 package it.unibs.ingswproject.view.cli.pages;
 
+import it.unibs.ingswproject.auth.AuthService;
+import it.unibs.ingswproject.models.entities.Utente;
 import it.unibs.ingswproject.view.cli.App;
 import it.unibs.ingswproject.view.cli.CliPage;
 import it.unibs.ingswproject.view.cli.pages.comprensori.ComprensoriPage;
@@ -14,8 +16,16 @@ public class HomePage extends CliPage {
         super(app);
 
         this.commands.put('0', "Esci"); // Override default command (0 -> Esci)
-        this.commands.put('1', "Comprensori");
-        this.commands.put('2', "Gerarchie");
+
+        // Aggiungi comandi in base al ruolo dell'utente
+        switch (AuthService.getInstance().getCurrentUser().getRuolo()) {
+            case Utente.Ruolo.CONFIGURATORE:
+                this.commands.put('1', "Comprensori");
+                this.commands.put('2', "Gerarchie");
+                break;
+            case Utente.Ruolo.FRUITORE:
+                break;
+        }
     }
 
     @Override
@@ -25,7 +35,7 @@ public class HomePage extends CliPage {
 
     @Override
     protected boolean canView() {
-        return true;
+        return AuthService.getInstance().isLoggedIn();
     }
 
     @Override
