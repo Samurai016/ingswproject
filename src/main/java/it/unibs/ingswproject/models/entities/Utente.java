@@ -32,7 +32,7 @@ public class Utente {
     public Utente(String username, String password, Ruolo ruolo) {
         this();
         this.setUsername(username)
-            .setPassword(password)
+            .changePassword(password)
             .setRuolo(ruolo);
     }
 
@@ -53,18 +53,34 @@ public class Utente {
         return this.comprensorio;
     }
 
-    public boolean isHasMadeFirstLogin() {
+    public boolean hasMadeFirstLogin() {
         return this.hasMadeFirstLogin;
+    }
+
+    public boolean isConfiguratore() {
+        return this.ruolo == Ruolo.CONFIGURATORE;
     }
 
     // SETTERS
     public Utente setUsername(String username) {
-        this.username = username;
+        if (username == null || username.isEmpty()) {
+            throw new IllegalArgumentException("Lo username non può essere vuoto");
+        }
+        this.username = username.toLowerCase().trim();
         return this;
     }
 
-    public Utente setPassword(String password) {
+    protected Utente setPassword(String password) {
+        if (password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("La password non può essere vuota");
+        }
         this.password = AuthService.hashPassword(password);
+        return this;
+    }
+
+    public Utente changePassword(String password) {
+        this.setPassword(password);
+        this.hasMadeFirstLogin = true;
         return this;
     }
 
@@ -75,11 +91,6 @@ public class Utente {
 
     public Utente setComprensorio(Comprensorio comprensorio) {
         this.comprensorio = comprensorio;
-        return this;
-    }
-
-    public Utente flagHasMadeFirstLogin() {
-        this.hasMadeFirstLogin = true;
         return this;
     }
 }

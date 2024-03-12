@@ -78,6 +78,9 @@ public class FattoreDiConversione {
 
     // SETTERS
     public FattoreDiConversione setNodo1(Nodo nodo1) {
+        if (nodo1 == null) {
+            throw new IllegalArgumentException("Il nodo 1 non può essere nullo");
+        }
         if (!nodo1.isFoglia()) {
             throw new IllegalArgumentException("Il nodo 1 deve essere una foglia");
         }
@@ -86,6 +89,9 @@ public class FattoreDiConversione {
     }
 
     public FattoreDiConversione setNodo2(Nodo nodo2) {
+        if (nodo2 == null) {
+            throw new IllegalArgumentException("Il nodo 2 non può essere nullo");
+        }
         if (!nodo2.isFoglia()) {
             throw new IllegalArgumentException("Il nodo 2 deve essere una foglia");
         }
