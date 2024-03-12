@@ -3,7 +3,7 @@ package it.unibs.ingswproject.view.cli.pages.comprensori;
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Comprensorio;
-import it.unibs.ingswproject.view.cli.App;
+import it.unibs.ingswproject.view.cli.CliApp;
 import it.unibs.ingswproject.view.cli.CliPage;
 
 import java.util.Scanner;
@@ -12,7 +12,7 @@ import java.util.Scanner;
  * @author Nicolò Rebaioli
  */
 public class AddComprensorioPage extends CliPage {
-    public AddComprensorioPage(App app) {
+    public AddComprensorioPage(CliApp app) {
         super(app);
     }
 
@@ -51,7 +51,7 @@ public class AddComprensorioPage extends CliPage {
             scanner.nextLine();
         } catch (Throwable e) {
             System.out.println("Errore: " + e.getMessage());
-            App.waitForInput();
+            CliApp.waitForInput();
         }
 
         this.app.goBack();

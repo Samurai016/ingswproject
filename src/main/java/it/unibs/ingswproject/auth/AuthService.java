@@ -17,6 +17,11 @@ import java.util.Objects;
  * @author Nicolò Rebaioli
  */
 public class AuthService {
+    /**
+     * Salt per la generazione dell'hash della password.
+     * Questo valore deve essere mantenuto segreto.
+     * Modificare questo valore comporta la necessità di resettare tutte le password degli utenti.
+     */
     private static final String SALT = "mysupersecretsalt";
     public static AuthService instance;
     private Utente currentUser;

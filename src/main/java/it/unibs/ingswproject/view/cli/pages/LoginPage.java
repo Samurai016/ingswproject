@@ -3,7 +3,7 @@ package it.unibs.ingswproject.view.cli.pages;
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Utente;
-import it.unibs.ingswproject.view.cli.App;
+import it.unibs.ingswproject.view.cli.CliApp;
 import it.unibs.ingswproject.view.cli.CliPage;
 
 import java.util.Scanner;
@@ -17,7 +17,7 @@ import java.util.Scanner;
  * @author Nicolò Rebaioli
  */
 public class LoginPage extends CliPage {
-    public LoginPage(App app) {
+    public LoginPage(CliApp app) {
         super(app);
         this.checkLogin();
     }

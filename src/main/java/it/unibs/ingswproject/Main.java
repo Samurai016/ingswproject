@@ -1,6 +1,6 @@
 package it.unibs.ingswproject;
 
-import it.unibs.ingswproject.view.cli.App;
+import it.unibs.ingswproject.view.cli.CliApp;
 
 public class Main {
     public static void main(String[] args) {
@@ -8,6 +8,6 @@ public class Main {
         System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "off");
 
         // Avvio l'applicazione
-        new App().run();
+        new CliApp().run();
     }
 }

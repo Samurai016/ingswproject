@@ -3,7 +3,7 @@ package it.unibs.ingswproject.view.cli.pages.comprensori;
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Comprensorio;
-import it.unibs.ingswproject.view.cli.App;
+import it.unibs.ingswproject.view.cli.CliApp;
 import it.unibs.ingswproject.view.cli.CliPage;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  * @author Nicolò Rebaioli
  */
 public class ComprensoriPage extends CliPage {
-    public ComprensoriPage(App app) {
+    public ComprensoriPage(CliApp app) {
         super(app);
 
         this.commands.put('1', "Aggiungi comprensorio");

@@ -2,7 +2,7 @@ package it.unibs.ingswproject.view.cli.pages;
 
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.models.entities.Utente;
-import it.unibs.ingswproject.view.cli.App;
+import it.unibs.ingswproject.view.cli.CliApp;
 import it.unibs.ingswproject.view.cli.CliPage;
 import it.unibs.ingswproject.view.cli.pages.comprensori.ComprensoriPage;
 
@@ -12,7 +12,7 @@ import it.unibs.ingswproject.view.cli.pages.comprensori.ComprensoriPage;
  * @author Nicolò Rebaioli
  */
 public class HomePage extends CliPage {
-    public HomePage(App app) {
+    public HomePage(CliApp app) {
         super(app);
 
         this.commands.put('0', "Esci"); // Override default command (0 -> Esci)

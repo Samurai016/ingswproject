@@ -2,6 +2,7 @@ package it.unibs.ingswproject.view.cli;
 
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.utils.Utils;
+import it.unibs.ingswproject.view.AppInterface;
 import it.unibs.ingswproject.view.cli.pages.LoginPage;
 
 import java.util.Scanner;
@@ -13,7 +14,7 @@ import java.util.Stack;
  *
  * @author Nicolò Rebaioli
  */
-public class App {
+public class CliApp implements AppInterface {
     public static final String HEADER = """
 
               _____               __  __    __     ___           _           _  \s

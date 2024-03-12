@@ -11,7 +11,7 @@ import java.util.Scanner;
  */
 public abstract class CliPage {
     protected HashMap<Character, String> commands = new HashMap<>();
-    protected App app;
+    protected CliApp app;
 
     /**
      * Costruttore che istanza la pagina
@@ -19,7 +19,7 @@ public abstract class CliPage {
      *
      * @param app Applicazione che ha generato la pagina
      */
-    public CliPage(App app) {
+    public CliPage(CliApp app) {
         this.app = app;
 
         this.commands.put('0', "Indietro");
