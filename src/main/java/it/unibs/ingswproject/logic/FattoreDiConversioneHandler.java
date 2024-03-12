@@ -8,6 +8,11 @@ import it.unibs.ingswproject.models.repositories.FattoreDiConversioneRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Questa classe fornisce metodi per gestire i fattori di conversione.
+ *
+ * @author Nicolò Rebaioli
+ */
 public class FattoreDiConversioneHandler {
     /**
      * Restituisce i fattori di conversione da aggiungere quando si aggiungono dei nodi figli
