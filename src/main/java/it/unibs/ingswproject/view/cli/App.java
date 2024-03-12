@@ -2,6 +2,7 @@ package it.unibs.ingswproject.view.cli;
 
 import it.unibs.ingswproject.utils.Utils;
 import it.unibs.ingswproject.view.cli.pages.HomePage;
+import it.unibs.ingswproject.view.cli.pages.LoginPage;
 
 import java.util.Scanner;
 import java.util.Stack;
@@ -23,7 +24,7 @@ public class App {
      */
     public void run() {
         try {
-            this.navigateTo(new HomePage(this));
+            this.navigateTo(new LoginPage(this));
         } catch (Throwable e) {
             System.out.println("Errore: " + Utils.getErrorMessage(e));
         }
@@ -81,8 +82,6 @@ public class App {
         return this.history.stream().map(CliPage::getName).toArray(String[]::new);
     }
 
-
-
     /**
      * Attende l'input dell'utente
      * Stampa a video un messaggio e attende che l'utente prema invio
@@ -90,5 +89,9 @@ public class App {
     public static void waitForInput() {
         System.out.println("Premi invio per continuare...");
         new Scanner(System.in).nextLine();
+    }
+
+    public Stack<CliPage> getHistory() {
+        return this.history;
     }
 }

@@ -1,9 +1,9 @@
 ebean:
   migration:
-    run: true
+    run: false
   ddl:
     generate: true
-    run: true
+    run: false
 
 datasource:
   default: sqlite

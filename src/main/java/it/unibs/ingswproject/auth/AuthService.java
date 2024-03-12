@@ -56,6 +56,10 @@ public class AuthService {
         this.currentUser = null;
     }
 
+    public boolean isLoggedIn() {
+        return this.currentUser != null;
+    }
+
     public Utente getCurrentUser() {
         return this.currentUser;
     }

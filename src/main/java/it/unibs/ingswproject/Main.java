@@ -7,7 +7,7 @@ public class Main {
         // Disabilito il logging di Ebean
         System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "off");
 
-        // TODO: Avviare l'applicazione CLI
+        // Avvio l'applicazione
         new App().run();
     }
 }

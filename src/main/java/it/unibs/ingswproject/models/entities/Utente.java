@@ -32,7 +32,7 @@ public class Utente {
     public Utente(String username, String password, Ruolo ruolo) {
         this();
         this.setUsername(username)
-            .changePassword(password)
+            .setPassword(password)
             .setRuolo(ruolo);
     }
 
