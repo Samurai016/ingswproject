@@ -4,6 +4,8 @@ import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.utils.Utils;
 import it.unibs.ingswproject.view.AppInterface;
 import it.unibs.ingswproject.view.cli.pages.LoginPage;
+import it.unibs.ingswproject.view.cli.router.CliPageFactory;
+import it.unibs.ingswproject.view.cli.router.CliRouter;
 
 import java.util.Scanner;
 import java.util.Stack;
@@ -26,14 +28,24 @@ public class CliApp implements AppInterface {
             """;
     public static final String BREADCRUMB_SEPARATOR = " > ";
 
-    protected Stack<CliPage> history = new Stack<>();
+    protected CliRouter router;
+    protected CliPageFactory pageFactory;
+    protected AuthService authService;
+
+    public CliApp(CliRouter router, CliPageFactory pageFactory, AuthService authService) {
+        this.router = router;
+        this.pageFactory = pageFactory;
+        this.authService = authService;
+    }
 
     /**
      * Avvia l'applicazione
      */
     public void run() {
         try {
-            this.navigateTo(new LoginPage(this));
+            LoginPage page = this.pageFactory.generatePage(LoginPage.class);
+            this.router.navigateTo(page);
+            this.renderPage(page);
         } catch (Throwable e) {
             System.out.println("Errore: " + Utils.getErrorMessage(e));
         }
@@ -45,7 +57,7 @@ public class CliApp implements AppInterface {
      * @param page Pagina da renderizzare
      */
     public void navigateTo(CliPage page) {
-        this.renderPage(this.history.push(page));
+        this.renderPage(this.router.navigateTo(page));
     }
 
     /**
@@ -53,11 +65,10 @@ public class CliApp implements AppInterface {
      * Influenza la history
      */
     public void goBack() {
-        if (this.history.size() <= 1) {
-            return;
+        CliPage page = this.router.goBack();
+        if (page != null) {
+            this.renderPage(page);
         }
-        this.history.pop(); // Remove current page from history
-        this.renderPage(this.history.lastElement()); // Render previous page
     }
 
     /**
@@ -69,9 +80,8 @@ public class CliApp implements AppInterface {
     protected void renderPage(CliPage page) {
         // 1. Stampa del header, del nome utente e dei breadcrumb
         System.out.println(HEADER);
-        AuthService authService = AuthService.getInstance();
-        if (authService.isLoggedIn()) {
-            System.out.printf("%s (%s)\n", authService.getCurrentUser().getUsername(), authService.getCurrentUser().getRuolo());
+        if (this.authService.isLoggedIn()) {
+            System.out.printf("%s (%s)\n", this.authService.getCurrentUser().getUsername(), this.authService.getCurrentUser().getRuolo());
         }
         System.out.println(String.join(BREADCRUMB_SEPARATOR, this.getBreadcrumbs()));
         System.out.println();
@@ -93,7 +103,7 @@ public class CliApp implements AppInterface {
      * @return Breadcrumb della history
      */
     protected String[] getBreadcrumbs() {
-        return this.history.stream().map(CliPage::getName).toArray(String[]::new);
+        return this.router.getHistory().stream().map(CliPage::getName).toArray(String[]::new);
     }
 
     /**
@@ -105,7 +115,7 @@ public class CliApp implements AppInterface {
         new Scanner(System.in).nextLine();
     }
 
-    public Stack<CliPage> getHistory() {
-        return this.history;
+    public CliRouter getRouter() {
+        return this.router;
     }
 }

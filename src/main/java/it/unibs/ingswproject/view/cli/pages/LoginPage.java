@@ -5,6 +5,9 @@ import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Utente;
 import it.unibs.ingswproject.view.cli.CliApp;
 import it.unibs.ingswproject.view.cli.CliPage;
+import it.unibs.ingswproject.view.cli.router.CliConstructor;
+import it.unibs.ingswproject.view.cli.router.CliPageFactory;
+import it.unibs.ingswproject.view.cli.router.CliRouter;
 
 import java.util.Scanner;
 
@@ -17,8 +20,16 @@ import java.util.Scanner;
  * @author Nicolò Rebaioli
  */
 public class LoginPage extends CliPage {
-    public LoginPage(CliApp app) {
+    protected AuthService authService;
+    protected StorageService storageService;
+    protected CliPageFactory pageFactory;
+
+    @CliConstructor
+    public LoginPage(CliApp app, AuthService authService, StorageService storageService, CliPageFactory pageFactory) {
         super(app);
+        this.authService = authService;
+        this.storageService = storageService;
+        this.pageFactory = pageFactory;
         this.checkLogin();
     }
 
@@ -27,9 +38,13 @@ public class LoginPage extends CliPage {
      * Se l'utente è già loggato, la history viene cancellata
      */
     protected void checkLogin() {
-        if (AuthService.getInstance().isLoggedIn()) {
-            this.app.getHistory().clear(); // Clear history
-            this.app.navigateTo(new HomePage(this.app));
+        try {
+            if (this.authService.isLoggedIn()) {
+                this.app.getRouter().clearHistory(); // Clear history
+                this.app.navigateTo(this.pageFactory.generatePage(HomePage.class));
+            }
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -57,15 +72,15 @@ public class LoginPage extends CliPage {
             String password = scanner.nextLine();
 
             System.out.println("\nEffettuo il login...");
-            loggedIn = AuthService.getInstance().login(username, password);
+            loggedIn = this.authService.login(username, password);
             if (!loggedIn) {
                 System.out.println("Credenziali non valide. Riprova.\n");
             }
         } while (!loggedIn);
 
         // Controllo se devo cambiare password
-        if (!AuthService.getInstance().getCurrentUser().hasMadeFirstLogin()) {
-            System.out.println("\nBenvenuto, " + AuthService.getInstance().getCurrentUser().getUsername() + "!");
+        if (!this.authService.getCurrentUser().hasMadeFirstLogin()) {
+            System.out.println("\nBenvenuto, " + this.authService.getCurrentUser().getUsername() + "!");
             System.out.println("Prima di continuare, è necessario cambiare la password.");
 
             boolean passwordChanged = false;
@@ -81,8 +96,8 @@ public class LoginPage extends CliPage {
                 System.out.print("Conferma la nuova password: ");
                 String confirmPassword = scanner.nextLine();
                 if (newPassword.equals(confirmPassword)) {
-                    AuthService.getInstance().getCurrentUser().changePassword(newPassword);
-                    StorageService.getInstance().getRepository(Utente.class).update(AuthService.getInstance().getCurrentUser());
+                    this.authService.getCurrentUser().changePassword(newPassword);
+                    this.storageService.getRepository(Utente.class).update(this.authService.getCurrentUser());
                     System.out.println("\nPassword cambiata con successo!");
                     passwordChanged = true;
                 } else {

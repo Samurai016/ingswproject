@@ -1,5 +1,6 @@
 package it.unibs.ingswproject.test.logic;
 
+import io.ebean.DB;
 import io.ebean.Transaction;
 import it.unibs.ingswproject.logic.FattoreDiConversioneHandler;
 import it.unibs.ingswproject.models.EntityRepository;
@@ -12,7 +13,8 @@ import java.util.List;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class FattoriDiConversioneTest {
-    private static final StorageService storageService = StorageService.getInstance();
+    private static final StorageService storageService = new StorageService(DB.getDefault());
+    private static final FattoreDiConversioneHandler fattoreDiConversioneHandler = new FattoreDiConversioneHandler(storageService);
     private static Nodo root;
 
     @BeforeAll
@@ -44,7 +46,7 @@ public class FattoriDiConversioneTest {
             repo.create(pera);
             root = repo.find(root.getId()); // Refresh root
 
-            List<FattoreDiConversione> FDCs = FattoreDiConversioneHandler.getFattoriDiConversionToSet(root);
+            List<FattoreDiConversione> FDCs = fattoreDiConversioneHandler.getFattoriDiConversionToSet(root);
             Assertions.assertEquals(2, FDCs.size());
             innerTransaction.rollback();
         }
@@ -81,7 +83,7 @@ public class FattoriDiConversioneTest {
             repoNodi.create(bananaAcerba);
             root = repoNodi.find(root.getId()); // Refresh root
 
-            List<FattoreDiConversione> FDCs = FattoreDiConversioneHandler.getFattoriDiConversionToSet(banana);
+            List<FattoreDiConversione> FDCs = fattoreDiConversioneHandler.getFattoriDiConversionToSet(banana);
             Assertions.assertEquals(2, FDCs.size());
             innerTransaction.rollback();
         }
@@ -125,7 +127,7 @@ public class FattoriDiConversioneTest {
             repoNodi.create(bananaMatura);
             repoNodi.create(bananaAcerba);
 
-            List<FattoreDiConversione> FDCs = FattoreDiConversioneHandler.getFattoriDiConversionToSet(banana);
+            List<FattoreDiConversione> FDCs = fattoreDiConversioneHandler.getFattoriDiConversionToSet(banana);
             Assertions.assertEquals(3, FDCs.size());
             innerTransaction.rollback();
         }

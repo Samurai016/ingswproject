@@ -23,14 +23,11 @@ public class AuthService {
      * Modificare questo valore comporta la necessità di resettare tutte le password degli utenti.
      */
     private static final String SALT = "mysupersecretsalt";
-    public static AuthService instance;
     private Utente currentUser;
-
-    public static AuthService getInstance() {
-        if (instance == null) {
-            instance = new AuthService();
-        }
-        return instance;
+    protected StorageService storageService;
+    
+    public AuthService(StorageService storageService) {
+        this.storageService = storageService;
     }
 
     /**
@@ -41,7 +38,7 @@ public class AuthService {
      */
     public boolean login(String username, String password) {
         // Search user by username
-        Utente user = StorageService.getInstance().getRepository(Utente.class).find(username);
+        Utente user = this.storageService.getRepository(Utente.class).find(username);
 
         // If user not found, return false
         if (user == null) {

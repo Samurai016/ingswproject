@@ -9,6 +9,7 @@ import it.unibs.ingswproject.models.entities.Utente;
 import it.unibs.ingswproject.models.repositories.FattoreDiConversioneRepository;
 import it.unibs.ingswproject.models.repositories.NodoRepository;
 
+import javax.xml.crypto.Data;
 import java.util.HashMap;
 
 /**
@@ -20,28 +21,16 @@ import java.util.HashMap;
  * @author Nicolò Rebaioli
  */
 public class StorageService {
-    private static StorageService instance;
     @SuppressWarnings("rawtypes")
     private final HashMap<Class, EntityRepository> repositories = new HashMap<>();
-    protected final Database database = DB.getDefault();
+    protected final Database database;
 
-    private StorageService() {
+    public StorageService(Database database) {
+        this.database = database;
         this.repositories.put(Comprensorio.class, new EntityRepository<>(Comprensorio.class, this.database));
         this.repositories.put(Nodo.class, new NodoRepository(this.database));
         this.repositories.put(FattoreDiConversione.class, new FattoreDiConversioneRepository(this.database));
         this.repositories.put(Utente.class, new EntityRepository<>(Utente.class, this.database));
-    }
-
-    /**
-     * Get the instance of the storage service.
-     * If the instance does not exist, it is created.
-     * @return The instance of the storage service
-     */
-    public static StorageService getInstance() {
-        if (instance == null) {
-            instance = new StorageService();
-        }
-        return instance;
     }
 
     /**

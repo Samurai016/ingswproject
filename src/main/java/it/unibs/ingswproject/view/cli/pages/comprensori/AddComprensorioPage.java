@@ -5,6 +5,7 @@ import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Comprensorio;
 import it.unibs.ingswproject.view.cli.CliApp;
 import it.unibs.ingswproject.view.cli.CliPage;
+import it.unibs.ingswproject.view.cli.router.CliConstructor;
 
 import java.util.Scanner;
 
@@ -12,8 +13,14 @@ import java.util.Scanner;
  * @author Nicolò Rebaioli
  */
 public class AddComprensorioPage extends CliPage {
-    public AddComprensorioPage(CliApp app) {
+    protected AuthService authService;
+    protected StorageService storageService;
+
+    @CliConstructor
+    public AddComprensorioPage(CliApp app, AuthService authService, StorageService storageService) {
         super(app);
+        this.authService = authService;
+        this.storageService = storageService;
     }
 
     @Override
@@ -23,7 +30,7 @@ public class AddComprensorioPage extends CliPage {
 
     @Override
     protected boolean canView() {
-        return AuthService.getInstance().isLoggedIn() && AuthService.getInstance().getCurrentUser().isConfiguratore();
+        return this.authService.isLoggedIn() && this.authService.getCurrentUser().isConfiguratore();
     }
 
     @Override
@@ -45,7 +52,7 @@ public class AddComprensorioPage extends CliPage {
 
             System.out.println();
             System.out.println("Inserimento nel database...");
-            StorageService.getInstance().getRepository(Comprensorio.class).create(comprensorio);
+            this.storageService.getRepository(Comprensorio.class).create(comprensorio);
 
             System.out.println("Comprensorio inserito con successo, premi invio per tornare indietro");
             scanner.nextLine();

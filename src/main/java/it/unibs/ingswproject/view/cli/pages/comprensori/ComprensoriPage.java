@@ -5,6 +5,8 @@ import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Comprensorio;
 import it.unibs.ingswproject.view.cli.CliApp;
 import it.unibs.ingswproject.view.cli.CliPage;
+import it.unibs.ingswproject.view.cli.router.CliConstructor;
+import it.unibs.ingswproject.view.cli.router.CliPageFactory;
 
 import java.util.List;
 
@@ -12,8 +14,16 @@ import java.util.List;
  * @author Nicolò Rebaioli
  */
 public class ComprensoriPage extends CliPage {
-    public ComprensoriPage(CliApp app) {
+    protected AuthService authService;
+    protected StorageService storageService;
+    protected CliPageFactory pageFactory;
+
+    @CliConstructor
+    public ComprensoriPage(CliApp app, AuthService authService, StorageService storageService, CliPageFactory pageFactory) {
         super(app);
+        this.authService = authService;
+        this.storageService = storageService;
+        this.pageFactory = pageFactory;
 
         this.commands.put('1', "Aggiungi comprensorio");
     }
@@ -25,15 +35,19 @@ public class ComprensoriPage extends CliPage {
 
     @Override
     protected boolean canView() {
-        return AuthService.getInstance().isLoggedIn() && AuthService.getInstance().getCurrentUser().isConfiguratore();
+        return this.authService.isLoggedIn() && this.authService.getCurrentUser().isConfiguratore();
     }
 
     @Override
     protected void handleInput(char input) {
         super.handleInput(input); // Handle default commands
 
-        if (input == '1') {
-            this.app.navigateTo(new AddComprensorioPage(this.app));
+        try {
+            if (input == '1') {
+                this.app.navigateTo(this.pageFactory.generatePage(AddComprensorioPage.class));
+            }
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -43,7 +57,7 @@ public class ComprensoriPage extends CliPage {
 
         // Show comprensori
         System.out.println("Comprensori:");
-        List<Comprensorio> comprensori = StorageService.getInstance().getRepository(Comprensorio.class).findAll();
+        List<Comprensorio> comprensori = this.storageService.getRepository(Comprensorio.class).findAll();
 
         if (comprensori.isEmpty()) {
             System.out.println("\tNessun comprensorio presente");
