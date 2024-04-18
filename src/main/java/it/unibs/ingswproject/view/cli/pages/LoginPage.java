@@ -7,7 +7,6 @@ import it.unibs.ingswproject.view.cli.CliApp;
 import it.unibs.ingswproject.view.cli.CliPage;
 import it.unibs.ingswproject.view.cli.router.CliConstructor;
 import it.unibs.ingswproject.view.cli.router.CliPageFactory;
-import it.unibs.ingswproject.view.cli.router.CliRouter;
 
 import java.util.Scanner;
 

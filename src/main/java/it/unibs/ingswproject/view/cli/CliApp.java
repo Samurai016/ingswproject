@@ -8,7 +8,6 @@ import it.unibs.ingswproject.view.cli.router.CliPageFactory;
 import it.unibs.ingswproject.view.cli.router.CliRouter;
 
 import java.util.Scanner;
-import java.util.Stack;
 
 /**
  * Classe principale dell'applicazione CLI
