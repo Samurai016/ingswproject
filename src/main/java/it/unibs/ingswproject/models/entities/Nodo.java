@@ -90,7 +90,7 @@ public class Nodo {
     // SETTERS (Builder pattern)
     public Nodo setNome(String nome) {
         if (nome == null || nome.isEmpty()) {
-            throw new IllegalArgumentException("Il nome del nodo non può essere vuoto");
+            throw new IllegalArgumentException("nodo_name_not_empty");
         }
         this.nome = nome;
         return this;

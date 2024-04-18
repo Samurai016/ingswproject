@@ -26,21 +26,12 @@ public class EntityRepository<T> {
     }
 
     /**
-     * Crea un'entità verificandone la validità.
-     * @param entity L'entità da creare
+     * Salva un'entità verificandone la validità.
+     * @param entity L'entità da salvare
      */
-    public void create(T entity) {
+    public void save(T entity) {
         this.validate(entity);
-        this.database.insert(entity);
-    }
-
-    /**
-     * Aggiorna un'entità verificandone la validità.
-     * @param entity L'entità da aggiornare
-     */
-    public void update(T entity) {
-        this.validate(entity);
-        this.database.update(entity);
+        this.database.save(entity);
     }
 
     /**

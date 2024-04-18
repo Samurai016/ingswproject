@@ -29,7 +29,7 @@ public class FattoriDiConversioneTest {
                 Nodo.createFoglia("Banana", null, "giallo", root)
         }));
 
-        storageService.getRepository(Nodo.class).create(root);
+        storageService.getRepository(Nodo.class).save(root);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class FattoriDiConversioneTest {
         try (Transaction innerTransaction = storageService.getDatabase().beginTransaction()) {
             EntityRepository<Nodo> repo = storageService.getRepository(Nodo.class);
             Nodo pera = Nodo.createFoglia("Pera", null, "verde", root);
-            repo.create(pera);
+            repo.save(pera);
             root = repo.find(root.getId()); // Refresh root
 
             List<FattoreDiConversione> FDCs = fattoreDiConversioneHandler.getFattoriDiConversionToSet(root);
@@ -71,16 +71,16 @@ public class FattoriDiConversioneTest {
             Nodo banana = children.stream().filter(n -> n.getNome().equals("Banana")).findFirst().orElse(null);
 
             // Add FDCs
-            repoFDC.create(new FattoreDiConversione(mela, banana, 1.0));
+            repoFDC.save(new FattoreDiConversione(mela, banana, 1.0));
 
             // Banana Matura e Banana Acerba
             assert banana != null;
-            repoNodi.update(banana.setNomeAttributo("maturazione"));
+            repoNodi.save(banana.setNomeAttributo("maturazione"));
             Nodo bananaMatura = Nodo.createFoglia("Banana Matura", null, "giallo", banana);
             Nodo bananaAcerba = Nodo.createFoglia("Banana Acerba", null, "verde", banana);
             banana.getFigli().addAll(List.of(new Nodo[]{bananaMatura, bananaAcerba}));
-            repoNodi.create(bananaMatura);
-            repoNodi.create(bananaAcerba);
+            repoNodi.save(bananaMatura);
+            repoNodi.save(bananaAcerba);
             root = repoNodi.find(root.getId()); // Refresh root
 
             List<FattoreDiConversione> FDCs = fattoreDiConversioneHandler.getFattoriDiConversionToSet(banana);
@@ -111,21 +111,21 @@ public class FattoriDiConversioneTest {
             // Pera
             Nodo pera = Nodo.createFoglia("Pera", null, "verde", root);
             root.getFigli().add(pera);
-            repoNodi.create(pera);
+            repoNodi.save(pera);
             root = repoNodi.find(root.getId()); // Refresh root
 
             // Add FDCs
-            repoFDC.create(new FattoreDiConversione(mela, banana, 1.0));
-            repoFDC.create(new FattoreDiConversione(banana, pera, 1.0));
+            repoFDC.save(new FattoreDiConversione(mela, banana, 1.0));
+            repoFDC.save(new FattoreDiConversione(banana, pera, 1.0));
 
             // Banana Matura e Banana Acerba
             assert banana != null;
-            repoNodi.update(banana.setNomeAttributo("maturazione"));
+            repoNodi.save(banana.setNomeAttributo("maturazione"));
             Nodo bananaMatura = Nodo.createFoglia("Banana Matura", null, "giallo", banana);
             Nodo bananaAcerba = Nodo.createFoglia("Banana Acerba", null, "verde", banana);
             banana.getFigli().addAll(List.of(new Nodo[]{bananaMatura, bananaAcerba}));
-            repoNodi.create(bananaMatura);
-            repoNodi.create(bananaAcerba);
+            repoNodi.save(bananaMatura);
+            repoNodi.save(bananaAcerba);
 
             List<FattoreDiConversione> FDCs = fattoreDiConversioneHandler.getFattoriDiConversionToSet(banana);
             Assertions.assertEquals(3, FDCs.size());

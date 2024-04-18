@@ -31,15 +31,15 @@ public class NodoRepository extends EntityRepository<Nodo> {
     }
 
     @Override
-    public void create(Nodo entity) {
+    public void save(Nodo entity) {
         // Generate the parent
-        super.create(entity);
+        super.save(entity);
 
         // Generate all children
         Nodo[] figli = entity.getFigli().toArray(Nodo[]::new);
         for (Nodo figlio : figli) {
             figlio.setParent(entity);
-            super.create(figlio);
+            super.save(figlio);
         }
     }
 
@@ -63,7 +63,7 @@ public class NodoRepository extends EntityRepository<Nodo> {
 
         Optional<Nodo> existsRoot = query.findOneOrEmpty();
         if (existsRoot.isPresent()) {
-            throw new IllegalArgumentException("Esiste già una foglia con lo stesso nome");
+            throw new IllegalArgumentException("nodo_same_name_not_allowed");
         }
     }
 }

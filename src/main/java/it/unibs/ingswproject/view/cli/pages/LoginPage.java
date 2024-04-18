@@ -3,8 +3,10 @@ package it.unibs.ingswproject.view.cli.pages;
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Utente;
+import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.view.cli.CliApp;
 import it.unibs.ingswproject.view.cli.CliPage;
+import it.unibs.ingswproject.view.cli.CliUtils;
 import it.unibs.ingswproject.view.cli.router.CliConstructor;
 import it.unibs.ingswproject.view.cli.router.CliPageFactory;
 
@@ -13,7 +15,7 @@ import java.util.Scanner;
 /**
  * Pagina di login dell'applicazione
  * Si occupa di gestire il login dell'utente e di reindirizzarlo alla home
- * Se l'utente è già loggato, viene reindirizzato alla home
+ * Se l'utente è già autenticato, viene reindirizzato alla home
  * Dovrebbe essere l'unico punto di accesso all'applicazione
  *
  * @author Nicolò Rebaioli
@@ -24,8 +26,8 @@ public class LoginPage extends CliPage {
     protected CliPageFactory pageFactory;
 
     @CliConstructor
-    public LoginPage(CliApp app, AuthService authService, StorageService storageService, CliPageFactory pageFactory) {
-        super(app);
+    public LoginPage(CliApp app, Translator translator, AuthService authService, StorageService storageService, CliPageFactory pageFactory, CliUtils cliUtils) {
+        super(app, translator, cliUtils);
         this.authService = authService;
         this.storageService = storageService;
         this.pageFactory = pageFactory;
@@ -33,8 +35,8 @@ public class LoginPage extends CliPage {
     }
 
     /**
-     * Controlla se l'utente è già loggato e in caso positivo lo reindirizza alla home
-     * Se l'utente è già loggato, la history viene cancellata
+     * Controlla se l'utente è già autenticato e in caso positivo lo reindirizza alla home
+     * Se l'utente è già autenticato, la history viene cancellata
      */
     protected void checkLogin() {
         try {
@@ -49,7 +51,7 @@ public class LoginPage extends CliPage {
 
     @Override
     protected String getName() {
-        return "Login";
+        return this.translator.translate("login_page_title");
     }
 
     @Override
@@ -59,48 +61,47 @@ public class LoginPage extends CliPage {
 
     @Override
     public void render() {
-        System.out.println("Benvenuto! Effettua il login per accedere all'applicazione.");
-        Scanner scanner = new Scanner(System.in);
+        System.out.println(this.translator.translate("login_page_welcome"));
 
         // Effettua il login
         boolean loggedIn;
         do {
-            System.out.print("Inserisci il tuo username: ");
-            String username = scanner.nextLine();
-            System.out.print("Inserisci la tua password: ");
-            String password = scanner.nextLine();
+            String username = this.cliUtils.readFromConsole(this.translator.translate("login_page_insert_username"), false);
+            String password = this.cliUtils.readFromConsole(this.translator.translate("login_page_insert_password"), false);
 
-            System.out.println("\nEffettuo il login...");
+            System.out.println();
+            System.out.println(this.translator.translate("login_page_loading_login"));
             loggedIn = this.authService.login(username, password);
             if (!loggedIn) {
-                System.out.println("Credenziali non valide. Riprova.\n");
+                System.out.println(this.translator.translate("login_page_login_error"));
             }
         } while (!loggedIn);
 
         // Controllo se devo cambiare password
         if (!this.authService.getCurrentUser().hasMadeFirstLogin()) {
-            System.out.println("\nBenvenuto, " + this.authService.getCurrentUser().getUsername() + "!");
-            System.out.println("Prima di continuare, è necessario cambiare la password.");
+            System.out.println();
+            System.out.printf((this.translator.translate("login_page_login_success")) + "\n", this.authService.getCurrentUser().getUsername());
+            System.out.println(this.translator.translate("login_page_change_password_alert"));
 
             boolean passwordChanged = false;
             do {
-                System.out.print("Inserisci la nuova password: ");
-                String newPassword = scanner.nextLine();
+                String newPassword = this.cliUtils.readFromConsole(this.translator.translate("login_page_insert_new_password"), false);
 
                 if (newPassword.isEmpty()) {
-                    System.out.println("\nLa password non può essere vuota. Riprova.");
+                    System.out.println();
+                    System.out.println(this.translator.translate("login_page_password_empty"));
                     continue;
                 }
 
-                System.out.print("Conferma la nuova password: ");
-                String confirmPassword = scanner.nextLine();
+                String confirmPassword = this.cliUtils.readFromConsole(this.translator.translate("login_page_insert_new_password_confirm"), false);
+                System.out.println();
                 if (newPassword.equals(confirmPassword)) {
                     this.authService.getCurrentUser().changePassword(newPassword);
-                    this.storageService.getRepository(Utente.class).update(this.authService.getCurrentUser());
-                    System.out.println("\nPassword cambiata con successo!");
+                    this.storageService.getRepository(Utente.class).save(this.authService.getCurrentUser());
+                    System.out.println(this.translator.translate("login_page_password_changed"));
                     passwordChanged = true;
                 } else {
-                    System.out.println("\nLe password non corrispondono. Riprova.");
+                    System.out.println(this.translator.translate("login_page_password_mismatch"));
                 }
             } while (!passwordChanged);
         }

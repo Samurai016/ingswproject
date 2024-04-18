@@ -1,5 +1,7 @@
 package it.unibs.ingswproject.view.cli;
 
+import it.unibs.ingswproject.translations.Translator;
+
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -10,8 +12,11 @@ import java.util.Scanner;
  * @author Nicolò Rebaioli
  */
 public abstract class CliPage {
+    public static final char COMMAND_BACK = '0';
     protected HashMap<Character, String> commands = new HashMap<>();
     protected CliApp app;
+    protected Translator translator;
+    protected CliUtils cliUtils;
 
     /**
      * Costruttore che istanza la pagina
@@ -19,10 +24,12 @@ public abstract class CliPage {
      *
      * @param app Applicazione che ha generato la pagina
      */
-    public CliPage(CliApp app) {
+    public CliPage(CliApp app, Translator translator, CliUtils cliUtils) {
         this.app = app;
+        this.translator = translator;
+        this.cliUtils = cliUtils;
 
-        this.commands.put('0', "Indietro");
+        this.commands.put(COMMAND_BACK, this.translator.translate("command_back"));
     }
 
     /**
@@ -38,23 +45,24 @@ public abstract class CliPage {
         this.beforeRender();
 
         // 2. Stampa dei comandi
-        System.out.println("Comandi disponibili:");
-        this.commands.forEach((key, value) -> System.out.println(key + ". " + value));
+        System.out.println(this.translator.translate("available_commands"));
+        this.commands.forEach((key, value) -> {
+            String command = String.format(this.translator.translate("command_pattern"), key, value);
+            System.out.println(command);
+        });
 
         this.afterRender();
 
         // 3. Richiesta di input
         System.out.println();
-        Scanner scanner = new Scanner(System.in);
         String input;
         boolean isValidInput = false;
         do {
-            System.out.print("Inserisci un comando: ");
-            input = scanner.nextLine();
+            input = this.cliUtils.readFromConsole(this.translator.translate("insert_command"), false);
             if (input.length() > 1) {
-                System.out.println("!! Input non valido");
+                System.out.println(this.translator.translate("invalid_input"));
             } else if (!this.commands.containsKey(input.charAt(0))) {
-                System.out.println("!! Comando non valido");
+                System.out.println(this.translator.translate("invalid_command"));
             } else {
                 isValidInput = true;
             }
@@ -99,7 +107,7 @@ public abstract class CliPage {
      */
     protected void handleInput(char input) {
         // Override this method to handle input
-        if (input == '0') {
+        if (input == COMMAND_BACK) {
             this.app.goBack();
         }
     }

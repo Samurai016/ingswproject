@@ -23,6 +23,7 @@ public class AuthService {
      * Modificare questo valore comporta la necessità di resettare tutte le password degli utenti.
      */
     private static final String SALT = "mysupersecretsalt";
+    private static final String HASH_ALGORITHM = "PBKDF2WithHmacSHA1";
     private Utente currentUser;
     protected StorageService storageService;
     
@@ -69,7 +70,7 @@ public class AuthService {
     public static String hashPassword(String password) {
         try {
             KeySpec spec = new PBEKeySpec(password.toCharArray(), SALT.getBytes(StandardCharsets.UTF_8), 65536, 128);
-            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+            SecretKeyFactory factory = SecretKeyFactory.getInstance(HASH_ALGORITHM);
             byte[] hash = factory.generateSecret(spec).getEncoded();
             return Base64.getEncoder().encodeToString(hash);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {

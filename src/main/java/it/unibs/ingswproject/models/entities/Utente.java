@@ -64,7 +64,7 @@ public class Utente {
     // SETTERS
     public Utente setUsername(String username) {
         if (username == null || username.isEmpty()) {
-            throw new IllegalArgumentException("Lo username non può essere vuoto");
+            throw new IllegalArgumentException("utente_username_not_empty");
         }
         this.username = username.toLowerCase().trim();
         return this;
@@ -72,7 +72,7 @@ public class Utente {
 
     protected Utente setPassword(String password) {
         if (password == null || password.isEmpty()) {
-            throw new IllegalArgumentException("La password non può essere vuota");
+            throw new IllegalArgumentException("utente_password_not_empty");
         }
         this.password = AuthService.hashPassword(password);
         return this;

@@ -2,9 +2,12 @@ package it.unibs.ingswproject.view.cli.pages;
 
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.models.entities.Utente;
+import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.view.cli.CliApp;
 import it.unibs.ingswproject.view.cli.CliPage;
+import it.unibs.ingswproject.view.cli.CliUtils;
 import it.unibs.ingswproject.view.cli.pages.comprensori.ComprensoriPage;
+import it.unibs.ingswproject.view.cli.pages.gerarchie.GerarchiePage;
 import it.unibs.ingswproject.view.cli.router.CliConstructor;
 import it.unibs.ingswproject.view.cli.router.CliPageFactory;
 
@@ -18,17 +21,18 @@ public class HomePage extends CliPage {
     protected CliPageFactory pageFactory;
 
     @CliConstructor
-    public HomePage(CliApp app, AuthService authService) {
-        super(app);
+    public HomePage(CliApp app, Translator translator, CliUtils cliUtils, AuthService authService, CliPageFactory pageFactory) {
+        super(app, translator, cliUtils);
         this.authService = authService;
+        this.pageFactory = pageFactory;
 
-        this.commands.put('0', "Esci"); // Override default command (0 -> Esci)
+        this.commands.put(CliPage.COMMAND_BACK, this.translator.translate("home_page_command_exit")); // Override default command (0 -> Esci)
 
         // Aggiungi comandi in base al ruolo dell'utente
         switch (this.authService.getCurrentUser().getRuolo()) {
             case Utente.Ruolo.CONFIGURATORE:
-                this.commands.put('1', "Comprensori");
-                this.commands.put('2', "Gerarchie");
+                this.commands.put('1', this.translator.translate("home_page_command_comprensori")); // Aggiungi comando (1 -> Comprensori)
+                this.commands.put('2', this.translator.translate("home_page_command_gerarchie")); // Aggiungi comando (2 -> Gerarchie)
                 break;
             case Utente.Ruolo.FRUITORE:
                 break;
@@ -37,7 +41,7 @@ public class HomePage extends CliPage {
 
     @Override
     protected String getName() {
-        return "Home";
+        return this.translator.translate("home_page_title");
     }
 
     @Override
@@ -55,7 +59,7 @@ public class HomePage extends CliPage {
                     this.app.navigateTo(this.pageFactory.generatePage(ComprensoriPage.class));
                     break;
                 case '2':
-                    //this.app.navigateTo(new GerarchiePage(this.app));
+                    this.app.navigateTo(this.pageFactory.generatePage(GerarchiePage.class));
                     break;
             }
         } catch (ReflectiveOperationException e) {

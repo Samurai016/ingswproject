@@ -1,5 +1,7 @@
 package it.unibs.ingswproject.utils;
 
+import it.unibs.ingswproject.translations.TranslatorService;
+
 /**
  * Classe di utilità
  * @author Nicolò Rebaioli
@@ -18,6 +20,19 @@ public abstract class Utils {
         }
 
         // If cause message is null, return the class name
-        return message==null ? throwable.getClass().getName() : message;
+        return TranslatorService.getInstance().translate(message==null ? throwable.getClass().getName() : message);
+    }
+
+    /**
+     * Capitalizza una stringa
+     * 
+     * @param str Stringa da capitalizzare
+     * @return Stringa capitalizzata
+     */
+    public static String capitalize(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }

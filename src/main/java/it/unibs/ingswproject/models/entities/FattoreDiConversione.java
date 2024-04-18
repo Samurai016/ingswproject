@@ -79,10 +79,10 @@ public class FattoreDiConversione {
     // SETTERS
     public FattoreDiConversione setNodo1(Nodo nodo1) {
         if (nodo1 == null) {
-            throw new IllegalArgumentException("Il nodo 1 non può essere nullo");
+            throw new IllegalArgumentException("fdc_nodo1_not_empty");
         }
         if (!nodo1.isFoglia()) {
-            throw new IllegalArgumentException("Il nodo 1 deve essere una foglia");
+            throw new IllegalArgumentException("fdc_nodo1_must_be_leaf");
         }
         this.nodo1 = nodo1;
         return this;
@@ -90,10 +90,10 @@ public class FattoreDiConversione {
 
     public FattoreDiConversione setNodo2(Nodo nodo2) {
         if (nodo2 == null) {
-            throw new IllegalArgumentException("Il nodo 2 non può essere nullo");
+            throw new IllegalArgumentException("fdc_nodo2_not_empty");
         }
         if (!nodo2.isFoglia()) {
-            throw new IllegalArgumentException("Il nodo 2 deve essere una foglia");
+            throw new IllegalArgumentException("fdc_nodo2_must_be_leaf");
         }
         this.nodo2 = nodo2;
         return this;
@@ -101,7 +101,7 @@ public class FattoreDiConversione {
 
     public FattoreDiConversione setFattore(Double fattore) {
         if (fattore != null && (fattore < 0 || fattore > 2)) {
-            throw new IllegalArgumentException("Il fattore di conversione deve essere compreso tra 0 e 2");
+            throw new IllegalArgumentException("fdc_fattore_range");
         }
 
         this.fattore = fattore;

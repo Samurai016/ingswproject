@@ -31,7 +31,7 @@ public class Comprensorio {
 
     public Comprensorio setNome(String nome) {
         if (nome == null || nome.isEmpty()) {
-            throw new IllegalArgumentException("Il nome del comprensorio non può essere vuoto");
+            throw new IllegalArgumentException("comprensorio_name_not_empty");
         }
         this.nome = nome;
         return this;
