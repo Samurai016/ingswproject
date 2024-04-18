@@ -28,12 +28,25 @@ public class BaseTranslator implements Translator {
         this.locale = locale;
     }
 
-    public void addResourceBundle(String name) {
+    public BaseTranslator addResourceBundle(String name) {
         this.resourceBundles.add(ResourceBundle.getBundle(name, this.locale, this.classLoader));
+        return this;
     }
 
-    public void addResourceBundle(ResourceBundle resourceBundle) {
+    public BaseTranslator addResourceBundle(ResourceBundle resourceBundle) {
         this.resourceBundles.add(resourceBundle);
+        return this;
+    }
+
+    public BaseTranslator setLocale(Locale locale) {
+        this.locale = locale;
+        // Reload all resource bundles
+        this.resourceBundles.replaceAll(resourceBundle -> ResourceBundle.getBundle(resourceBundle.getBaseBundleName(), this.locale, this.classLoader));
+        return this;
+    }
+
+    public Locale getLocale() {
+        return this.locale;
     }
 
     @Override

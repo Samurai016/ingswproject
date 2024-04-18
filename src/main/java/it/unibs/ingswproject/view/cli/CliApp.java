@@ -87,7 +87,8 @@ public class CliApp implements AppInterface {
         // 1. Stampa del header, del nome utente e dei breadcrumb
         System.out.println(HEADER);
         if (this.authService.isLoggedIn()) {
-            String userMessage = String.format(this.translator.translate("user_header_pattern"), this.authService.getCurrentUser().getUsername(), this.authService.getCurrentUser().getRuolo());
+            String ruolo = this.translator.translate(this.authService.getCurrentUser().getRuolo().toString().toLowerCase());
+            String userMessage = String.format(this.translator.translate("user_header_pattern"), this.authService.getCurrentUser().getUsername(), ruolo);
             System.out.println(userMessage);
         }
         System.out.println(String.join(BREADCRUMB_SEPARATOR, this.getBreadcrumbs()));

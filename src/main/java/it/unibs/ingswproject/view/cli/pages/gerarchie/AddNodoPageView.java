@@ -2,7 +2,7 @@ package it.unibs.ingswproject.view.cli.pages.gerarchie;
 
 import it.unibs.ingswproject.controllers.cli.pages.gerarchie.AddNodoPageController;
 import it.unibs.ingswproject.errors.ErrorManager;
-import it.unibs.ingswproject.logic.FattoreDiConversioneHandler;
+import it.unibs.ingswproject.logic.FattoreDiConversioneStrategy;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.FattoreDiConversione;
 import it.unibs.ingswproject.models.entities.Nodo;
@@ -21,13 +21,15 @@ import java.util.List;
 public class AddNodoPageView extends CliPageView {
     protected final StorageService storageService;
     protected final ErrorManager errorManager;
+    protected final FattoreDiConversioneStrategy fattoreDiConversioneStrategy;
     protected final Nodo root;
 
     @PageConstructor
-    public AddNodoPageView(CliApp app, AddNodoPageController controller, Translator translator, CliUtils cliUtils, StorageService storageService, ErrorManager errorManager) {
+    public AddNodoPageView(CliApp app, AddNodoPageController controller, Translator translator, CliUtils cliUtils, StorageService storageService, ErrorManager errorManager, FattoreDiConversioneStrategy fattoreDiConversioneStrategy) {
         super(app, controller, translator, cliUtils);
         this.storageService = storageService;
         this.errorManager = errorManager;
+        this.fattoreDiConversioneStrategy = fattoreDiConversioneStrategy;
         this.root = controller.getRoot();
     }
 
@@ -86,8 +88,7 @@ public class AddNodoPageView extends CliPageView {
 
         // FDC
         // TODO: Implementare richiesta FDC
-        FattoreDiConversioneHandler fattoreDiConversioneHandler = new FattoreDiConversioneHandler(this.storageService);
-        List<FattoreDiConversione> FDCs = fattoreDiConversioneHandler.getFattoriDiConversionToSet(gerarchia);
+        List<FattoreDiConversione> FDCs = this.fattoreDiConversioneStrategy.getFattoriDiConversionToSet(gerarchia);
         if (!FDCs.isEmpty()) {
             System.out.println(this.translator.translate("add_node_page_gerarchia_step3"));
             System.out.println(this.translator.translate("add_node_page_gerarchia_step3_helper"));

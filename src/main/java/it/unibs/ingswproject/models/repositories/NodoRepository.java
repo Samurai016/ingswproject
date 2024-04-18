@@ -13,10 +13,6 @@ public class NodoRepository extends EntityRepository<Nodo> {
         super(Nodo.class, db);
     }
 
-    public NodoRepository() {
-        super(Nodo.class);
-    }
-
     /**
      * Trova tutte le entità.
      *

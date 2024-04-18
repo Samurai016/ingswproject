@@ -13,18 +13,18 @@ import java.util.List;
  *
  * @author Nicolò Rebaioli
  */
-public class FattoreDiConversioneHandler {
+public class BaseFattoreDiConversioneStrategy implements FattoreDiConversioneStrategy {
     protected StorageService storageService;
-    
-    public FattoreDiConversioneHandler(StorageService storageService) {
+
+    /**
+     * Costruttore del gestore dei fattori di conversione.
+     * @param storageService Il servizio di storage
+     */
+    public BaseFattoreDiConversioneStrategy(StorageService storageService) {
         this.storageService = storageService;
     }
-    
-    /**
-     * Restituisce i fattori di conversione da aggiungere quando si aggiungono dei nodi figli
-     * @param nodo Il nodo padre a cui si aggiungono i figli
-     * @return I fattori di conversione da aggiungere (senza valore di conversione)
-     */
+
+    @Override
     public List<FattoreDiConversione> getFattoriDiConversionToSet(Nodo nodo) {
         // I fattori di conversione e i nodi costituiscono un grafo
         // I fattore di conversione rappresentano gli archi e i nodi rappresentano i vertici
@@ -69,11 +69,7 @@ public class FattoreDiConversioneHandler {
         return fattoriDaAggiungere;
     }
 
-    /**
-     * Restituisce i fattori di conversione da rimuovere quando si rimuove un nodo oppure diventa foglia
-     * @param nodo Il nodo padre a cui si aggiungono i figli
-     * @return I fattori di conversione da rimuovere
-     */
+    @Override
     public List<FattoreDiConversione> getFattoriDiConversionToDelete(Nodo nodo) {
         // I fattori di conversione e i nodi costituiscono un grafo
         // I fattore di conversione rappresentano gli archi e i nodi rappresentano i vertici

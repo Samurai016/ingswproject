@@ -2,7 +2,8 @@ package it.unibs.ingswproject.test.logic;
 
 import io.ebean.DB;
 import io.ebean.Transaction;
-import it.unibs.ingswproject.logic.FattoreDiConversioneHandler;
+import it.unibs.ingswproject.logic.BaseFattoreDiConversioneStrategy;
+import it.unibs.ingswproject.logic.FattoreDiConversioneStrategy;
 import it.unibs.ingswproject.models.EntityRepository;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.FattoreDiConversione;
@@ -14,7 +15,7 @@ import java.util.List;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class FattoriDiConversioneTest {
     protected static final StorageService storageService = new StorageService(DB.getDefault());
-    protected static final FattoreDiConversioneHandler fattoreDiConversioneHandler = new FattoreDiConversioneHandler(storageService);
+    protected static final FattoreDiConversioneStrategy FattoreDiConversioneStrategy = new BaseFattoreDiConversioneStrategy(storageService);
     protected static Nodo root;
 
     @BeforeAll
@@ -46,7 +47,7 @@ public class FattoriDiConversioneTest {
             repo.save(pera);
             root = repo.find(root.getId()); // Refresh root
 
-            List<FattoreDiConversione> FDCs = fattoreDiConversioneHandler.getFattoriDiConversionToSet(root);
+            List<FattoreDiConversione> FDCs = FattoreDiConversioneStrategy.getFattoriDiConversionToSet(root);
             Assertions.assertEquals(2, FDCs.size());
             innerTransaction.rollback();
         }
@@ -83,7 +84,7 @@ public class FattoriDiConversioneTest {
             repoNodi.save(bananaAcerba);
             root = repoNodi.find(root.getId()); // Refresh root
 
-            List<FattoreDiConversione> FDCs = fattoreDiConversioneHandler.getFattoriDiConversionToSet(banana);
+            List<FattoreDiConversione> FDCs = FattoreDiConversioneStrategy.getFattoriDiConversionToSet(banana);
             Assertions.assertEquals(2, FDCs.size());
             innerTransaction.rollback();
         }
@@ -127,7 +128,7 @@ public class FattoriDiConversioneTest {
             repoNodi.save(bananaMatura);
             repoNodi.save(bananaAcerba);
 
-            List<FattoreDiConversione> FDCs = fattoreDiConversioneHandler.getFattoriDiConversionToSet(banana);
+            List<FattoreDiConversione> FDCs = FattoreDiConversioneStrategy.getFattoriDiConversionToSet(banana);
             Assertions.assertEquals(3, FDCs.size());
             innerTransaction.rollback();
         }

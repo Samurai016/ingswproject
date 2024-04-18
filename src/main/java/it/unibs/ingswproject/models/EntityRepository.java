@@ -17,16 +17,30 @@ public class EntityRepository<T> {
     protected final Class<T> entityClass;
     protected final Database database;
 
+    /**
+     * Costruttore del repository.
+     *
+     * @param entityClass La classe dell'entità
+     * @param database    Il database
+     */
     public EntityRepository(Class<T> entityClass, Database database) {
         this.entityClass = entityClass;
         this.database = database;
     }
+
+    /**
+     * Costruttore del repository.
+     * Utilizza il database di default.
+     *
+     * @param entityClass La classe dell'entità
+     */
     public EntityRepository(Class<T> entityClass) {
         this(entityClass, DB.getDefault());
     }
 
     /**
      * Salva un'entità verificandone la validità.
+     *
      * @param entity L'entità da salvare
      */
     public void save(T entity) {
@@ -36,6 +50,7 @@ public class EntityRepository<T> {
 
     /**
      * Elimina un'entità.
+     *
      * @param entity The entity to delete
      */
     public void delete(T entity) {
@@ -44,6 +59,7 @@ public class EntityRepository<T> {
 
     /**
      * Cerca un'entità in base all'id.
+     *
      * @param id L'id dell'entità
      * @return L'entità trovata
      */
@@ -53,6 +69,7 @@ public class EntityRepository<T> {
 
     /**
      * Trova tutte le entità.
+     *
      * @return La lista di entità trovate
      */
     public List<T> findAll() {
@@ -64,6 +81,7 @@ public class EntityRepository<T> {
      * Questo metodo viene chiamato prima di creare o aggiornare un'entità.
      * Se l'entità non è valida, dovrebbe lanciare un'eccezione.
      * In caso di logiche specifiche, è possibile sovrascrivere questo metodo.
+     *
      * @param entity The entity to validate
      */
     protected void validate(T entity) {

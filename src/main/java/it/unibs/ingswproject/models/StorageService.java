@@ -24,6 +24,10 @@ public class StorageService {
     protected final HashMap<Class, EntityRepository> repositories = new HashMap<>();
     protected final Database database;
 
+    /**
+     * Costruttore del servizio di storage.
+     * @param database Il database
+     */
     public StorageService(Database database) {
         this.database = database;
         this.repositories.put(Comprensorio.class, new EntityRepository<>(Comprensorio.class, this.database));

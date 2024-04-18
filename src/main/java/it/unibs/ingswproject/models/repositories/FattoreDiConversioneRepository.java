@@ -8,9 +8,6 @@ import it.unibs.ingswproject.models.entities.Nodo;
 import java.util.List;
 
 public class FattoreDiConversioneRepository extends EntityRepository<FattoreDiConversione> {
-    public FattoreDiConversioneRepository() {
-        super(FattoreDiConversione.class);
-    }
 
     public FattoreDiConversioneRepository(Database db) {
         super(FattoreDiConversione.class, db);

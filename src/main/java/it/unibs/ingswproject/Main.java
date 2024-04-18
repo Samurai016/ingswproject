@@ -25,9 +25,9 @@ public class Main {
         pageFactory.registerDependency(PageFactory.class, pageFactory);
 
         // Translator
-        BaseTranslator translator = new BaseTranslator( "file:i18n/");
-        translator.addResourceBundle("models");
-        translator.addResourceBundle("cli");
+        BaseTranslator translator = new BaseTranslator("file:i18n/")
+                .addResourceBundle("models")
+                .addResourceBundle("cli");
         pageFactory.registerDependency(Translator.class, translator);
 
         // Utils
@@ -36,7 +36,7 @@ public class Main {
 
         // Error manager
         CliErrorManager errorManager = new CliErrorManager(translator, cliUtils);
-        errorManager.setDebugModeEnabled(true);
+        errorManager.setDebugMode(true);
         pageFactory.registerDependency(ErrorManager.class, errorManager);
 
         // Persistence
