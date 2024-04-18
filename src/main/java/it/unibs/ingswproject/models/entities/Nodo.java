@@ -13,16 +13,16 @@ import java.util.UUID;
 @Entity
 public class Nodo {
     @Id
-    private UUID id;
+    protected UUID id;
     @NotNull
-    private String nome;
-    private String descrizione;
-    private String nomeAttributo;
-    private String valoreAttributo;
+    protected String nome;
+    protected String descrizione;
+    protected String nomeAttributo;
+    protected String valoreAttributo;
     @ManyToOne()
-    private Nodo parent;
+    protected Nodo parent;
     @OneToMany(mappedBy = "parent")
-    private List<Nodo> figli = new ArrayList<>();
+    protected List<Nodo> figli = new ArrayList<>();
 
     public Nodo() {
         // Costruttore vuoto per Ebean

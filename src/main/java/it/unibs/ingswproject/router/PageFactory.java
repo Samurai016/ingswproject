@@ -1,19 +1,19 @@
-package it.unibs.ingswproject.view.cli.router;
+package it.unibs.ingswproject.router;
 
-import it.unibs.ingswproject.view.cli.CliPage;
+import it.unibs.ingswproject.controllers.cli.CliPageController;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CliPageFactory {
+public class PageFactory {
     protected Map<Class<?>, Object> dependencies;
 
-    public CliPageFactory() {
+    public PageFactory() {
         this(new HashMap<>());
     }
-    public CliPageFactory(Map<Class<?>, Object> dependencies) {
+    public PageFactory(Map<Class<?>, Object> dependencies) {
         this.dependencies = dependencies;
     }
 
@@ -21,7 +21,7 @@ public class CliPageFactory {
         this.dependencies.put(type, instance);
     }
 
-    public <T extends CliPage> T generatePage(Class<T> pageClass) throws ReflectiveOperationException {
+    public <T extends CliPageController> T generatePage(Class<T> pageClass) {
         Constructor<?> constructor = this.findCliConstructor(pageClass);
         if (constructor == null) {
             throw new IllegalArgumentException("No CliConstructor found for class " + pageClass.getName());
@@ -35,13 +35,17 @@ public class CliPageFactory {
             args[i] = this.dependencies.get(type);
         }
 
-        //noinspection unchecked
-        return (T) constructor.newInstance(args);
+        try {
+            //noinspection unchecked
+            return (T) constructor.newInstance(args);
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     protected Constructor<?> findCliConstructor(Class<?> pageClass) {
         for (Constructor<?> constructor : pageClass.getConstructors()) {
-            if (constructor.isAnnotationPresent(CliConstructor.class)) {
+            if (constructor.isAnnotationPresent(PageConstructor.class)) {
                 return constructor;
             }
         }

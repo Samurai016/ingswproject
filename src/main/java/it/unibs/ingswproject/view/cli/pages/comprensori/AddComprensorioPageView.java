@@ -1,41 +1,27 @@
 package it.unibs.ingswproject.view.cli.pages.comprensori;
 
-import it.unibs.ingswproject.auth.AuthService;
+import it.unibs.ingswproject.controllers.cli.pages.comprensori.AddComprensorioPageController;
 import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Comprensorio;
 import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.view.cli.CliApp;
-import it.unibs.ingswproject.view.cli.CliPage;
-import it.unibs.ingswproject.view.cli.CliUtils;
-import it.unibs.ingswproject.view.cli.router.CliConstructor;
-
-import java.util.Scanner;
+import it.unibs.ingswproject.view.cli.CliPageView;
+import it.unibs.ingswproject.utils.cli.CliUtils;
+import it.unibs.ingswproject.router.PageConstructor;
 
 /**
  * @author Nicolò Rebaioli
  */
-public class AddComprensorioPage extends CliPage {
-    protected AuthService authService;
+public class AddComprensorioPageView extends CliPageView {
     protected StorageService storageService;
     protected ErrorManager errorManager;
 
-    @CliConstructor
-    public AddComprensorioPage(CliApp app, Translator translator, AuthService authService, StorageService storageService, ErrorManager errorManager, CliUtils cliUtils) {
-        super(app, translator, cliUtils);
-        this.authService = authService;
+    @PageConstructor
+    public AddComprensorioPageView(CliApp app, AddComprensorioPageController controller, Translator translator, StorageService storageService, ErrorManager errorManager, CliUtils cliUtils) {
+        super(app, controller, translator, cliUtils);
         this.storageService = storageService;
         this.errorManager = errorManager;
-    }
-
-    @Override
-    protected String getName() {
-        return this.translator.translate("add_comprensorio_page_title");
-    }
-
-    @Override
-    protected boolean canView() {
-        return this.authService.isLoggedIn() && this.authService.getCurrentUser().isConfiguratore();
     }
 
     @Override

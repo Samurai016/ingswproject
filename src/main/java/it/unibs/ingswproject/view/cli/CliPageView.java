@@ -1,9 +1,8 @@
 package it.unibs.ingswproject.view.cli;
 
+import it.unibs.ingswproject.controllers.cli.CliPageController;
 import it.unibs.ingswproject.translations.Translator;
-
-import java.util.HashMap;
-import java.util.Scanner;
+import it.unibs.ingswproject.utils.cli.CliUtils;
 
 /**
  * Classe astratta che rappresenta una pagina della CLI
@@ -11,10 +10,9 @@ import java.util.Scanner;
  *
  * @author Nicolò Rebaioli
  */
-public abstract class CliPage {
-    public static final char COMMAND_BACK = '0';
-    protected HashMap<Character, String> commands = new HashMap<>();
+public abstract class CliPageView {
     protected CliApp app;
+    protected CliPageController controller;
     protected Translator translator;
     protected CliUtils cliUtils;
 
@@ -22,14 +20,16 @@ public abstract class CliPage {
      * Costruttore che istanza la pagina
      * Inserisce il comando 0 per tornare indietro
      *
-     * @param app Applicazione che ha generato la pagina
+     * @param app        Applicazione che ha generato la pagina
+     * @param controller Controller della pagina
+     * @param translator Traduttore per la lingua
+     * @param cliUtils   Classe di utilità per la CLI
      */
-    public CliPage(CliApp app, Translator translator, CliUtils cliUtils) {
+    public CliPageView(CliApp app, CliPageController controller, Translator translator, CliUtils cliUtils) {
         this.app = app;
+        this.controller = controller;
         this.translator = translator;
         this.cliUtils = cliUtils;
-
-        this.commands.put(COMMAND_BACK, this.translator.translate("command_back"));
     }
 
     /**
@@ -46,7 +46,7 @@ public abstract class CliPage {
 
         // 2. Stampa dei comandi
         System.out.println(this.translator.translate("available_commands"));
-        this.commands.forEach((key, value) -> {
+        this.controller.getCommands().forEach((key, value) -> {
             String command = String.format(this.translator.translate("command_pattern"), key, value);
             System.out.println(command);
         });
@@ -61,7 +61,7 @@ public abstract class CliPage {
             input = this.cliUtils.readFromConsole(this.translator.translate("insert_command"), false);
             if (input.length() > 1) {
                 System.out.println(this.translator.translate("invalid_input"));
-            } else if (!this.commands.containsKey(input.charAt(0))) {
+            } else if (!this.controller.getCommands().containsKey(input.charAt(0))) {
                 System.out.println(this.translator.translate("invalid_command"));
             } else {
                 isValidInput = true;
@@ -69,7 +69,7 @@ public abstract class CliPage {
         } while (!isValidInput);
 
         // 4. Gestione dell'input
-        this.handleInput(input.charAt(0));
+        this.controller.handleInput(input.charAt(0));
     }
 
     /**
@@ -86,29 +86,5 @@ public abstract class CliPage {
      */
     protected void afterRender() {
         // Override this method to execute code before rendering the page
-    }
-
-    /**
-     * Metodo che restituisce il nome della pagina
-     * Viene utilizzato per stampare i breadcrumb
-     * @return Il nome della pagina
-     */
-    protected abstract String getName();
-
-    /**
-     * Metodo che restituisce se l'utente può visualizzare la pagina
-     * @return True se l'utente può visualizzare la pagina, false altrimenti
-     */
-    protected abstract boolean canView();
-
-    /**
-     * Metodo che gestisce l'input dell'utente
-     * @param input Il carattere inserito dall'utente
-     */
-    protected void handleInput(char input) {
-        // Override this method to handle input
-        if (input == COMMAND_BACK) {
-            this.app.goBack();
-        }
     }
 }

@@ -12,13 +12,13 @@ public class FattoreDiConversione {
     @Embeddable
     public static class FattoreDiConversioneId implements Serializable {
         @Serial
-        private static final long serialVersionUID = -5978971331323711359L;
+        protected static final long serialVersionUID = -5978971331323711359L;
 
         @Column
-        private UUID nodo1;
+        protected UUID nodo1;
 
         @Column
-        private UUID nodo2;
+        protected UUID nodo2;
 
         @Override
         public boolean equals(Object o) {
@@ -36,19 +36,19 @@ public class FattoreDiConversione {
     }
 
     @EmbeddedId
-    private FattoreDiConversioneId id;
+    protected FattoreDiConversioneId id;
 
     @MapsId("nodo1")
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "nodo1", nullable = false)
-    private Nodo nodo1;
+    protected Nodo nodo1;
 
     @MapsId("nodo2")
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "nodo2", nullable = false)
-    private Nodo nodo2;
+    protected Nodo nodo2;
 
-    private Double fattore; // Double invece di double per poter essere null
+    protected Double fattore; // Double invece di double per poter essere null
 
     public FattoreDiConversione() {
         // Costruttore vuoto per Ebean

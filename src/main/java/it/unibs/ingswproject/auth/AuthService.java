@@ -22,9 +22,9 @@ public class AuthService {
      * Questo valore deve essere mantenuto segreto.
      * Modificare questo valore comporta la necessità di resettare tutte le password degli utenti.
      */
-    private static final String SALT = "mysupersecretsalt";
-    private static final String HASH_ALGORITHM = "PBKDF2WithHmacSHA1";
-    private Utente currentUser;
+    protected static final String SALT = "mysupersecretsalt";
+    protected static final String HASH_ALGORITHM = "PBKDF2WithHmacSHA1";
+    protected Utente currentUser;
     protected StorageService storageService;
     
     public AuthService(StorageService storageService) {
@@ -53,10 +53,6 @@ public class AuthService {
         }
 
         return false;
-    }
-
-    public void logout() {
-        this.currentUser = null;
     }
 
     public boolean isLoggedIn() {

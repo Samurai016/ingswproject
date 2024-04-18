@@ -1,8 +1,9 @@
-package it.unibs.ingswproject.view.cli;
+package it.unibs.ingswproject.errors.cli;
 
 import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.utils.Utils;
+import it.unibs.ingswproject.utils.cli.CliUtils;
 
 @SuppressWarnings("CallToPrintStackTrace")
 public class CliErrorManager extends ErrorManager {

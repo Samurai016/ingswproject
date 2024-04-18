@@ -1,16 +1,15 @@
 package it.unibs.ingswproject.view.cli.pages;
 
 import it.unibs.ingswproject.auth.AuthService;
+import it.unibs.ingswproject.controllers.cli.pages.HomePageController;
+import it.unibs.ingswproject.controllers.cli.pages.LoginPageController;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Utente;
 import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.view.cli.CliApp;
-import it.unibs.ingswproject.view.cli.CliPage;
-import it.unibs.ingswproject.view.cli.CliUtils;
-import it.unibs.ingswproject.view.cli.router.CliConstructor;
-import it.unibs.ingswproject.view.cli.router.CliPageFactory;
-
-import java.util.Scanner;
+import it.unibs.ingswproject.view.cli.CliPageView;
+import it.unibs.ingswproject.utils.cli.CliUtils;
+import it.unibs.ingswproject.router.PageFactory;
 
 /**
  * Pagina di login dell'applicazione
@@ -20,18 +19,16 @@ import java.util.Scanner;
  *
  * @author Nicolò Rebaioli
  */
-public class LoginPage extends CliPage {
+public class LoginPageView extends CliPageView {
     protected AuthService authService;
     protected StorageService storageService;
-    protected CliPageFactory pageFactory;
+    protected PageFactory pageFactory;
 
-    @CliConstructor
-    public LoginPage(CliApp app, Translator translator, AuthService authService, StorageService storageService, CliPageFactory pageFactory, CliUtils cliUtils) {
-        super(app, translator, cliUtils);
+    public LoginPageView(CliApp app, LoginPageController controller, Translator translator, AuthService authService, StorageService storageService, PageFactory pageFactory, CliUtils cliUtils) {
+        super(app, controller, translator, cliUtils);
         this.authService = authService;
         this.storageService = storageService;
         this.pageFactory = pageFactory;
-        this.checkLogin();
     }
 
     /**
@@ -39,28 +36,15 @@ public class LoginPage extends CliPage {
      * Se l'utente è già autenticato, la history viene cancellata
      */
     protected void checkLogin() {
-        try {
-            if (this.authService.isLoggedIn()) {
-                this.app.getRouter().clearHistory(); // Clear history
-                this.app.navigateTo(this.pageFactory.generatePage(HomePage.class));
-            }
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException(e);
+        if (this.authService.isLoggedIn()) {
+            this.app.getRouter().clearHistory(); // Clear history
+            this.app.navigateTo(this.pageFactory.generatePage(HomePageController.class));
         }
     }
 
     @Override
-    protected String getName() {
-        return this.translator.translate("login_page_title");
-    }
-
-    @Override
-    protected boolean canView() {
-        return true;
-    }
-
-    @Override
     public void render() {
+        this.checkLogin();
         System.out.println(this.translator.translate("login_page_welcome"));
 
         // Effettua il login

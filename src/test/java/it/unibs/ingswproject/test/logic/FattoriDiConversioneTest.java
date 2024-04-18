@@ -13,9 +13,9 @@ import java.util.List;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class FattoriDiConversioneTest {
-    private static final StorageService storageService = new StorageService(DB.getDefault());
-    private static final FattoreDiConversioneHandler fattoreDiConversioneHandler = new FattoreDiConversioneHandler(storageService);
-    private static Nodo root;
+    protected static final StorageService storageService = new StorageService(DB.getDefault());
+    protected static final FattoreDiConversioneHandler fattoreDiConversioneHandler = new FattoreDiConversioneHandler(storageService);
+    protected static Nodo root;
 
     @BeforeAll
     static void setUpAll() {

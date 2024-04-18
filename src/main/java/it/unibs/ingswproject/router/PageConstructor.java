@@ -1,4 +1,4 @@
-package it.unibs.ingswproject.view.cli.router;
+package it.unibs.ingswproject.router;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.CONSTRUCTOR})
-public @interface CliConstructor {
+public @interface PageConstructor {
 }

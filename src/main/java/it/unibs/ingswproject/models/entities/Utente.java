@@ -18,13 +18,13 @@ public class Utente {
 
     @Id
     @Length(64) // Massimo 64 caratteri per poter utilizzare l'username come chiave primaria
-    private String username;
-    private String password;
+    protected String username;
+    protected String password;
     @Enumerated(EnumType.STRING)
-    private Ruolo ruolo;
+    protected Ruolo ruolo;
     @ManyToOne()
     Comprensorio comprensorio;
-    private boolean hasMadeFirstLogin = false;
+    protected boolean hasMadeFirstLogin = false;
 
     public Utente() {
         // Costruttore vuoto per Ebean

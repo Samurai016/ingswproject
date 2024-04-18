@@ -8,10 +8,10 @@ import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.translations.BaseTranslator;
 import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.view.cli.CliApp;
-import it.unibs.ingswproject.view.cli.CliErrorManager;
-import it.unibs.ingswproject.view.cli.CliUtils;
-import it.unibs.ingswproject.view.cli.router.CliPageFactory;
-import it.unibs.ingswproject.view.cli.router.CliRouter;
+import it.unibs.ingswproject.errors.cli.CliErrorManager;
+import it.unibs.ingswproject.utils.cli.CliUtils;
+import it.unibs.ingswproject.router.PageFactory;
+import it.unibs.ingswproject.router.cli.CliRouter;
 
 import java.net.MalformedURLException;
 
@@ -21,8 +21,8 @@ public class Main {
         System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "off");
 
         // Avvio l'applicazione
-        CliPageFactory pageFactory = new CliPageFactory();
-        pageFactory.registerDependency(CliPageFactory.class, pageFactory);
+        PageFactory pageFactory = new PageFactory();
+        pageFactory.registerDependency(PageFactory.class, pageFactory);
 
         // Translator
         BaseTranslator translator = new BaseTranslator( "file:i18n/");

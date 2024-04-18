@@ -1,12 +1,14 @@
 package it.unibs.ingswproject.view.cli;
 
 import it.unibs.ingswproject.auth.AuthService;
+import it.unibs.ingswproject.controllers.cli.CliPageController;
+import it.unibs.ingswproject.controllers.cli.pages.LoginPageController;
+import it.unibs.ingswproject.errors.cli.CliErrorManager;
 import it.unibs.ingswproject.translations.Translator;
-import it.unibs.ingswproject.utils.Utils;
+import it.unibs.ingswproject.utils.cli.CliUtils;
 import it.unibs.ingswproject.view.AppInterface;
-import it.unibs.ingswproject.view.cli.pages.LoginPage;
-import it.unibs.ingswproject.view.cli.router.CliPageFactory;
-import it.unibs.ingswproject.view.cli.router.CliRouter;
+import it.unibs.ingswproject.router.PageFactory;
+import it.unibs.ingswproject.router.cli.CliRouter;
 
 /**
  * Classe principale dell'applicazione CLI
@@ -26,14 +28,14 @@ public class CliApp implements AppInterface {
             """;
     public static final String BREADCRUMB_SEPARATOR = " > ";
 
-    protected CliRouter router;
-    protected CliPageFactory pageFactory;
-    protected AuthService authService;
-    protected CliUtils cliUtils;
-    protected Translator translator;
-    protected CliErrorManager errorManager;
+    protected final CliRouter router;
+    protected final PageFactory pageFactory;
+    protected final AuthService authService;
+    protected final CliUtils cliUtils;
+    protected final Translator translator;
+    protected final CliErrorManager errorManager;
 
-    public CliApp(CliRouter router, CliPageFactory pageFactory, AuthService authService, CliUtils cliUtils, Translator translator, CliErrorManager errorManager) {
+    public CliApp(CliRouter router, PageFactory pageFactory, AuthService authService, CliUtils cliUtils, Translator translator, CliErrorManager errorManager) {
         this.router = router;
         this.pageFactory = pageFactory;
         this.authService = authService;
@@ -47,7 +49,7 @@ public class CliApp implements AppInterface {
      */
     public void run() {
         try {
-            LoginPage page = this.pageFactory.generatePage(LoginPage.class);
+            CliPageController page = this.pageFactory.generatePage(LoginPageController.class);
             this.router.navigateTo(page);
             this.renderPage(page);
         } catch (Throwable e) {
@@ -60,8 +62,8 @@ public class CliApp implements AppInterface {
      * Influenza la history
      * @param page Pagina da renderizzare
      */
-    public void navigateTo(CliPage page) {
-        this.renderPage(this.router.navigateTo(page));
+    public void navigateTo(CliPageController page) {
+        this.renderPage((CliPageController) this.router.navigateTo(page));
     }
 
     /**
@@ -69,7 +71,7 @@ public class CliApp implements AppInterface {
      * Influenza la history
      */
     public void goBack() {
-        CliPage page = this.router.goBack();
+        CliPageController page = (CliPageController) this.router.goBack();
         if (page != null) {
             this.renderPage(page);
         }
@@ -81,7 +83,7 @@ public class CliApp implements AppInterface {
      * La pagina fornisce il contenuto
      * @param page Pagina da renderizzare
      */
-    protected void renderPage(CliPage page) {
+    protected void renderPage(CliPageController page) {
         // 1. Stampa del header, del nome utente e dei breadcrumb
         System.out.println(HEADER);
         if (this.authService.isLoggedIn()) {
@@ -108,7 +110,7 @@ public class CliApp implements AppInterface {
      * @return Breadcrumb della history
      */
     protected String[] getBreadcrumbs() {
-        return this.router.getHistory().stream().map(CliPage::getName).toArray(String[]::new);
+        return this.router.getHistory().stream().map(p -> ((CliPageController)p).getName()).toArray(String[]::new);
     }
 
     public CliRouter getRouter() {

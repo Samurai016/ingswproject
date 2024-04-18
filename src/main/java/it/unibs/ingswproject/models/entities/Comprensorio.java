@@ -13,9 +13,9 @@ import java.util.List;
 public class Comprensorio {
     @Id
     @Length(64) // Massimo 64 caratteri per poter utilizzare l'username come chiave primaria
-    private String nome;
+    protected String nome;
     @OneToMany(mappedBy = "comprensorio")
-    private final List<Utente> utenti = new ArrayList<>();
+    protected final List<Utente> utenti = new ArrayList<>();
 
     public Comprensorio() {
         // Costruttore vuoto per Ebean

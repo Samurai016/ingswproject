@@ -1,4 +1,4 @@
-package it.unibs.ingswproject.view.cli;
+package it.unibs.ingswproject.utils.cli;
 
 import it.unibs.ingswproject.translations.Translator;
 

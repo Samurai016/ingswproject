@@ -21,7 +21,7 @@ import java.util.HashMap;
  */
 public class StorageService {
     @SuppressWarnings("rawtypes")
-    private final HashMap<Class, EntityRepository> repositories = new HashMap<>();
+    protected final HashMap<Class, EntityRepository> repositories = new HashMap<>();
     protected final Database database;
 
     public StorageService(Database database) {
