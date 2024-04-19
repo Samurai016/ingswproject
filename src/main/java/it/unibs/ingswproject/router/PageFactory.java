@@ -12,7 +12,7 @@ import java.util.Map;
  * Si occupa di gestire l'inversione di controllo per la creazione di pagine
  */
 public class PageFactory {
-    protected Map<Class<?>, Object> dependencies;
+    protected final Map<Class<?>, Object> dependencies;
 
     /**
      * Costruttore di default

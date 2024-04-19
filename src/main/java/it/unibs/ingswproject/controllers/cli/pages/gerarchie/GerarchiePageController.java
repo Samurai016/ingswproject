@@ -19,14 +19,14 @@ public class GerarchiePageController extends CliPageController {
     protected final AuthService authService;
     protected final PageFactory pageFactory;
     protected Nodo root;
-    protected HashMap<Character, Nodo> nodi = new HashMap<>();
+    protected final HashMap<Character, Nodo> nodi = new HashMap<>();
 
     @PageConstructor
     public GerarchiePageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, StorageService storageService) {
         super(app, translator);
         this.authService = authService;
         this.pageFactory = pageFactory;
-        this.view = new GerarchiePageView(app, this, translator, storageService, cliUtils);
+        this.view = new GerarchiePageView(app, this, translator, storageService, cliUtils, authService);
 
         this.commands.put(CliPageController.COMMAND_BACK, this.translator.translate("home_page_command_exit")); // Override default command (0 -> Esci)
 

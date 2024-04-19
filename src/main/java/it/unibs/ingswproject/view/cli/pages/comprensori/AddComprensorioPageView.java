@@ -1,5 +1,6 @@
 package it.unibs.ingswproject.view.cli.pages.comprensori;
 
+import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.controllers.cli.pages.comprensori.AddComprensorioPageController;
 import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.models.StorageService;
@@ -14,18 +15,18 @@ import it.unibs.ingswproject.router.PageConstructor;
  * @author Nicolò Rebaioli
  */
 public class AddComprensorioPageView extends CliPageView {
-    protected StorageService storageService;
-    protected ErrorManager errorManager;
+    protected final StorageService storageService;
+    protected final ErrorManager errorManager;
 
     @PageConstructor
-    public AddComprensorioPageView(CliApp app, AddComprensorioPageController controller, Translator translator, StorageService storageService, ErrorManager errorManager, CliUtils cliUtils) {
-        super(app, controller, translator, cliUtils);
+    public AddComprensorioPageView(CliApp app, AddComprensorioPageController controller, Translator translator, StorageService storageService, ErrorManager errorManager, CliUtils cliUtils, AuthService authService) {
+        super(app, controller, translator, cliUtils, authService);
         this.storageService = storageService;
         this.errorManager = errorManager;
     }
 
     @Override
-    public void render() {
+    public void renderContent() {
         System.out.println();
 
         try {

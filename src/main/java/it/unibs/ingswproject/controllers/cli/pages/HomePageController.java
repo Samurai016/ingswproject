@@ -21,7 +21,7 @@ public class HomePageController extends CliPageController {
         super(app, translator);
         this.authService = authService;
         this.pageFactory = pageFactory;
-        this.view = new HomePageView(app, this, translator, cliUtils);
+        this.view = new HomePageView(app, this, translator, cliUtils, authService);
 
         this.commands.put(CliPageController.COMMAND_BACK, this.translator.translate("home_page_command_exit")); // Override default command (0 -> Esci)
 

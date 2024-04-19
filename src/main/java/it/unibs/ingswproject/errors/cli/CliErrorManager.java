@@ -12,8 +12,8 @@ import it.unibs.ingswproject.utils.cli.CliUtils;
  * @author Nicolò Rebaioli
  */
 public class CliErrorManager extends ErrorManager {
-    protected Translator translator;
-    protected CliUtils cliUtils;
+    protected final Translator translator;
+    protected final CliUtils cliUtils;
 
     public CliErrorManager(Translator translator, CliUtils cliUtils) {
         this.translator = translator;

@@ -1,5 +1,6 @@
 package it.unibs.ingswproject.view.cli;
 
+import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.controllers.cli.CliPageController;
 import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.utils.cli.CliUtils;
@@ -11,10 +12,21 @@ import it.unibs.ingswproject.utils.cli.CliUtils;
  * @author Nicolò Rebaioli
  */
 public abstract class CliPageView {
-    protected CliApp app;
-    protected CliPageController controller;
-    protected Translator translator;
-    protected CliUtils cliUtils;
+    public static final String HEADER = """
+
+              _____               __  __    __     ___           _           _  \s
+              \\_   \\_ __   __ _  / _\\/ / /\\ \\ \\   / _ \\_ __ ___ (_) ___  ___| |_\s
+               / /\\/ '_ \\ / _` | \\ \\ \\ \\/  \\/ /  / /_)/ '__/ _ \\| |/ _ \\/ __| __|
+            /\\/ /_ | | | | (_| | _\\ \\ \\  /\\  /  / ___/| | | (_) | |  __/ (__| |_\s
+            \\____/ |_| |_|\\__, | \\__/  \\/  \\/   \\/    |_|  \\___// |\\___|\\___|\\__|
+                          |___/                               |__/              \s
+            """;
+    public static final String BREADCRUMB_SEPARATOR = " > ";
+    protected final CliApp app;
+    protected final CliPageController controller;
+    protected final Translator translator;
+    protected final CliUtils cliUtils;
+    protected final AuthService authService;
 
     /**
      * Costruttore che istanza la pagina
@@ -25,23 +37,23 @@ public abstract class CliPageView {
      * @param translator Traduttore per la lingua
      * @param cliUtils   Classe di utilità per la CLI
      */
-    public CliPageView(CliApp app, CliPageController controller, Translator translator, CliUtils cliUtils) {
+    public CliPageView(CliApp app, CliPageController controller, Translator translator, CliUtils cliUtils, AuthService authService) {
         this.app = app;
         this.controller = controller;
         this.translator = translator;
         this.cliUtils = cliUtils;
+        this.authService = authService;
     }
 
     /**
      * Metodo che renderizza la pagina
      * Stampa i comandi disponibili e gestisce l'input
      */
-    public void render() {
+    public void renderContent() {
         // Ogni pagina è composta in questo modo:
         // 2. Stampa dei comandi
         // 3. Richiesta di input
         // 4. Gestione dell'input
-
         this.beforeRender();
 
         // 2. Stampa dei comandi
@@ -71,6 +83,43 @@ public abstract class CliPageView {
         // 4. Gestione dell'input
         this.controller.handleInput(input.charAt(0));
     }
+
+    /**
+     * Renderizza la pagina
+     * Si occupa di visualizzare lo scaffold dell'applicazione e le autorizzazioni
+     * La view fornisce il contenuto
+     */
+    public final void render() {
+        // 1. Stampa del header, del nome utente e dei breadcrumb
+        System.out.println(HEADER);
+        if (this.authService.isLoggedIn()) {
+            String ruolo = this.translator.translate(this.authService.getCurrentUser().getRuolo().toString().toLowerCase());
+            String userMessage = String.format(this.translator.translate("user_header_pattern"), this.authService.getCurrentUser().getUsername(), ruolo);
+            System.out.println(userMessage);
+        }
+        System.out.println(String.join(BREADCRUMB_SEPARATOR, this.getBreadcrumbs()));
+        System.out.println();
+
+        // 2.1 Controlla autorizzazione
+        if (!this.controller.canView()) {
+            System.out.println(this.translator.translate("unauthorized_view_access"));
+            this.cliUtils.waitForInput();
+            this.app.goBack();
+            return;
+        }
+
+        // 2.2 Stampa della pagina
+        this.renderContent();
+    }
+
+    /**
+     * Ottiene i breadcrumb della history
+     * @return Breadcrumb della history
+     */
+    protected String[] getBreadcrumbs() {
+        return this.app.getRouter().getHistory().stream().map(p -> ((CliPageController)p).getName()).toArray(String[]::new);
+    }
+
 
     /**
      * Metodo che esegue del codice prima di renderizzare la pagina

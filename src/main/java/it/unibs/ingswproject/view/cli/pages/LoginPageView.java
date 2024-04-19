@@ -1,7 +1,6 @@
 package it.unibs.ingswproject.view.cli.pages;
 
 import it.unibs.ingswproject.auth.AuthService;
-import it.unibs.ingswproject.controllers.cli.pages.HomePageController;
 import it.unibs.ingswproject.controllers.cli.pages.LoginPageController;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Utente;
@@ -20,31 +19,19 @@ import it.unibs.ingswproject.router.PageFactory;
  * @author Nicolò Rebaioli
  */
 public class LoginPageView extends CliPageView {
-    protected AuthService authService;
-    protected StorageService storageService;
-    protected PageFactory pageFactory;
+    protected final StorageService storageService;
+    protected final PageFactory pageFactory;
 
     public LoginPageView(CliApp app, LoginPageController controller, Translator translator, AuthService authService, StorageService storageService, PageFactory pageFactory, CliUtils cliUtils) {
-        super(app, controller, translator, cliUtils);
-        this.authService = authService;
+        super(app, controller, translator, cliUtils, authService);
         this.storageService = storageService;
         this.pageFactory = pageFactory;
     }
 
-    /**
-     * Controlla se l'utente è già autenticato e in caso positivo lo reindirizza alla home
-     * Se l'utente è già autenticato, la history viene cancellata
-     */
-    protected void checkLogin() {
-        if (this.authService.isLoggedIn()) {
-            this.app.getRouter().clearHistory(); // Clear history
-            this.app.navigateTo(this.pageFactory.generatePage(HomePageController.class));
-        }
-    }
-
     @Override
-    public void render() {
-        this.checkLogin();
+    public void renderContent() {
+        LoginPageController controller = (LoginPageController) this.controller;
+        controller.checkLogin();
         System.out.println(this.translator.translate("login_page_welcome"));
 
         // Effettua il login
@@ -91,6 +78,6 @@ public class LoginPageView extends CliPageView {
         }
 
         // Reindirizzo alla home
-        this.checkLogin();
+        controller.checkLogin();
     }
 }

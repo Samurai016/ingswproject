@@ -1,5 +1,6 @@
 package it.unibs.ingswproject.view.cli.pages.comprensori;
 
+import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.controllers.cli.pages.comprensori.ComprensoriPageController;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Comprensorio;
@@ -16,11 +17,11 @@ import java.util.List;
  * @author Nicolò Rebaioli
  */
 public class ComprensoriPageView extends CliPageView {
-    protected StorageService storageService;
+    protected final StorageService storageService;
 
     @PageConstructor
-    public ComprensoriPageView(CliApp app, ComprensoriPageController controller, Translator translator, CliUtils cliUtils, StorageService storageService) {
-        super(app, controller, translator, cliUtils);
+    public ComprensoriPageView(CliApp app, ComprensoriPageController controller, Translator translator, CliUtils cliUtils, StorageService storageService, AuthService authService) {
+        super(app, controller, translator, cliUtils, authService);
         this.storageService = storageService;
     }
 

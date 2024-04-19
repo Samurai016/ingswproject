@@ -2,6 +2,8 @@ package it.unibs.ingswproject.router;
 
 import it.unibs.ingswproject.controllers.PageController;
 
+import java.util.List;
+
 /**
  * Interfaccia che definisce un router di pagine
  *
@@ -12,9 +14,8 @@ public interface PageRouter {
      * Naviga verso una pagina
      *
      * @param page pagina verso cui navigare
-     * @return la pagina a cui si è navigato
      */
-    PageController navigateTo(PageController page);
+    void navigateTo(PageController page);
 
     /**
      * Torna indietro di una pagina
@@ -22,4 +23,16 @@ public interface PageRouter {
      * @return la pagina a cui si è tornati
      */
     PageController goBack();
+
+    /**
+     * Pulisce la cronologia
+     */
+    void clearHistory();
+
+    /**
+     * Restituisce la cronologia
+     *
+     * @return la cronologia
+     */
+    List<PageController> getHistory();
 }

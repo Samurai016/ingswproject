@@ -1,5 +1,6 @@
 package it.unibs.ingswproject.view.cli.pages.gerarchie;
 
+import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.controllers.cli.pages.gerarchie.GerarchiePageController;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Nodo;
@@ -15,12 +16,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class GerarchiePageView extends CliPageView {
-    protected HashMap<Character, Nodo> nodi = new HashMap<>();
-    protected StorageService storageService;
+    protected final HashMap<Character, Nodo> nodi = new HashMap<>();
+    protected final StorageService storageService;
 
     @PageConstructor
-    public GerarchiePageView(CliApp app, GerarchiePageController controller, Translator translator, StorageService storageService, CliUtils cliUtils) {
-        super(app, controller, translator, cliUtils);
+    public GerarchiePageView(CliApp app, GerarchiePageController controller, Translator translator, StorageService storageService, CliUtils cliUtils, AuthService authService) {
+        super(app, controller, translator, cliUtils, authService);
         this.storageService = storageService;
     }
 
@@ -89,7 +90,7 @@ public class GerarchiePageView extends CliPageView {
     }
 
     @Override
-    public void render() {
+    public void renderContent() {
         // Ogni pagina è composta in questo modo:
         // 2. Stampa dei comandi
         // 3. Richiesta di input

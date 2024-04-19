@@ -51,7 +51,7 @@ public class Main {
 
         // Cli setup
         CliRouter router = new CliRouter();
-        CliApp app = new CliApp(router, pageFactory, authService, cliUtils, translator, errorManager);
+        CliApp app = new CliApp(router, pageFactory, errorManager);
         pageFactory.registerDependency(CliRouter.class, router);
         pageFactory.registerDependency(CliApp.class, app);
 

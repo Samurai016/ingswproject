@@ -11,9 +11,14 @@ import it.unibs.ingswproject.router.PageConstructor;
 import it.unibs.ingswproject.router.PageFactory;
 
 public class LoginPageController extends CliPageController {
+    protected final AuthService authService;
+    protected final PageFactory pageFactory;
+
     @PageConstructor
     public LoginPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, StorageService storageService) {
         super(app, translator);
+        this.authService = authService;
+        this.pageFactory = pageFactory;
         this.view = new LoginPageView(app, this, translator, authService, storageService, pageFactory, cliUtils);
     }
 
@@ -25,5 +30,16 @@ public class LoginPageController extends CliPageController {
     @Override
     public boolean canView() {
         return true;
+    }
+
+    /**
+     * Controlla se l'utente è già autenticato e in caso positivo lo reindirizza alla home
+     * Se l'utente è già autenticato, la history viene cancellata
+     */
+    public void checkLogin() {
+        if (this.authService.isLoggedIn()) {
+            this.app.getRouter().clearHistory(); // Clear history
+            this.app.navigateTo(this.pageFactory.generatePage(HomePageController.class));
+        }
     }
 }

@@ -26,7 +26,7 @@ public class AddNodoPageController extends CliPageController {
         this.authService = authService;
         this.pageFactory = pageFactory;
         FattoreDiConversioneStrategy fdcStrategy = new BaseFattoreDiConversioneStrategy(storageService);
-        this.view = new AddNodoPageView(app, this, translator, cliUtils, storageService, errorManager, fdcStrategy);
+        this.view = new AddNodoPageView(app, this, translator, cliUtils, storageService, errorManager, fdcStrategy, authService);
 
         this.commands.put(CliPageController.COMMAND_BACK, this.translator.translate("home_page_command_exit")); // Override default command (0 -> Esci)
 

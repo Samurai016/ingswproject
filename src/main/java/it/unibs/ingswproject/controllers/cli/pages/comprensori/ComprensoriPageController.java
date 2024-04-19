@@ -19,7 +19,7 @@ public class ComprensoriPageController extends CliPageController {
         super(app, translator);
         this.authService = authService;
         this.pageFactory = pageFactory;
-        this.view = new ComprensoriPageView(app, this, translator, cliUtils, storageService);
+        this.view = new ComprensoriPageView(app, this, translator, cliUtils, storageService, authService);
 
         this.commands.put('1', this.translator.translate("comprensori_page_command_add"));
     }

@@ -1,5 +1,6 @@
 package it.unibs.ingswproject.view.cli.pages.gerarchie;
 
+import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.controllers.cli.pages.gerarchie.AddNodoPageController;
 import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.logic.FattoreDiConversioneStrategy;
@@ -25,8 +26,8 @@ public class AddNodoPageView extends CliPageView {
     protected final Nodo root;
 
     @PageConstructor
-    public AddNodoPageView(CliApp app, AddNodoPageController controller, Translator translator, CliUtils cliUtils, StorageService storageService, ErrorManager errorManager, FattoreDiConversioneStrategy fattoreDiConversioneStrategy) {
-        super(app, controller, translator, cliUtils);
+    public AddNodoPageView(CliApp app, AddNodoPageController controller, Translator translator, CliUtils cliUtils, StorageService storageService, ErrorManager errorManager, FattoreDiConversioneStrategy fattoreDiConversioneStrategy, AuthService authService) {
+        super(app, controller, translator, cliUtils, authService);
         this.storageService = storageService;
         this.errorManager = errorManager;
         this.fattoreDiConversioneStrategy = fattoreDiConversioneStrategy;
@@ -35,7 +36,7 @@ public class AddNodoPageView extends CliPageView {
 
 
     @Override
-    public void render() {
+    public void renderContent() {
         try {
             Nodo nodo = this.root == null ? this.enterGerarchia() : this.enterFoglia();
             System.out.println();
@@ -48,14 +49,13 @@ public class AddNodoPageView extends CliPageView {
                 System.out.println(this.translator.translate("add_node_page_foglia_success"));
             }
             this.cliUtils.waitForInput();
-        } catch (InterruptedException ignored) {
-            // Operazione annullata, torna indietro
-        } catch (Throwable e) {
+        } // Operazione annullata, torna indietro
+        catch (Throwable e) {
             this.errorManager.handle(e);
         }
     }
 
-    protected Nodo enterGerarchia() throws InterruptedException {
+    protected Nodo enterGerarchia() {
         Nodo gerarchia = new Nodo();
 
         System.out.println(this.translator.translate("add_node_page_gerarchia_step1"));
@@ -116,7 +116,7 @@ public class AddNodoPageView extends CliPageView {
         return gerarchia;
     }
 
-    protected Nodo enterFoglia() throws InterruptedException {
+    protected Nodo enterFoglia() {
         return this.enterFoglia(new Nodo());
     }
 

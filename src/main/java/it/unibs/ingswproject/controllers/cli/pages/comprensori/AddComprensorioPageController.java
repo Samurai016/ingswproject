@@ -20,7 +20,7 @@ public class AddComprensorioPageController extends CliPageController {
         super(app, translator);
         this.authService = authService;
         this.pageFactory = pageFactory;
-        this.view = new AddComprensorioPageView(app, this, translator, storageService, errorManager, cliUtils);
+        this.view = new AddComprensorioPageView(app, this, translator, storageService, errorManager, cliUtils, authService);
 
         this.commands.put('1', this.translator.translate("comprensori_page_command_add"));
     }

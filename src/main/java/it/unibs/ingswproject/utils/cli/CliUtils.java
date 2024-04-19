@@ -5,7 +5,7 @@ import it.unibs.ingswproject.translations.Translator;
 import java.util.Scanner;
 
 public class CliUtils {
-    protected Translator translator;
+    protected final Translator translator;
 
     public CliUtils(Translator translator) {
         this.translator = translator;

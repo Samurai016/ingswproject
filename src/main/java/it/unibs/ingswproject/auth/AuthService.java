@@ -25,7 +25,7 @@ public class AuthService {
     protected static final String SALT = "mysupersecretsalt";
     protected static final String HASH_ALGORITHM = "PBKDF2WithHmacSHA1";
     protected Utente currentUser;
-    protected StorageService storageService;
+    protected final StorageService storageService;
     
     public AuthService(StorageService storageService) {
         this.storageService = storageService;

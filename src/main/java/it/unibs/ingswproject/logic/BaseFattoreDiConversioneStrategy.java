@@ -14,7 +14,7 @@ import java.util.List;
  * @author Nicolò Rebaioli
  */
 public class BaseFattoreDiConversioneStrategy implements FattoreDiConversioneStrategy {
-    protected StorageService storageService;
+    protected final StorageService storageService;
 
     /**
      * Costruttore del gestore dei fattori di conversione.

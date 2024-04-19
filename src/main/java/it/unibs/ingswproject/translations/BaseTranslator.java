@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class BaseTranslator implements Translator {
-    protected ArrayList<ResourceBundle> resourceBundles = new ArrayList<>();
+    protected final ArrayList<ResourceBundle> resourceBundles = new ArrayList<>();
     protected ClassLoader classLoader;
     protected Locale locale;
 

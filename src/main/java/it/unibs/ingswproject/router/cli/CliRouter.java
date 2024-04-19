@@ -15,9 +15,8 @@ public class CliRouter implements PageRouter {
     protected final Stack<PageController> history = new Stack<>();
 
     @Override
-    public PageController navigateTo(PageController page) {
+    public void navigateTo(PageController page) {
         this.history.push(page);
-        return page;
     }
 
 
@@ -33,6 +32,7 @@ public class CliRouter implements PageRouter {
     /**
      * Pulisce la cronologia
      */
+    @Override
     public void clearHistory() {
         this.history.clear();
     }
@@ -42,6 +42,7 @@ public class CliRouter implements PageRouter {
      *
      * @return la cronologia
      */
+    @Override
     public List<PageController> getHistory() {
         return this.history;
     }
