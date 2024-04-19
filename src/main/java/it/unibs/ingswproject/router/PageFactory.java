@@ -1,6 +1,6 @@
 package it.unibs.ingswproject.router;
 
-import it.unibs.ingswproject.controllers.cli.CliPageController;
+import it.unibs.ingswproject.platforms.cli.controllers.CliPageController;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Parameter;
