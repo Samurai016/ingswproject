@@ -32,6 +32,8 @@ public class CliApp implements Application {
             CliPageController page = this.pageFactory.generatePage(LoginPageController.class);
             this.router.navigateTo(page);
             page.render();
+
+            this.goBack(); // Questo serve a fare si che l'applicazione termini solo quando l'utente esce dalla prima pagina
         } catch (Throwable e) {
             this.errorManager.handle(e);
         }
