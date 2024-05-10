@@ -24,7 +24,6 @@ public class AddNodoPageView extends CliPageView {
     protected final StorageService storageService;
     protected final ErrorManager errorManager;
     protected final FattoreDiConversioneStrategy fattoreDiConversioneStrategy;
-    protected final Nodo root;
 
     @PageConstructor
     public AddNodoPageView(CliApp app, AddNodoPageController controller, Translator translator, CliUtils cliUtils, StorageService storageService, ErrorManager errorManager, FattoreDiConversioneStrategy fattoreDiConversioneStrategy, AuthService authService) {
@@ -32,18 +31,20 @@ public class AddNodoPageView extends CliPageView {
         this.storageService = storageService;
         this.errorManager = errorManager;
         this.fattoreDiConversioneStrategy = fattoreDiConversioneStrategy;
-        this.root = controller.getRoot();
     }
 
 
     @Override
     public void renderContent() {
         try {
-            Nodo nodo = this.root == null ? this.enterGerarchia() : this.enterFoglia();
+            AddNodoPageController controller = (AddNodoPageController) this.controller;
+            Nodo root = controller.getRoot();
+            Nodo nodo = root == null ? this.enterGerarchia() : this.enterFoglia(root);
+
             System.out.println();
             System.out.println(this.translator.translate("saving_item"));
             this.storageService.getRepository(Nodo.class).save(nodo);
-            System.out.println(this.translator.translate(this.root == null ? "add_node_page_gerarchia_success" : "add_node_page_foglia_success"));
+            System.out.println(this.translator.translate(root == null ? "add_node_page_gerarchia_success" : "add_node_page_foglia_success"));
             this.cliUtils.waitForInput();
         } catch (CliQuitException e) {
             // Non fare nulla, l'utente ha deciso di uscire
@@ -70,11 +71,13 @@ public class AddNodoPageView extends CliPageView {
         gerarchia.setNomeAttributo(nomeAttributo);
 
         // Dominio
+        System.out.println();
         System.out.println(this.translator.translate("add_node_page_gerarchia_dominio_helper"));
-        String valoriAttributo = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_gerarchia_dominio"));
+        String valoriAttributo = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_gerarchia_dominio"), true);
 
         if (!valoriAttributo.isEmpty()) {
             // Richiesta foglie
+            System.out.println();
             System.out.println(this.translator.translate("add_node_page_gerarchia_step2"));
             for (String valore : valoriAttributo.split(",")) {
                 System.out.printf(this.translator.translate("add_node_page_gerarchia_foglia_header"), valore);
@@ -86,6 +89,7 @@ public class AddNodoPageView extends CliPageView {
         // FDC
         List<FattoreDiConversione> FDCs = this.fattoreDiConversioneStrategy.getFattoriDiConversionToSet(gerarchia);
         if (!FDCs.isEmpty()) {
+            System.out.println();
             System.out.println(this.translator.translate("add_node_page_gerarchia_step3"));
             System.out.println(this.translator.translate("add_node_page_gerarchia_step3_helper"));
             this.fillFDCs(FDCs);
@@ -94,17 +98,17 @@ public class AddNodoPageView extends CliPageView {
         return gerarchia;
     }
 
-    protected Nodo enterFoglia() throws CliQuitException {
-        return this.enterFoglia(new Nodo());
+    protected Nodo enterFoglia(Nodo root) throws CliQuitException {
+        return this.enterFoglia(root, new Nodo());
     }
 
-    protected Nodo enterFoglia(Nodo foglia) throws CliQuitException {
-        foglia.setParent(this.root);
+    protected Nodo enterFoglia(Nodo root, Nodo foglia) throws CliQuitException {
+        foglia.setParent(root);
 
-        if (this.root != null && this.root.getNomeAttributo() == null) {
+        if (root != null && root.getNomeAttributo() == null) {
             System.out.println(this.translator.translate("add_node_page_foglia_helper"));
             String nomeAttributo = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_foglia_attribute"));
-            this.root.setNomeAttributo(nomeAttributo);
+            root.setNomeAttributo(nomeAttributo);
         }
 
         if (foglia.getValoreAttributo() == null) {
@@ -137,7 +141,7 @@ public class AddNodoPageView extends CliPageView {
                     System.out.println(this.translator.translate("add_node_page_gerarchia_fdc_error"));
                     fattore = null;
                 } catch (IllegalArgumentException e) {
-                    System.out.println("\t" + Utils.getErrorMessage(e));
+                    System.out.println("\t" + Utils.getErrorMessage(this.translator, e));
                     fattore = null;
                 }
             } while (fattore == null);

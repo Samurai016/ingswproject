@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 public class Comprensorio {
     @Id
-    @Length(64) // Massimo 64 caratteri per poter utilizzare l'username come chiave primaria
+    @Length(64) // Massimo 64 caratteri per poter utilizzare il nome come chiave primaria
     protected String nome;
     @OneToMany(mappedBy = "comprensorio")
     protected final List<Utente> utenti = new ArrayList<>();

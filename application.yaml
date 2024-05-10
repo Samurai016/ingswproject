@@ -18,7 +18,7 @@ datasource:
   mysql_production:
     username: c0ingsw
     password: H4wFjkT!
-    url: jdbc:mysql://v00xpk-idea.sphostserver.com:3306/c0ingsw?sessionVariables=default_storage_engine=InnoDB
+    url: jdbc:mysql://46.254.36.77:3306/c0ingsw?sessionVariables=default_storage_engine=InnoDB
   sqlite:
     username: root
     password: root

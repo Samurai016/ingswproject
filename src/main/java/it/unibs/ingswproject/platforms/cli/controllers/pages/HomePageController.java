@@ -3,7 +3,7 @@ package it.unibs.ingswproject.platforms.cli.controllers.pages;
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.platforms.cli.controllers.CliPageController;
 import it.unibs.ingswproject.platforms.cli.controllers.pages.comprensori.ComprensoriPageController;
-import it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie.GerarchiePageController;
+import it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie.NodoPageController;
 import it.unibs.ingswproject.models.entities.Utente;
 import it.unibs.ingswproject.router.PageConstructor;
 import it.unibs.ingswproject.router.PageFactory;
@@ -55,7 +55,7 @@ public class HomePageController extends CliPageController {
                 this.app.navigateTo(this.pageFactory.generatePage(ComprensoriPageController.class));
                 break;
             case '2':
-                this.app.navigateTo(this.pageFactory.generatePage(GerarchiePageController.class));
+                this.app.navigateTo(this.pageFactory.generatePage(NodoPageController.class));
                 break;
         }
     }

@@ -35,11 +35,15 @@ public class LoginPageController extends CliPageController {
     /**
      * Controlla se l'utente è già autenticato e in caso positivo lo reindirizza alla home
      * Se l'utente è già autenticato, la history viene cancellata
+     *
+     * @return true se l'utente è già autenticato, false altrimenti
      */
-    public void checkLogin() {
+    public boolean checkLogin() {
         if (this.authService.isLoggedIn()) {
             this.app.getRouter().clearHistory(); // Clear history
             this.app.navigateTo(this.pageFactory.generatePage(HomePageController.class));
+            return true;
         }
+        return false;
     }
 }

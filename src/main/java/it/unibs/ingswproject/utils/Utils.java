@@ -1,6 +1,6 @@
 package it.unibs.ingswproject.utils;
 
-import it.unibs.ingswproject.translations.TranslatorService;
+import it.unibs.ingswproject.translations.Translator;
 
 /**
  * Classe di utilità
@@ -12,7 +12,7 @@ public abstract class Utils {
      * @param throwable Eccezione
      * @return Messaggio di errore
      */
-    public static String getErrorMessage(Throwable throwable) {
+    public static String getErrorMessage(Translator translator, Throwable throwable) {
         String message = throwable.getMessage();
 
         if (message == null) { // If message is null, try to get the cause message
@@ -20,7 +20,7 @@ public abstract class Utils {
         }
 
         // If cause message is null, return the class name
-        return TranslatorService.getInstance().translate(message==null ? throwable.getClass().getName() : message);
+        return translator.translate(message==null ? throwable.getClass().getName() : message);
     }
 
     /**

@@ -31,7 +31,9 @@ public class LoginPageView extends CliPageView {
     @Override
     public void renderContent() {
         LoginPageController controller = (LoginPageController) this.controller;
-        controller.checkLogin();
+        if (controller.checkLogin()) {
+            return; // Se l'utente è già autenticato, non renderizzo la pagina
+        }
         System.out.println(this.translator.translate("login_page_welcome"));
 
         // Effettua il login

@@ -28,8 +28,6 @@ public class AddComprensorioPageView extends CliPageView {
 
     @Override
     public void renderContent() {
-        System.out.println();
-
         try {
             Comprensorio comprensorio = new Comprensorio();
 

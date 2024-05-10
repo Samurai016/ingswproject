@@ -30,10 +30,13 @@ public class CliApp implements Application {
     public void run() {
         try {
             CliPageController page = this.pageFactory.generatePage(LoginPageController.class);
-            this.router.navigateTo(page);
-            page.render();
+            this.navigateTo(page);
 
-            this.goBack(); // Questo serve a fare si che l'applicazione termini solo quando l'utente esce dalla prima pagina
+            // Loop principale dell'applicazione
+            // noinspection StatementWithEmptyBody
+            while (this.goBack()) {
+                // Questo serve a fare si che l'applicazione termini solo quando l'utente esce dall'ultima pagina della cronologia
+            }
         } catch (Throwable e) {
             this.errorManager.handle(e);
         }
@@ -50,12 +53,16 @@ public class CliApp implements Application {
 
     /**
      * Torna indietro di una pagina
+     *
+     * @return true se è possibile tornare indietro, false altrimenti
      */
-    public void goBack() {
+    public boolean goBack() {
         CliPageController page = (CliPageController) this.router.goBack();
         if (page != null) {
             page.render();
+            return true;
         }
+        return false;
     }
 
     /**

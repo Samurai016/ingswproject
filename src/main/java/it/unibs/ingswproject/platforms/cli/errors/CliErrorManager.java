@@ -25,7 +25,7 @@ public class CliErrorManager extends ErrorManager {
         if (this.isDebugModeEnabled()) {
             e.printStackTrace();
         } else {
-            System.out.printf((this.translator.translate("error_pattern")) + "\n", Utils.getErrorMessage(e));
+            System.out.printf((this.translator.translate("error_pattern")) + "\n", Utils.getErrorMessage(this.translator, e));
         }
         this.cliUtils.waitForInput();
     }

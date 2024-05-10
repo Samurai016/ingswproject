@@ -1,10 +1,14 @@
 package it.unibs.ingswproject.platforms.cli.views;
 
 import it.unibs.ingswproject.auth.AuthService;
+import it.unibs.ingswproject.controllers.PageController;
 import it.unibs.ingswproject.platforms.cli.controllers.CliPageController;
 import it.unibs.ingswproject.platforms.cli.CliApp;
+import it.unibs.ingswproject.platforms.cli.utils.BreadcrumbsGenerator;
 import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
+
+import java.util.List;
 
 /**
  * Classe astratta che rappresenta una pagina della CLI
@@ -22,7 +26,6 @@ public abstract class CliPageView {
             \\____/ |_| |_|\\__, | \\__/  \\/  \\/   \\/    |_|  \\___// |\\___|\\___|\\__|
                           |___/                               |__/              \s
             """;
-    public static final String BREADCRUMB_SEPARATOR = " > ";
     protected final CliApp app;
     protected final CliPageController controller;
     protected final Translator translator;
@@ -98,29 +101,22 @@ public abstract class CliPageView {
             String userMessage = String.format(this.translator.translate("user_header_pattern"), this.authService.getCurrentUser().getUsername(), ruolo);
             System.out.println(userMessage);
         }
-        System.out.println(String.join(BREADCRUMB_SEPARATOR, this.getBreadcrumbs()));
+
+        List<PageController> history = this.app.getRouter().getHistory();
+        BreadcrumbsGenerator breadcrumbsGenerator = new BreadcrumbsGenerator(history);
+        System.out.println(breadcrumbsGenerator.getBreadcrumbsString());
         System.out.println();
 
         // 2.1 Controlla autorizzazione
         if (!this.controller.canView()) {
             System.out.println(this.translator.translate("unauthorized_view_access"));
             this.cliUtils.waitForInput();
-            this.app.goBack();
-            return;
+            return; // Return to previous page
         }
 
         // 2.2 Stampa della pagina
         this.renderContent();
     }
-
-    /**
-     * Ottiene i breadcrumb della history
-     * @return Breadcrumb della history
-     */
-    protected String[] getBreadcrumbs() {
-        return this.app.getRouter().getHistory().stream().map(p -> ((CliPageController)p).getName()).toArray(String[]::new);
-    }
-
 
     /**
      * Metodo che esegue del codice prima di renderizzare la pagina
