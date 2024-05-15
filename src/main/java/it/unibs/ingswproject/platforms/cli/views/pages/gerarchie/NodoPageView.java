@@ -1,37 +1,45 @@
 package it.unibs.ingswproject.platforms.cli.views.pages.gerarchie;
 
 import it.unibs.ingswproject.auth.AuthService;
-import it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie.NodoPageController;
 import it.unibs.ingswproject.models.entities.Nodo;
+import it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie.NodoPageController;
+import it.unibs.ingswproject.platforms.cli.elements.OneLevelTreeRenderer;
+import it.unibs.ingswproject.platforms.cli.elements.TreeRenderer;
 import it.unibs.ingswproject.translations.Translator;
-import it.unibs.ingswproject.utils.Utils;
 import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.views.CliPageView;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.router.PageConstructor;
+import it.unibs.ingswproject.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class NodoPageView extends CliPageView {
+    protected final TreeRenderer treeRenderer;
+
     @PageConstructor
     public NodoPageView(CliApp app, NodoPageController controller, Translator translator, CliUtils cliUtils, AuthService authService) {
         super(app, controller, translator, cliUtils, authService);
+        this.treeRenderer = new OneLevelTreeRenderer(translator);
     }
 
     @Override
     protected void beforeRender() {
         super.beforeRender();
-        NodoPageController controller = (NodoPageController) this.controller;
-        Nodo root = controller.getRoot();
-        List<Nodo> nodi = new ArrayList<>(controller.getNodi());
 
-        // Show gerarchie
-        if (root == null) {
-            this.renderGerarchie(nodi);
-        } else { // Visualizza nodi di una gerarchie
-            this.renderFoglie(root, nodi);
+        // Renderizzo nodi
+        NodoPageController controller = (NodoPageController) this.controller;
+        Nodo controllerRoot = controller.getRoot();
+        Nodo renderRoot;
+        if (controllerRoot == null) {
+            renderRoot = new Nodo();
+            renderRoot.setNome(Utils.capitalize(this.translator.translate("gerarchia_plural")));
+            renderRoot.setFigli(new ArrayList<>(controller.getNodi()));
+        } else {
+            renderRoot = controllerRoot;
         }
+        this.treeRenderer.setRoot(renderRoot);
+        this.treeRenderer.render();
 
         System.out.println();
     }
@@ -68,50 +76,5 @@ public class NodoPageView extends CliPageView {
 
         // 4. Gestione dell'input
         this.controller.handleInput(input.charAt(0));
-    }
-
-    protected void renderGerarchie(List<Nodo> nodi) {
-        System.out.printf("%s:", Utils.capitalize(this.translator.translate("gerarchia_plural")));
-        System.out.println();
-
-        if (nodi.isEmpty()) {
-            System.out.printf("\t%s", this.translator.translate("no_items_found"));
-            System.out.println();
-        } else {
-            for (int i = 0; i < nodi.size(); i++) {
-                Nodo gerarchia = nodi.get(i);
-
-                String nomeAttributo = gerarchia.getNomeAttributo() == null
-                        ? ""
-                        : String.format(
-                        this.translator.translate("gerarchie_page_attribute_pattern"),
-                        gerarchia.getNomeAttributo()
-                );
-                System.out.printf(this.translator.translate("gerarchie_page_gerarchia_pattern"), i + 1, gerarchia.getNome(), nomeAttributo);
-                System.out.println();
-            }
-        }
-    }
-
-    protected void renderFoglie(Nodo root, List<Nodo> nodi) {
-        String nomeAttributo = root.getNomeAttributo() == null
-                ? ""
-                : String.format(
-                this.translator.translate("gerarchie_page_attribute_pattern"),
-                root.getNomeAttributo()
-        );
-        System.out.printf(this.translator.translate("gerarchie_page_nodo_pattern"), root.getNome(), nomeAttributo);
-        System.out.println();
-
-        if (nodi.isEmpty()) {
-            System.out.printf("\t%s", this.translator.translate("no_items_found"));
-            System.out.println();
-        } else {
-            for (int i = 0; i < nodi.size(); i++) {
-                Nodo figlio = nodi.get(i);
-                System.out.printf(this.translator.translate("gerarchie_page_child_pattern"), i+1, figlio.getNome());
-                System.out.println();
-            }
-        }
     }
 }

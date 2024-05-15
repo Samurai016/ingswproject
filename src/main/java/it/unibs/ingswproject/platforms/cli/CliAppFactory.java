@@ -61,6 +61,9 @@ public class CliAppFactory implements ApplicationFactory {
         pageFactory.registerDependency(CliRouter.class, router);
         pageFactory.registerDependency(CliApp.class, app);
 
+        // Debug mode
+        authService.login("admin", "gelato01");
+
         return app;
     }
 }
