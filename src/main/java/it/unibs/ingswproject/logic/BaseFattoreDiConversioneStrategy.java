@@ -1,5 +1,7 @@
 package it.unibs.ingswproject.logic;
 
+import it.unibs.ingswproject.logic.graph.ConnectivityCheck;
+import it.unibs.ingswproject.logic.graph.Graph;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.FattoreDiConversione;
 import it.unibs.ingswproject.models.entities.Nodo;
@@ -78,5 +80,17 @@ public class BaseFattoreDiConversioneStrategy implements FattoreDiConversioneStr
 
         FattoreDiConversioneRepository fdcRepository = (FattoreDiConversioneRepository) this.storageService.getRepository(FattoreDiConversione.class);
         return fdcRepository.findByNodo(nodo);
+    }
+
+    @Override
+    public boolean isGerarchiaValida(Nodo nodo) {
+        Graph graph = new Graph(nodo); // Genero grafo dall'albero
+        ConnectivityCheck connectivityCheck = new ConnectivityCheck(graph);
+        return connectivityCheck.isConnected();
+    }
+
+    @Override
+    public double getWeight(double prevDistance, double nextDistance) {
+        return prevDistance * nextDistance;
     }
 }

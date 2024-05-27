@@ -26,4 +26,21 @@ public interface FattoreDiConversioneStrategy {
      * @return I fattori di conversione da rimuovere
      */
     List<FattoreDiConversione> getFattoriDiConversionToDelete(Nodo nodo);
+
+    /**
+     * Verifica se la gerarchia di un nodo è valida
+     *
+     * @param nodo La root della gerarchia da verificare
+     * @return true se la gerarchia è valida, false altrimenti
+     */
+    boolean isGerarchiaValida(Nodo nodo);
+
+    /**
+     * Calcola il peso di un cammino tra 2 archi
+     *
+     * @param prevDistance La distanza del nodo precedente
+     * @param nextDistance La distanza del nodo successivo
+     * @return Il peso del cammino
+     */
+    double getWeight(double prevDistance, double nextDistance);
 }

@@ -5,6 +5,12 @@ import it.unibs.ingswproject.translations.Translator;
 
 import java.util.List;
 
+/**
+ * Classe per il rendering di un albero con un solo livello di figli
+ * Stampa solo i figli del nodo radice, che possono essere selezionati
+ *
+ * @author Nicolò Rebaioli
+ */
 public class OneLevelTreeRenderer extends TreeRenderer {
     private final Translator translator;
 

@@ -8,6 +8,12 @@ import it.unibs.ingswproject.platforms.cli.views.CliPageView;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Classe astratta che rappresenta un controller di una pagina
+ * Fornisce già un comando per tornare indietro
+ *
+ * @author Nicolò Rebaioli
+ */
 public abstract class CliPageController implements PageController {
     public static final char COMMAND_BACK = '0';
     protected final Map<Character, String> commands = new HashMap<>();

@@ -10,6 +10,8 @@ import java.util.Map;
 /**
  * Classe factory per la creazione di pagine
  * Si occupa di gestire l'inversione di controllo per la creazione di pagine
+ *
+ * @author Nicolò Rebaioli
  */
 public class PageFactory {
     protected final Map<Class<?>, Object> dependencies;

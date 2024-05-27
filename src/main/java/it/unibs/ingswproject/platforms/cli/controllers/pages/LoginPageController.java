@@ -32,6 +32,14 @@ public class LoginPageController extends CliPageController {
         return true;
     }
 
+    @Override
+    public void render() {
+        // Se l'utente è già autenticato, non renderizzo la pagina
+        if (!this.checkLogin()) {
+            super.render();
+        }
+    }
+
     /**
      * Controlla se l'utente è già autenticato e in caso positivo lo reindirizza alla home
      * Se l'utente è già autenticato, la history viene cancellata

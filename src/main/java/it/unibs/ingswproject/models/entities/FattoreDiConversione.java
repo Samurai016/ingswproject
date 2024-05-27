@@ -9,10 +9,12 @@ import java.util.UUID;
 
 @Entity
 public class FattoreDiConversione {
+    public static final double MAX_WEIGHT = 2.0;
+
     @Embeddable
     public static class FattoreDiConversioneId implements Serializable {
         @Serial
-        protected static final long serialVersionUID = -5978971331323711359L;
+        private static final long serialVersionUID = -5978971331323711359L;
 
         @Column
         protected UUID nodo1;
@@ -72,8 +74,16 @@ public class FattoreDiConversione {
         return this.nodo2;
     }
 
-    public Double getFattore() {
-        return this.fattore;
+    /**
+     * Restituisce il fattore di conversione tra i due nodi
+     *
+     * @param startingNode Il nodo di partenza, indica la direzione del fattore
+     * @return Il fattore di conversione se il nodo di partenza è nodo1, altrimenti 1/fattore
+     */
+    public Double getFattore(Nodo startingNode) {
+        return startingNode == this.nodo1
+                ? this.fattore
+                : 1 / this.fattore;
     }
 
     // SETTERS
@@ -100,11 +110,19 @@ public class FattoreDiConversione {
     }
 
     public FattoreDiConversione setFattore(Double fattore) {
-        if (fattore != null && (fattore < 0 || fattore > 2)) {
+        if (fattore != null && (fattore < getMinAcceptedWeight() || fattore > getMaxAcceptedWeight())) {
             throw new IllegalArgumentException("fdc_fattore_range");
         }
 
         this.fattore = fattore;
         return this;
+    }
+
+    public static double getMinAcceptedWeight() {
+        return 1 / MAX_WEIGHT;
+    }
+
+    public static double getMaxAcceptedWeight() {
+        return MAX_WEIGHT;
     }
 }

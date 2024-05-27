@@ -1,6 +1,8 @@
 package it.unibs.ingswproject.platforms.cli.views.pages.gerarchie;
 
+import io.ebean.Transaction;
 import it.unibs.ingswproject.auth.AuthService;
+import it.unibs.ingswproject.models.EntityRepository;
 import it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie.AddNodoPageController;
 import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.platforms.cli.errors.exceptions.CliQuitException;
@@ -41,9 +43,27 @@ public class AddNodoPageView extends CliPageView {
             Nodo root = controller.getRoot();
             Nodo nodo = root == null ? this.enterGerarchia() : this.enterFoglia(root);
 
+            // Richiesta FDC
+            List<FattoreDiConversione> FDCs = this.fattoreDiConversioneStrategy.getFattoriDiConversionToSet(nodo);
+            if (!FDCs.isEmpty()) {
+                System.out.println();
+                System.out.println(this.translator.translate("add_node_page_gerarchia_step3"));
+                System.out.println(this.translator.translate("add_node_page_gerarchia_step3_helper"));
+                this.fillFDCs(FDCs);
+            }
+
             System.out.println();
             System.out.println(this.translator.translate("saving_item"));
-            this.storageService.getRepository(Nodo.class).save(nodo);
+
+            try (Transaction transaction = this.storageService.getDatabase().beginTransaction()) {
+                this.storageService.getRepository(Nodo.class).save(nodo);
+                EntityRepository<FattoreDiConversione> repository = this.storageService.getRepository(FattoreDiConversione.class);
+                for (FattoreDiConversione fdc : FDCs) {
+                    repository.save(fdc);
+                }
+                transaction.commit();
+            }
+
             System.out.println(this.translator.translate(root == null ? "add_node_page_gerarchia_success" : "add_node_page_foglia_success"));
             this.cliUtils.waitForInput();
         } catch (CliQuitException e) {
@@ -84,15 +104,6 @@ public class AddNodoPageView extends CliPageView {
                 Nodo foglia = this.enterFoglia(new Nodo().setValoreAttributo(valore));
                 gerarchia.getFigli().add(foglia);
             }
-        }
-
-        // FDC
-        List<FattoreDiConversione> FDCs = this.fattoreDiConversioneStrategy.getFattoriDiConversionToSet(gerarchia);
-        if (!FDCs.isEmpty()) {
-            System.out.println();
-            System.out.println(this.translator.translate("add_node_page_gerarchia_step3"));
-            System.out.println(this.translator.translate("add_node_page_gerarchia_step3_helper"));
-            this.fillFDCs(FDCs);
         }
 
         return gerarchia;

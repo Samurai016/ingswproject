@@ -62,7 +62,7 @@ public class CliAppFactory implements ApplicationFactory {
         pageFactory.registerDependency(CliApp.class, app);
 
         // Debug mode
-        authService.login("admin", "gelato01");
+        //authService.login("admin", "gelato01");
 
         return app;
     }
