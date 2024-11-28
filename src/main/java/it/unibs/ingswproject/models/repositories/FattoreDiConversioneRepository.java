@@ -44,4 +44,6 @@ public class FattoreDiConversioneRepository extends EntityRepository<FattoreDiCo
                 )
                 .findList();
     }
+
+
 }

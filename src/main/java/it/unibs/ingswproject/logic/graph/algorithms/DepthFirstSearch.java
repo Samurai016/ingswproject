@@ -9,6 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Classe che implementa la visita in profondità di un grafo.
+ *
+ * @see "<a href="https://en.wikipedia.org/wiki/Depth-first_search">Depth-first search (Wikipedia)</a>"
+ *
+ * @author Nicolò Rebaioli
+ */
 public class DepthFirstSearch {
     private final Map<Nodo, List<AdjacencyListNode>> adjacencyListCache;
     private Set<Nodo> visited;

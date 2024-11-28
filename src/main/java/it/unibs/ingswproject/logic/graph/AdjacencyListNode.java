@@ -6,6 +6,16 @@ import it.unibs.ingswproject.models.entities.Nodo;
 // node of adjacency list contains vertex number of
 // the vertex to which edge connects. It also
 // contains weight of the edge
+
+/**
+ * Record che rappresenta un nodo adiacente.
+ * Ogni nodo della lista di adiacenza contiene il vertice a cui è connesso e il peso dell'arco.
+ *
+ * @param vertex vertice a cui è connesso
+ * @param weight peso dell'arco
+ *
+ * @author Nicolò Rebaioli
+ */
 public record AdjacencyListNode(Nodo vertex, double weight) {
     @Override
     public boolean equals(Object obj) {

@@ -5,7 +5,6 @@ import it.unibs.ingswproject.models.entities.Utente;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
@@ -17,12 +16,6 @@ import java.util.Objects;
  * @author Nicolò Rebaioli
  */
 public class AuthService {
-    /**
-     * Salt per la generazione dell'hash della password.
-     * Questo valore deve essere mantenuto segreto.
-     * Modificare questo valore comporta la necessità di resettare tutte le password degli utenti.
-     */
-    protected static final String SALT = "mysupersecretsalt";
     protected static final String HASH_ALGORITHM = "PBKDF2WithHmacSHA1";
     protected Utente currentUser;
     protected final StorageService storageService;
@@ -65,7 +58,7 @@ public class AuthService {
 
     public static String hashPassword(String password) {
         try {
-            KeySpec spec = new PBEKeySpec(password.toCharArray(), SALT.getBytes(StandardCharsets.UTF_8), 65536, 128);
+            KeySpec spec = new PBEKeySpec(password.toCharArray());
             SecretKeyFactory factory = SecretKeyFactory.getInstance(HASH_ALGORITHM);
             byte[] hash = factory.generateSecret(spec).getEncoded();
             return Base64.getEncoder().encodeToString(hash);

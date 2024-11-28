@@ -5,6 +5,14 @@ import it.unibs.ingswproject.models.entities.Nodo;
 
 import java.util.*;
 
+/**
+ * Classe che implementa il controllo di connettività di un grafo.
+ * Il controllo di connettività di un grafo è un problema che consiste nel verificare se un grafo è connesso o meno.
+ *
+ * @see <a href="https://en.wikipedia.org/wiki/Connectivity_(graph_theory)">Connettività (Wikipedia)</a>
+ *
+ * @author Nicolò Rebaioli
+ */
 public class ConnectivityCheck {
     protected final Nodo startingNode;
     protected final Graph graph;

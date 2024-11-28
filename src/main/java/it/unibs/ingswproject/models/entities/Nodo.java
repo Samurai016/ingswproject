@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -21,7 +20,7 @@ public class Nodo {
     protected String descrizione;
     protected String nomeAttributo;
     protected String valoreAttributo;
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     protected Nodo parent;
     @OneToMany(mappedBy = "parent")
     protected List<Nodo> figli = new ArrayList<>();
@@ -32,6 +31,7 @@ public class Nodo {
 
     public Nodo() {
         // Costruttore vuoto per Ebean
+        this.id = UUID.randomUUID();
     }
 
     protected Nodo(String nome, String descrizione, String nomeAttributo, String valoreAttributo, Nodo parent) {
@@ -64,6 +64,13 @@ public class Nodo {
             return null;
         }
         return this.figli.stream().map(Nodo::getValoreAttributo).toArray(String[]::new);
+    }
+
+    public Nodo getRoot() {
+        if (this.isRoot()) {
+            return this;
+        }
+        return this.parent.getRoot();
     }
 
     // GETTERS

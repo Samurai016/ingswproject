@@ -1,6 +1,8 @@
 package it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie;
 
 import it.unibs.ingswproject.auth.AuthService;
+import it.unibs.ingswproject.logic.graph.SimpleWeightComputation;
+import it.unibs.ingswproject.logic.graph.WeightComputationStrategy;
 import it.unibs.ingswproject.platforms.cli.controllers.CliPageController;
 import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.logic.BaseFattoreDiConversioneStrategy;
@@ -26,7 +28,8 @@ public class AddNodoPageController extends CliPageController {
         this.authService = authService;
         this.pageFactory = pageFactory;
         FattoreDiConversioneStrategy fdcStrategy = new BaseFattoreDiConversioneStrategy(storageService);
-        this.view = new AddNodoPageView(app, this, translator, cliUtils, storageService, errorManager, fdcStrategy, authService);
+        WeightComputationStrategy weightComputationStrategy = new SimpleWeightComputation();
+        this.view = new AddNodoPageView(app, this, translator, cliUtils, storageService, errorManager, fdcStrategy, weightComputationStrategy, authService);
 
         this.commands.put(CliPageController.COMMAND_BACK, this.translator.translate("home_page_command_exit")); // Override default command (0 -> Esci)
 

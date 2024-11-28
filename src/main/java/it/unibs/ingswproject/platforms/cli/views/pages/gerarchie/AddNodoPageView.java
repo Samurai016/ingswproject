@@ -2,20 +2,23 @@ package it.unibs.ingswproject.platforms.cli.views.pages.gerarchie;
 
 import io.ebean.Transaction;
 import it.unibs.ingswproject.auth.AuthService;
-import it.unibs.ingswproject.models.EntityRepository;
-import it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie.AddNodoPageController;
 import it.unibs.ingswproject.errors.ErrorManager;
-import it.unibs.ingswproject.platforms.cli.errors.exceptions.CliQuitException;
 import it.unibs.ingswproject.logic.FattoreDiConversioneStrategy;
+import it.unibs.ingswproject.logic.graph.Graph;
+import it.unibs.ingswproject.logic.graph.CompleteWeightComputation;
+import it.unibs.ingswproject.logic.graph.WeightComputationStrategy;
+import it.unibs.ingswproject.models.EntityRepository;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.FattoreDiConversione;
 import it.unibs.ingswproject.models.entities.Nodo;
+import it.unibs.ingswproject.platforms.cli.CliApp;
+import it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie.AddNodoPageController;
+import it.unibs.ingswproject.platforms.cli.errors.exceptions.CliQuitException;
+import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
+import it.unibs.ingswproject.platforms.cli.views.CliPageView;
+import it.unibs.ingswproject.router.PageConstructor;
 import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.utils.Utils;
-import it.unibs.ingswproject.platforms.cli.CliApp;
-import it.unibs.ingswproject.platforms.cli.views.CliPageView;
-import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
-import it.unibs.ingswproject.router.PageConstructor;
 
 import java.util.List;
 
@@ -26,13 +29,15 @@ public class AddNodoPageView extends CliPageView {
     protected final StorageService storageService;
     protected final ErrorManager errorManager;
     protected final FattoreDiConversioneStrategy fattoreDiConversioneStrategy;
+    protected final WeightComputationStrategy weightComputationStrategy;
 
     @PageConstructor
-    public AddNodoPageView(CliApp app, AddNodoPageController controller, Translator translator, CliUtils cliUtils, StorageService storageService, ErrorManager errorManager, FattoreDiConversioneStrategy fattoreDiConversioneStrategy, AuthService authService) {
+    public AddNodoPageView(CliApp app, AddNodoPageController controller, Translator translator, CliUtils cliUtils, StorageService storageService, ErrorManager errorManager, FattoreDiConversioneStrategy fattoreDiConversioneStrategy, WeightComputationStrategy weightComputationStrategy, AuthService authService) {
         super(app, controller, translator, cliUtils, authService);
         this.storageService = storageService;
         this.errorManager = errorManager;
         this.fattoreDiConversioneStrategy = fattoreDiConversioneStrategy;
+        this.weightComputationStrategy = weightComputationStrategy;
     }
 
 
@@ -43,13 +48,18 @@ public class AddNodoPageView extends CliPageView {
             Nodo root = controller.getRoot();
             Nodo nodo = root == null ? this.enterGerarchia() : this.enterFoglia(root);
 
+            Nodo gerarchia = nodo.getRoot();
+
             // Richiesta FDC
-            List<FattoreDiConversione> FDCs = this.fattoreDiConversioneStrategy.getFattoriDiConversionToSet(nodo);
+            if (root != null) {
+                root.getFigli().add(nodo);
+            }
+            List<FattoreDiConversione> FDCs = this.fattoreDiConversioneStrategy.getFattoriDiConversionToSet(root==null ? nodo : root);
             if (!FDCs.isEmpty()) {
                 System.out.println();
                 System.out.println(this.translator.translate("add_node_page_gerarchia_step3"));
                 System.out.println(this.translator.translate("add_node_page_gerarchia_step3_helper"));
-                this.fillFDCs(FDCs);
+                this.fillFDCs(gerarchia, FDCs);
             }
 
             System.out.println();
@@ -83,28 +93,31 @@ public class AddNodoPageView extends CliPageView {
         gerarchia.setNome(nome);
 
         // Descrizione
-        String descrizione = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_gerarchia_description"));
+        String descrizione = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_gerarchia_description"), true);
         gerarchia.setDescrizione(descrizione);
 
         // Nome attributo
-        String nomeAttributo = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_gerarchia_attribute"));
+        String nomeAttributo = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_gerarchia_attribute"), true);
         gerarchia.setNomeAttributo(nomeAttributo);
 
-        // Dominio
-        System.out.println();
-        System.out.println(this.translator.translate("add_node_page_gerarchia_dominio_helper"));
-        String valoriAttributo = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_gerarchia_dominio"), true);
-
-        if (!valoriAttributo.isEmpty()) {
-            // Richiesta foglie
+        if (!nomeAttributo.isEmpty()) {
+            // Dominio
             System.out.println();
-            System.out.println(this.translator.translate("add_node_page_gerarchia_step2"));
-            for (String valore : valoriAttributo.split(",")) {
-                System.out.printf(this.translator.translate("add_node_page_gerarchia_foglia_header"), valore);
-                Nodo foglia = this.enterFoglia(new Nodo().setValoreAttributo(valore));
-                gerarchia.getFigli().add(foglia);
+            System.out.println(this.translator.translate("add_node_page_gerarchia_dominio_helper"));
+            String valoriAttributo = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_gerarchia_dominio"), true);
+
+            if (!valoriAttributo.isEmpty()) {
+                // Richiesta foglie
+                System.out.println();
+                System.out.println(this.translator.translate("add_node_page_gerarchia_step2"));
+                for (String valore : valoriAttributo.split(",")) {
+                    System.out.printf(this.translator.translate("add_node_page_gerarchia_foglia_header"), valore);
+                    Nodo foglia = this.enterFoglia(gerarchia, new Nodo().setValoreAttributo(valore));
+                    gerarchia.getFigli().add(foglia);
+                }
             }
         }
+
 
         return gerarchia;
     }
@@ -136,10 +149,14 @@ public class AddNodoPageView extends CliPageView {
         return foglia;
     }
 
-    protected void fillFDCs(List<FattoreDiConversione> FDCs) throws CliQuitException {
-        // TODO: Implementare richiesta FDC
+    protected void fillFDCs(Nodo gerarchia, List<FattoreDiConversione> FDCs) throws CliQuitException {
+        Graph graph = new Graph(gerarchia);
+
         for (FattoreDiConversione fdc : FDCs) {
             Double fattore;
+            double maxWeight = this.weightComputationStrategy.getMaxAcceptedWeight(graph, fdc);
+            double minWeight = this.weightComputationStrategy.getMinAcceptedWeight(graph, fdc);
+
             do {
                 try {
                     String fattoreInput = this.cliUtils.readFromConsoleQuittable(String.format(
@@ -148,6 +165,12 @@ public class AddNodoPageView extends CliPageView {
                     ));
                     fattore = Double.parseDouble(fattoreInput);
                     fdc.setFattore(fattore);
+
+                    if (fattore > maxWeight) {
+                        throw new IllegalArgumentException(this.translator.translate("add_node_page_gerarchia_fdc_error_max_weight"));
+                    } else if (fattore < minWeight) {
+                        throw new IllegalArgumentException(this.translator.translate("add_node_page_gerarchia_fdc_error_min_weight"));
+                    }
                 } catch (NumberFormatException e) {
                     System.out.println(this.translator.translate("add_node_page_gerarchia_fdc_error"));
                     fattore = null;
@@ -156,6 +179,8 @@ public class AddNodoPageView extends CliPageView {
                     fattore = null;
                 }
             } while (fattore == null);
+
+            graph.getArchi().add(fdc); // Aggiungi l'arco al grafo
         }
     }
 }

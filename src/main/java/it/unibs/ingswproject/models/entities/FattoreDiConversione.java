@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @Entity
 public class FattoreDiConversione {
+    public static final double MIN_WEIGHT = 0.5;
     public static final double MAX_WEIGHT = 2.0;
 
     @Embeddable
@@ -119,7 +120,7 @@ public class FattoreDiConversione {
     }
 
     public static double getMinAcceptedWeight() {
-        return 1 / MAX_WEIGHT;
+        return MIN_WEIGHT;
     }
 
     public static double getMaxAcceptedWeight() {

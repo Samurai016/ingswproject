@@ -7,8 +7,15 @@ import it.unibs.ingswproject.models.entities.Nodo;
 
 import java.util.*;
 
-// Arborescence (https://en.wikipedia.org/wiki/Arborescence_(graph_theory))
-// https://stackoverflow.com/questions/23988236/chu-liu-edmonds-algorithm-for-minimum-spanning-tree-on-directed-graphs
+/**
+ * Classe che implementa l'algoritmo di Chu-Liu-Edmonds per trovare l'arborescenza
+ * di un grafo orientato.
+ *
+ * @see <a href="https://stackoverflow.com/questions/23988236/chu-liu-edmonds-algorithm-for-minimum-spanning-tree-on-directed-graphs">Chu-Liu-Edmonds Algorithm (Stack Overflow)</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Arborescence_(graph_theory)">Arborescenza (Wikipedia)</a>
+ *
+ * @author Nicolò Rebaioli
+ */
 public class ChuLiuEdmondsAlgorithm {
     public record Arc(Nodo nodo1, Nodo nodo2, double weight) {}
 
@@ -98,7 +105,7 @@ public class ChuLiuEdmondsAlgorithm {
         return solutionArcByTail;
     }
 
-    public Map<Nodo, FattoreDiConversione> minSpanningArborescence(Graph graph, Nodo startingNode) {
+    private Map<Nodo, FattoreDiConversione> minSpanningArborescence(Graph graph, Nodo startingNode) {
         List<Arc> arcs = new ArrayList<>();
         for (FattoreDiConversione edge : graph.getArchi()) {
             arcs.add(new Arc(edge.getNodo1(), edge.getNodo2(), edge.getFattore(edge.getNodo1())));
@@ -134,10 +141,11 @@ public class ChuLiuEdmondsAlgorithm {
         }
 
         for (FattoreDiConversione arco : fattori.values()) {
-            AdjacencyListNode andata = new AdjacencyListNode(arco.getNodo2(), arco.getFattore(arco.getNodo1()));
-            if (adjacencyList.containsKey(arco.getNodo1()) && !adjacencyList.get(arco.getNodo1()).contains(andata)) {
-                adjacencyList.get(arco.getNodo1()).add(andata);
+            AdjacencyListNode adjNode = new AdjacencyListNode(arco.getNodo2(), arco.getFattore(arco.getNodo1()));
+            if (!adjacencyList.containsKey(arco.getNodo1())) {
+                adjacencyList.put(arco.getNodo1(), new LinkedList<>());
             }
+            adjacencyList.get(arco.getNodo1()).add(adjNode);
         }
 
         return adjacencyList;

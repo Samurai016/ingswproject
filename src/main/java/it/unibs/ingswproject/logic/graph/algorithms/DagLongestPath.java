@@ -7,6 +7,14 @@ import it.unibs.ingswproject.models.entities.Nodo;
 import java.util.*;
 import java.util.function.DoubleBinaryOperator;
 
+/**
+ * Classe che implementa l'algoritmo per trovare il percorso più lungo in un grafo orientato aciclico (DAG).
+ *
+ * @see <a href="https://www.geeksforgeeks.org/topological-sorting/">Topological Sorting (GeeksforGeeks)</a>
+ * @see <a href="https://en.wikipedia.org/wiki/Longest_path_problem">Longest path problem (Wikipedia)</a>
+ *
+ * @author Nicolò Rebaioli
+ */
 public class DagLongestPath {
     private final DoubleBinaryOperator weightFunction;
     private Set<Nodo> visited;
