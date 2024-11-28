@@ -46,8 +46,6 @@ public class AddNodoPageView extends CliPageView {
             Nodo root = controller.getRoot();
             Nodo nodo = root == null ? this.enterGerarchia() : this.enterFoglia(root);
 
-            Nodo gerarchia = nodo.getRoot();
-
             // Richiesta FDC
             if (root != null) {
                 root.getFigli().add(nodo);
