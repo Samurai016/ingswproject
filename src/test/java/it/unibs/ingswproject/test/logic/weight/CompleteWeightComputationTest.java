@@ -1,4 +1,4 @@
-package it.unibs.ingswproject.test.logic;
+package it.unibs.ingswproject.test.logic.weight;
 
 import it.unibs.ingswproject.logic.weight.complete.Graph;
 import it.unibs.ingswproject.logic.weight.CompleteWeightComputation;
