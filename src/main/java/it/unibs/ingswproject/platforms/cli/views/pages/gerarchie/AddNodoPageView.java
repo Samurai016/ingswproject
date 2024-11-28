@@ -17,7 +17,6 @@ import it.unibs.ingswproject.platforms.cli.views.CliPageView;
 import it.unibs.ingswproject.router.PageConstructor;
 import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.utils.Utils;
-import jakarta.persistence.Graph;
 
 import java.util.List;
 
@@ -58,7 +57,7 @@ public class AddNodoPageView extends CliPageView {
                 System.out.println();
                 System.out.println(this.translator.translate("add_node_page_gerarchia_step3"));
                 System.out.println(this.translator.translate("add_node_page_gerarchia_step3_helper"));
-                this.fillFDCs(gerarchia, FDCsToSet);
+                this.fillFDCs(FDCsToSet);
             }
 
             List<FattoreDiConversione> FDCsToDelete = this.fattoreDiConversioneStrategy.getFattoriDiConversionToDelete(root==null ? nodo : root);
@@ -153,7 +152,7 @@ public class AddNodoPageView extends CliPageView {
         return foglia;
     }
 
-    protected void fillFDCs(Nodo gerarchia, List<FattoreDiConversione> FDCs) throws CliQuitException {
+    protected void fillFDCs(List<FattoreDiConversione> FDCs) throws CliQuitException {
         for (FattoreDiConversione fdc : FDCs) {
             Double fattore;
             double maxWeight = this.weightComputationStrategy.getMaxAcceptedWeight();
