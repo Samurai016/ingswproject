@@ -22,7 +22,7 @@ public class CompleteWeightComputationTest {
         CompleteWeightComputation weightComputation = new CompleteWeightComputation((a, b) -> a * b);
         double maxWeight = weightComputation.getMaxAcceptedWeight(graph, nuovoFDC);
 
-        Assertions.assertEquals(maxWeight, 1.42);
+        Assertions.assertEquals(1.42, maxWeight);
     }
 
 }
