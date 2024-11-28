@@ -1,12 +1,12 @@
 ebean:
   migration:
-    run: true
+    run: false
   ddl:
     generate: true
-    run: true
+    run: false
 
 datasource:
-  default: h2
+  default: mysql_production
   h2:
     username: root
     password: root

@@ -63,6 +63,7 @@ public class NodoPageController extends CliPageController {
             }
         } else {
             this.commands.put('a', this.translator.translate("gerarchie_page_command_add_foglia"));
+            this.commands.put('b', this.translator.translate("gerarchie_page_command_view_fdc"));
 
             this.setRoot(repository.find(this.getRoot().getId())); // Refresh root
             List<Nodo> figli = this.getRoot().getFigli();
@@ -91,8 +92,13 @@ public class NodoPageController extends CliPageController {
         if (this.nodi.containsKey(input)) {
             this.app.navigateTo(this.pageFactory.generatePage(NodoPageController.class).setRoot(this.nodi.get(input)));
         } else {
-            if (input == 'a') {
-                this.app.navigateTo(this.pageFactory.generatePage(AddNodoPageController.class).setRoot(this.root));
+            switch (input) {
+                case 'a':
+                    this.app.navigateTo(this.pageFactory.generatePage(AddNodoPageController.class).setRoot(this.root));
+                    break;
+                case 'b':
+                    this.app.navigateTo(this.pageFactory.generatePage(ViewFdcsPageController.class).setRoot(this.root));
+                    break;
             }
         }
     }
