@@ -35,6 +35,11 @@ public class NodoPageController extends CliPageController {
 
     public NodoPageController setRoot(Nodo root) {
         this.root = root;
+        if (this.root.isFoglia()) {
+            this.commands.put('b', this.translator.translate("gerarchie_page_command_view_fdcs"));
+        } else {
+            this.commands.remove('b');
+        }
         return this;
     }
 
@@ -63,7 +68,6 @@ public class NodoPageController extends CliPageController {
             }
         } else {
             this.commands.put('a', this.translator.translate("gerarchie_page_command_add_foglia"));
-            this.commands.put('b', this.translator.translate("gerarchie_page_command_view_fdc"));
 
             this.setRoot(repository.find(this.getRoot().getId())); // Refresh root
             List<Nodo> figli = this.getRoot().getFigli();

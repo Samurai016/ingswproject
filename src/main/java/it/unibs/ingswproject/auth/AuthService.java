@@ -16,7 +16,8 @@ import java.util.Objects;
  * @author Nicolò Rebaioli
  */
 public class AuthService {
-    protected static final String HASH_ALGORITHM = "PBKDF2WithHmacSHA1";
+    private static final String HASH_ALGORITHM = "PBKDF2WithHmacSHA1";
+    private static final String SALT = "PBKDF2WithHmacSHA1";
     protected Utente currentUser;
     protected final StorageService storageService;
     
@@ -58,7 +59,7 @@ public class AuthService {
 
     public static String hashPassword(String password) {
         try {
-            KeySpec spec = new PBEKeySpec(password.toCharArray());
+            KeySpec spec = new PBEKeySpec(password.toCharArray(), SALT.getBytes(), 65536, 128);
             SecretKeyFactory factory = SecretKeyFactory.getInstance(HASH_ALGORITHM);
             byte[] hash = factory.generateSecret(spec).getEncoded();
             return Base64.getEncoder().encodeToString(hash);

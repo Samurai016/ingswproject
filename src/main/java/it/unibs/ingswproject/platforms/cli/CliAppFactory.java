@@ -5,7 +5,6 @@ import io.ebean.Database;
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.models.StorageService;
-import it.unibs.ingswproject.models.entities.Utente;
 import it.unibs.ingswproject.platforms.cli.errors.CliErrorManager;
 import it.unibs.ingswproject.platforms.cli.router.CliRouter;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
@@ -63,7 +62,6 @@ public class CliAppFactory implements ApplicationFactory {
         pageFactory.registerDependency(CliApp.class, app);
 
         // Debug mode
-        storageService.getRepository(Utente.class).save(new Utente("admin", "gelato01", Utente.Ruolo.CONFIGURATORE));
         authService.login("admin", "gelato01");
 
         return app;
