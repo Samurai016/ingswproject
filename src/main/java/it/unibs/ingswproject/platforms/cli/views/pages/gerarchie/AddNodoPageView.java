@@ -4,7 +4,6 @@ import io.ebean.Transaction;
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.errors.ErrorHandler;
 import it.unibs.ingswproject.logic.FattoreDiConversioneStrategy;
-import it.unibs.ingswproject.logic.weight.complete.Graph;
 import it.unibs.ingswproject.logic.weight.WeightComputationStrategy;
 import it.unibs.ingswproject.models.EntityRepository;
 import it.unibs.ingswproject.models.StorageService;
@@ -18,6 +17,7 @@ import it.unibs.ingswproject.platforms.cli.views.CliPageView;
 import it.unibs.ingswproject.router.PageConstructor;
 import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.utils.Utils;
+import jakarta.persistence.Graph;
 
 import java.util.List;
 
@@ -154,12 +154,10 @@ public class AddNodoPageView extends CliPageView {
     }
 
     protected void fillFDCs(Nodo gerarchia, List<FattoreDiConversione> FDCs) throws CliQuitException {
-        Graph graph = new Graph(gerarchia);
-
         for (FattoreDiConversione fdc : FDCs) {
             Double fattore;
-            double maxWeight = this.weightComputationStrategy.getMaxAcceptedWeight(graph, fdc);
-            double minWeight = this.weightComputationStrategy.getMinAcceptedWeight(graph, fdc);
+            double maxWeight = this.weightComputationStrategy.getMaxAcceptedWeight();
+            double minWeight = this.weightComputationStrategy.getMinAcceptedWeight();
 
             do {
                 try {
@@ -182,8 +180,6 @@ public class AddNodoPageView extends CliPageView {
                     fattore = null;
                 }
             } while (fattore == null);
-
-            graph.getArchi().add(fdc); // Aggiungi l'arco al grafo
         }
     }
 }
