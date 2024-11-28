@@ -1,4 +1,4 @@
-package it.unibs.ingswproject.logic.graph;
+package it.unibs.ingswproject.logic.weight.complete;
 
 import it.unibs.ingswproject.models.entities.FattoreDiConversione;
 import it.unibs.ingswproject.models.entities.Nodo;

@@ -1,6 +1,7 @@
-package it.unibs.ingswproject.logic.graph;
+package it.unibs.ingswproject.logic.weight;
 
-import it.unibs.ingswproject.logic.graph.algorithms.DagLongestPath;
+import it.unibs.ingswproject.logic.weight.complete.Graph;
+import it.unibs.ingswproject.logic.weight.complete.algorithms.DagLongestPath;
 import it.unibs.ingswproject.models.entities.FattoreDiConversione;
 import it.unibs.ingswproject.models.entities.Nodo;
 
@@ -57,6 +58,6 @@ public class CompleteWeightComputation implements WeightComputationStrategy {
 
     @Override
     public double getMinAcceptedWeight(Graph graph, FattoreDiConversione newFDC) {
-        return FattoreDiConversione.getMinAcceptedWeight();
+        return FattoreDiConversione.MIN_WEIGHT;
     }
 }

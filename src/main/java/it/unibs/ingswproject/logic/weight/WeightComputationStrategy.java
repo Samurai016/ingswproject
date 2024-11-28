@@ -1,5 +1,6 @@
-package it.unibs.ingswproject.logic.graph;
+package it.unibs.ingswproject.logic.weight;
 
+import it.unibs.ingswproject.logic.weight.complete.Graph;
 import it.unibs.ingswproject.models.entities.FattoreDiConversione;
 
 public interface WeightComputationStrategy {

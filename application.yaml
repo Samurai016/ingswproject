@@ -6,7 +6,7 @@ ebean:
     run: false
 
 datasource:
-  default: mysql_production
+  default: sqlite
   h2:
     username: root
     password: root

@@ -1,8 +1,8 @@
 package it.unibs.ingswproject.platforms.cli;
 
+import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.platforms.cli.controllers.CliPageController;
 import it.unibs.ingswproject.platforms.cli.controllers.pages.LoginPageController;
-import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.router.PageRouter;
 import it.unibs.ingswproject.view.Application;
 import it.unibs.ingswproject.router.PageFactory;
@@ -16,12 +16,12 @@ import it.unibs.ingswproject.router.PageFactory;
 public class CliApp implements Application {
     protected final PageRouter router;
     protected final PageFactory pageFactory;
-    protected final ErrorManager errorManager;
+    protected final ErrorManager errorHandler;
 
-    public CliApp(PageRouter router, PageFactory pageFactory, ErrorManager errorManager) {
+    public CliApp(PageRouter router, PageFactory pageFactory, ErrorManager errorHandler) {
         this.router = router;
         this.pageFactory = pageFactory;
-        this.errorManager = errorManager;
+        this.errorHandler = errorHandler;
     }
 
     /**
@@ -38,7 +38,7 @@ public class CliApp implements Application {
                 // Questo serve a fare si che l'applicazione termini solo quando l'utente esce dall'ultima pagina della cronologia
             }
         } catch (Throwable e) {
-            this.errorManager.handle(e);
+            this.errorHandler.handle(e);
         }
     }
 

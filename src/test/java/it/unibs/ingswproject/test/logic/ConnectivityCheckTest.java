@@ -1,7 +1,7 @@
 package it.unibs.ingswproject.test.logic;
 
-import it.unibs.ingswproject.logic.graph.ConnectivityCheck;
-import it.unibs.ingswproject.logic.graph.Graph;
+import it.unibs.ingswproject.logic.weight.complete.ConnectivityCheck;
+import it.unibs.ingswproject.logic.weight.complete.Graph;
 import it.unibs.ingswproject.models.entities.FattoreDiConversione;
 import it.unibs.ingswproject.models.entities.Nodo;
 import org.junit.jupiter.api.*;

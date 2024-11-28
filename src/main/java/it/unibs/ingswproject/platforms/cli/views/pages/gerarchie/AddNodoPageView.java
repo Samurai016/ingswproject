@@ -2,10 +2,10 @@ package it.unibs.ingswproject.platforms.cli.views.pages.gerarchie;
 
 import io.ebean.Transaction;
 import it.unibs.ingswproject.auth.AuthService;
-import it.unibs.ingswproject.errors.ErrorManager;
+import it.unibs.ingswproject.errors.ErrorHandler;
 import it.unibs.ingswproject.logic.FattoreDiConversioneStrategy;
-import it.unibs.ingswproject.logic.graph.Graph;
-import it.unibs.ingswproject.logic.graph.WeightComputationStrategy;
+import it.unibs.ingswproject.logic.weight.complete.Graph;
+import it.unibs.ingswproject.logic.weight.WeightComputationStrategy;
 import it.unibs.ingswproject.models.EntityRepository;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.FattoreDiConversione;
@@ -26,15 +26,15 @@ import java.util.List;
  */
 public class AddNodoPageView extends CliPageView {
     protected final StorageService storageService;
-    protected final ErrorManager errorManager;
+    protected final ErrorHandler errorHandler;
     protected final FattoreDiConversioneStrategy fattoreDiConversioneStrategy;
     protected final WeightComputationStrategy weightComputationStrategy;
 
     @PageConstructor
-    public AddNodoPageView(CliApp app, AddNodoPageController controller, Translator translator, CliUtils cliUtils, StorageService storageService, ErrorManager errorManager, FattoreDiConversioneStrategy fattoreDiConversioneStrategy, WeightComputationStrategy weightComputationStrategy, AuthService authService) {
+    public AddNodoPageView(CliApp app, AddNodoPageController controller, Translator translator, CliUtils cliUtils, StorageService storageService, ErrorHandler errorHandler, FattoreDiConversioneStrategy fattoreDiConversioneStrategy, WeightComputationStrategy weightComputationStrategy, AuthService authService) {
         super(app, controller, translator, cliUtils, authService);
         this.storageService = storageService;
-        this.errorManager = errorManager;
+        this.errorHandler = errorHandler;
         this.fattoreDiConversioneStrategy = fattoreDiConversioneStrategy;
         this.weightComputationStrategy = weightComputationStrategy;
     }
@@ -53,13 +53,15 @@ public class AddNodoPageView extends CliPageView {
             if (root != null) {
                 root.getFigli().add(nodo);
             }
-            List<FattoreDiConversione> FDCs = this.fattoreDiConversioneStrategy.getFattoriDiConversionToSet(root==null ? nodo : root);
-            if (!FDCs.isEmpty()) {
+            List<FattoreDiConversione> FDCsToSet = this.fattoreDiConversioneStrategy.getFattoriDiConversionToSet(root == null ? nodo : root);
+            if (!FDCsToSet.isEmpty()) {
                 System.out.println();
                 System.out.println(this.translator.translate("add_node_page_gerarchia_step3"));
                 System.out.println(this.translator.translate("add_node_page_gerarchia_step3_helper"));
-                this.fillFDCs(gerarchia, FDCs);
+                this.fillFDCs(gerarchia, FDCsToSet);
             }
+
+            List<FattoreDiConversione> FDCsToDelete = this.fattoreDiConversioneStrategy.getFattoriDiConversionToDelete(root==null ? nodo : root);
 
             System.out.println();
             System.out.println(this.translator.translate("saving_item"));
@@ -67,8 +69,11 @@ public class AddNodoPageView extends CliPageView {
             try (Transaction transaction = this.storageService.getDatabase().beginTransaction()) {
                 this.storageService.getRepository(Nodo.class).save(nodo);
                 EntityRepository<FattoreDiConversione> repository = this.storageService.getRepository(FattoreDiConversione.class);
-                for (FattoreDiConversione fdc : FDCs) {
+                for (FattoreDiConversione fdc : FDCsToSet) {
                     repository.save(fdc);
+                }
+                for (FattoreDiConversione fdc : FDCsToDelete) {
+                    repository.delete(fdc);
                 }
                 transaction.commit();
             }
@@ -78,7 +83,7 @@ public class AddNodoPageView extends CliPageView {
         } catch (CliQuitException e) {
             // Non fare nulla, l'utente ha deciso di uscire
         } catch (Throwable e) {
-            this.errorManager.handle(e);
+            this.errorHandler.handle(e);
         }
     }
 

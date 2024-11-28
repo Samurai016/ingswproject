@@ -1,7 +1,7 @@
 package it.unibs.ingswproject.platforms.cli.views.pages.gerarchie;
 
 import it.unibs.ingswproject.auth.AuthService;
-import it.unibs.ingswproject.errors.ErrorManager;
+import it.unibs.ingswproject.errors.ErrorHandler;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.FattoreDiConversione;
 import it.unibs.ingswproject.models.entities.Nodo;
@@ -18,13 +18,13 @@ import java.util.List;
 
 public class ViewFdcsPageView extends CliPageView {
     protected final StorageService storageService;
-    protected final ErrorManager errorManager;
+    protected final ErrorHandler errorHandler;
 
     @PageConstructor
-    public ViewFdcsPageView(CliApp app, ViewFdcsPageController controller, Translator translator, CliUtils cliUtils, StorageService storageService, ErrorManager errorManager, AuthService authService) {
+    public ViewFdcsPageView(CliApp app, ViewFdcsPageController controller, Translator translator, CliUtils cliUtils, StorageService storageService, ErrorHandler errorHandler, AuthService authService) {
         super(app, controller, translator, cliUtils, authService);
         this.storageService = storageService;
-        this.errorManager = errorManager;
+        this.errorHandler = errorHandler;
     }
 
 

@@ -1,6 +1,6 @@
-package it.unibs.ingswproject.logic.graph;
+package it.unibs.ingswproject.logic.weight.complete;
 
-import it.unibs.ingswproject.logic.graph.algorithms.DepthFirstSearch;
+import it.unibs.ingswproject.logic.weight.complete.algorithms.DepthFirstSearch;
 import it.unibs.ingswproject.models.entities.Nodo;
 
 import java.util.*;

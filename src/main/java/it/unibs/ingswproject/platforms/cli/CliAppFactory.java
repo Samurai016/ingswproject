@@ -4,8 +4,9 @@ import io.ebean.DB;
 import io.ebean.Database;
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.errors.ErrorManager;
+import it.unibs.ingswproject.errors.handlers.FileLogErrorHandler;
 import it.unibs.ingswproject.models.StorageService;
-import it.unibs.ingswproject.platforms.cli.errors.CliErrorManager;
+import it.unibs.ingswproject.platforms.cli.errors.CliErrorHandler;
 import it.unibs.ingswproject.platforms.cli.router.CliRouter;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.router.PageFactory;
@@ -41,8 +42,9 @@ public class CliAppFactory implements ApplicationFactory {
         pageFactory.registerDependency(CliUtils.class, cliUtils);
 
         // Error manager
-        CliErrorManager errorManager = new CliErrorManager(translator, cliUtils);
-        errorManager.setDebugMode(true);
+        ErrorManager errorManager = new ErrorManager();
+        errorManager.addErrorHandler(new FileLogErrorHandler());
+        errorManager.addErrorHandler(new CliErrorHandler(translator, cliUtils).setDebugMode(true));
         pageFactory.registerDependency(ErrorManager.class, errorManager);
 
         // Persistence

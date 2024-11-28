@@ -1,7 +1,7 @@
-package it.unibs.ingswproject.logic.graph.algorithms;
+package it.unibs.ingswproject.logic.weight.complete.algorithms;
 
-import it.unibs.ingswproject.logic.graph.AdjacencyListNode;
-import it.unibs.ingswproject.logic.graph.Graph;
+import it.unibs.ingswproject.logic.weight.complete.AdjacencyListNode;
+import it.unibs.ingswproject.logic.weight.complete.Graph;
 import it.unibs.ingswproject.models.entities.Nodo;
 
 import java.util.HashSet;

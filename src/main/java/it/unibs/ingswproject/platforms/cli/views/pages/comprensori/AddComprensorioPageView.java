@@ -2,7 +2,7 @@ package it.unibs.ingswproject.platforms.cli.views.pages.comprensori;
 
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.platforms.cli.controllers.pages.comprensori.AddComprensorioPageController;
-import it.unibs.ingswproject.errors.ErrorManager;
+import it.unibs.ingswproject.errors.ErrorHandler;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Comprensorio;
 import it.unibs.ingswproject.platforms.cli.errors.exceptions.CliQuitException;
@@ -17,13 +17,13 @@ import it.unibs.ingswproject.router.PageConstructor;
  */
 public class AddComprensorioPageView extends CliPageView {
     protected final StorageService storageService;
-    protected final ErrorManager errorManager;
+    protected final ErrorHandler errorHandler;
 
     @PageConstructor
-    public AddComprensorioPageView(CliApp app, AddComprensorioPageController controller, Translator translator, StorageService storageService, ErrorManager errorManager, CliUtils cliUtils, AuthService authService) {
+    public AddComprensorioPageView(CliApp app, AddComprensorioPageController controller, Translator translator, StorageService storageService, ErrorHandler errorHandler, CliUtils cliUtils, AuthService authService) {
         super(app, controller, translator, cliUtils, authService);
         this.storageService = storageService;
-        this.errorManager = errorManager;
+        this.errorHandler = errorHandler;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class AddComprensorioPageView extends CliPageView {
         } catch (CliQuitException e) {
             // Non fare nulla, l'utente ha deciso di uscire
         } catch (Throwable e) {
-            this.errorManager.handle(e);
+            this.errorHandler.handle(e);
         }
     }
 }
