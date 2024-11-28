@@ -164,13 +164,12 @@ public class AddNodoPageView extends CliPageView {
                             fdc.getNodo1().getNome(), fdc.getNodo2().getNome()
                     ));
                     fattore = Double.parseDouble(fattoreInput);
-                    fdc.setFattore(fattore);
 
-                    if (fattore > maxWeight) {
-                        throw new IllegalArgumentException(this.translator.translate("add_node_page_gerarchia_fdc_error_max_weight"));
-                    } else if (fattore < minWeight) {
-                        throw new IllegalArgumentException(this.translator.translate("add_node_page_gerarchia_fdc_error_min_weight"));
+                    if (fattore<minWeight || fattore>maxWeight) {
+                        throw new IllegalArgumentException(String.format(this.translator.translate("add_node_page_gerarchia_fdc_error_weight_range"), minWeight, maxWeight));
                     }
+
+                    fdc.setFattore(fattore);
                 } catch (NumberFormatException e) {
                     System.out.println(this.translator.translate("add_node_page_gerarchia_fdc_error"));
                     fattore = null;
