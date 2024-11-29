@@ -12,6 +12,7 @@ import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.platforms.cli.views.CliPageView;
 import it.unibs.ingswproject.router.PageConstructor;
 import it.unibs.ingswproject.translations.Translator;
+import it.unibs.ingswproject.utils.ProjectUtils;
 import it.unibs.ingswproject.utils.Utils;
 
 import java.util.List;
@@ -21,8 +22,8 @@ public class ViewFdcsPageView extends CliPageView {
     protected final ErrorHandler errorHandler;
 
     @PageConstructor
-    public ViewFdcsPageView(CliApp app, ViewFdcsPageController controller, Translator translator, CliUtils cliUtils, StorageService storageService, ErrorHandler errorHandler, AuthService authService) {
-        super(app, controller, translator, cliUtils, authService);
+    public ViewFdcsPageView(CliApp app, ViewFdcsPageController controller, Translator translator, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService, ErrorHandler errorHandler, AuthService authService) {
+        super(app, controller, translator, cliUtils, projectUtils, authService);
         this.storageService = storageService;
         this.errorHandler = errorHandler;
     }

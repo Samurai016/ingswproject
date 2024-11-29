@@ -9,17 +9,18 @@ import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.platforms.cli.views.pages.LoginPageView;
 import it.unibs.ingswproject.router.PageConstructor;
 import it.unibs.ingswproject.router.PageFactory;
+import it.unibs.ingswproject.utils.ProjectUtils;
 
 public class LoginPageController extends CliPageController {
     protected final AuthService authService;
     protected final PageFactory pageFactory;
 
     @PageConstructor
-    public LoginPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, StorageService storageService) {
+    public LoginPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService) {
         super(app, translator);
         this.authService = authService;
         this.pageFactory = pageFactory;
-        this.view = new LoginPageView(app, this, translator, authService, storageService, pageFactory, cliUtils);
+        this.view = new LoginPageView(app, this, translator, authService, storageService, pageFactory, cliUtils, projectUtils);
     }
 
     @Override

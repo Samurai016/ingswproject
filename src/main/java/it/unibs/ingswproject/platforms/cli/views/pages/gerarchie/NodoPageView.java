@@ -10,6 +10,7 @@ import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.views.CliPageView;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.router.PageConstructor;
+import it.unibs.ingswproject.utils.ProjectUtils;
 import it.unibs.ingswproject.utils.Utils;
 
 import java.util.ArrayList;
@@ -18,8 +19,8 @@ public class NodoPageView extends CliPageView {
     protected final TreeRenderer treeRenderer;
 
     @PageConstructor
-    public NodoPageView(CliApp app, NodoPageController controller, Translator translator, CliUtils cliUtils, AuthService authService) {
-        super(app, controller, translator, cliUtils, authService);
+    public NodoPageView(CliApp app, NodoPageController controller, Translator translator, CliUtils cliUtils, ProjectUtils projectUtils, AuthService authService) {
+        super(app, controller, translator, cliUtils, projectUtils, authService);
         this.treeRenderer = new OneLevelTreeRenderer(translator);
     }
 
@@ -53,11 +54,7 @@ public class NodoPageView extends CliPageView {
         this.beforeRender();
 
         // 2. Stampa dei comandi
-        System.out.println(this.translator.translate("available_commands"));
-        this.controller.getCommands().forEach((key, value) -> {
-            String command = String.format(this.translator.translate("command_pattern"), key, value);
-            System.out.println(command);
-        });
+        this.printCommands();
 
         this.afterRender();
 

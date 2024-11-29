@@ -1,5 +1,7 @@
 package it.unibs.ingswproject.view;
 
+import org.apache.commons.cli.CommandLine;
+
 /**
  * Interfaccia che rappresenta una factory per un'applicazione
  * Serve a creare un'istanza di tipo Application
@@ -12,5 +14,5 @@ public interface ApplicationFactory {
      *
      * @return Applicazione creata
      */
-    Application createApp();
+    Application createApp(CommandLine args);
 }

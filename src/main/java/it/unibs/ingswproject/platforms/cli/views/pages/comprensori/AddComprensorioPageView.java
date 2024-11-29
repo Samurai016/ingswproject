@@ -11,6 +11,7 @@ import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.views.CliPageView;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.router.PageConstructor;
+import it.unibs.ingswproject.utils.ProjectUtils;
 
 /**
  * @author Nicolò Rebaioli
@@ -20,8 +21,8 @@ public class AddComprensorioPageView extends CliPageView {
     protected final ErrorHandler errorHandler;
 
     @PageConstructor
-    public AddComprensorioPageView(CliApp app, AddComprensorioPageController controller, Translator translator, StorageService storageService, ErrorHandler errorHandler, CliUtils cliUtils, AuthService authService) {
-        super(app, controller, translator, cliUtils, authService);
+    public AddComprensorioPageView(CliApp app, AddComprensorioPageController controller, Translator translator, StorageService storageService, ErrorHandler errorHandler, CliUtils cliUtils, ProjectUtils projectUtils, AuthService authService) {
+        super(app, controller, translator, cliUtils, projectUtils, authService);
         this.storageService = storageService;
         this.errorHandler = errorHandler;
     }

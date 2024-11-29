@@ -5,6 +5,7 @@ import it.unibs.ingswproject.platforms.cli.controllers.pages.comprensori.Compren
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Comprensorio;
 import it.unibs.ingswproject.translations.Translator;
+import it.unibs.ingswproject.utils.ProjectUtils;
 import it.unibs.ingswproject.utils.Utils;
 import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.views.CliPageView;
@@ -20,8 +21,8 @@ public class ComprensoriPageView extends CliPageView {
     protected final StorageService storageService;
 
     @PageConstructor
-    public ComprensoriPageView(CliApp app, ComprensoriPageController controller, Translator translator, CliUtils cliUtils, StorageService storageService, AuthService authService) {
-        super(app, controller, translator, cliUtils, authService);
+    public ComprensoriPageView(CliApp app, ComprensoriPageController controller, Translator translator, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService, AuthService authService) {
+        super(app, controller, translator, cliUtils, projectUtils, authService);
         this.storageService = storageService;
     }
 

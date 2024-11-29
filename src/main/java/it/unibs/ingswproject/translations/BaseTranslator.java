@@ -22,7 +22,7 @@ public class BaseTranslator implements Translator {
     protected Locale locale;
 
     /**
-     * Costruttore che istanzia il traduttore
+     * Costruttore che crea un'istanza del traduttore
      *
      * @param folder Cartella in cui sono presenti i file delle risorse
      * @throws MalformedURLException Se l'URL della cartella non è valido
@@ -32,7 +32,7 @@ public class BaseTranslator implements Translator {
     }
 
     /**
-     * Costruttore che istanzia il traduttore
+     * Costruttore che crea un'istanza del traduttore
      *
      * @param folder Cartella in cui sono presenti i file delle risorse
      * @param locale Lingua da utilizzare
@@ -46,7 +46,27 @@ public class BaseTranslator implements Translator {
     }
 
     /**
-     * Costruttore che istanzia il traduttore
+     * Costruttore che crea un'istanza del traduttore
+     *
+     * @param classLoader ClassLoader da utilizzare per caricare le risorse
+     */
+    public BaseTranslator(ClassLoader classLoader) {
+        this(classLoader, Locale.getDefault());
+    }
+
+    /**
+     * Costruttore che crea un'istanza del traduttore
+     *
+     * @param classLoader ClassLoader da utilizzare per caricare le risorse
+     * @param locale Lingua da utilizzare
+     */
+    public BaseTranslator(ClassLoader classLoader, Locale locale) {
+        this(locale);
+        this.classLoader = classLoader;
+    }
+
+    /**
+     * Costruttore che crea un'istanza del traduttore
      *
      * @param locale Lingua da utilizzare
      */

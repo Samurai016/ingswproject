@@ -7,6 +7,7 @@ import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.utils.BreadcrumbsGenerator;
 import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
+import it.unibs.ingswproject.utils.ProjectUtils;
 
 import java.util.List;
 
@@ -24,12 +25,13 @@ public abstract class CliPageView {
                / /\\/ '_ \\ / _` | \\ \\ \\ \\/  \\/ /  / /_)/ '__/ _ \\| |/ _ \\/ __| __|
             /\\/ /_ | | | | (_| | _\\ \\ \\  /\\  /  / ___/| | | (_) | |  __/ (__| |_\s
             \\____/ |_| |_|\\__, | \\__/  \\/  \\/   \\/    |_|  \\___// |\\___|\\___|\\__|
-                          |___/                               |__/              \s
+                          |___/                               |__/         v%s\s
             """;
     protected final CliApp app;
     protected final CliPageController controller;
     protected final Translator translator;
     protected final CliUtils cliUtils;
+    protected final ProjectUtils projectUtils;
     protected final AuthService authService;
 
     /**
@@ -41,11 +43,12 @@ public abstract class CliPageView {
      * @param translator Traduttore per la lingua
      * @param cliUtils   Classe di utilità per la CLI
      */
-    public CliPageView(CliApp app, CliPageController controller, Translator translator, CliUtils cliUtils, AuthService authService) {
+    public CliPageView(CliApp app, CliPageController controller, Translator translator, CliUtils cliUtils, ProjectUtils projectUtils, AuthService authService) {
         this.app = app;
         this.controller = controller;
         this.translator = translator;
         this.cliUtils = cliUtils;
+        this.projectUtils = projectUtils;
         this.authService = authService;
     }
 
@@ -61,11 +64,7 @@ public abstract class CliPageView {
         this.beforeRender();
 
         // 2. Stampa dei comandi
-        System.out.println(this.translator.translate("available_commands"));
-        this.controller.getCommands().forEach((key, value) -> {
-            String command = String.format(this.translator.translate("command_pattern"), key, value);
-            System.out.println(command);
-        });
+        this.printCommands();
 
         this.afterRender();
 
@@ -95,7 +94,8 @@ public abstract class CliPageView {
      */
     public final void render() {
         // 1. Stampa del header, del nome utente e dei breadcrumb
-        System.out.println(HEADER);
+        System.out.printf(HEADER, this.projectUtils.getProjectVersion());
+        System.out.println();
         if (this.authService.isLoggedIn()) {
             String ruolo = this.translator.translate(this.authService.getCurrentUser().getRuolo().toString().toLowerCase());
             String userMessage = String.format(this.translator.translate("user_header_pattern"), this.authService.getCurrentUser().getUsername(), ruolo);
@@ -132,5 +132,16 @@ public abstract class CliPageView {
      */
     protected void afterRender() {
         // Override this method to execute code before rendering the page
+    }
+
+    /**
+     * Metodo che stampa i comandi disponibili
+     */
+    protected void printCommands() {
+        System.out.println(this.translator.translate("available_commands"));
+        this.controller.getCommands().forEach((key, value) -> {
+            String command = String.format(this.translator.translate("command_pattern"), key, value);
+            System.out.println(command);
+        });
     }
 }

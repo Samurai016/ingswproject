@@ -16,6 +16,7 @@ import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.platforms.cli.views.pages.gerarchie.AddNodoPageView;
+import it.unibs.ingswproject.utils.ProjectUtils;
 
 public class AddNodoPageController extends CliPageController {
     protected final AuthService authService;
@@ -23,13 +24,13 @@ public class AddNodoPageController extends CliPageController {
     protected Nodo root;
 
     @PageConstructor
-    public AddNodoPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, StorageService storageService, ErrorHandler errorHandler) {
+    public AddNodoPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService, ErrorHandler errorHandler) {
         super(app, translator);
         this.authService = authService;
         this.pageFactory = pageFactory;
         FattoreDiConversioneStrategy fdcStrategy = new BaseFattoreDiConversioneStrategy(storageService);
         WeightComputationStrategy weightComputationStrategy = new SimpleWeightComputation();
-        this.view = new AddNodoPageView(app, this, translator, cliUtils, storageService, errorHandler, fdcStrategy, weightComputationStrategy, authService);
+        this.view = new AddNodoPageView(app, this, translator, cliUtils, projectUtils, storageService, errorHandler, fdcStrategy, weightComputationStrategy, authService);
 
         this.commands.put(CliPageController.COMMAND_BACK, this.translator.translate("home_page_command_exit")); // Override default command (0 -> Esci)
 

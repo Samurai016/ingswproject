@@ -11,17 +11,18 @@ import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.platforms.cli.views.pages.HomePageView;
+import it.unibs.ingswproject.utils.ProjectUtils;
 
 public class HomePageController extends CliPageController {
     protected final AuthService authService;
     protected final PageFactory pageFactory;
 
     @PageConstructor
-    public HomePageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils) {
+    public HomePageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, ProjectUtils projectUtils) {
         super(app, translator);
         this.authService = authService;
         this.pageFactory = pageFactory;
-        this.view = new HomePageView(app, this, translator, cliUtils, authService);
+        this.view = new HomePageView(app, this, translator, cliUtils, projectUtils, authService);
 
         this.commands.put(CliPageController.COMMAND_BACK, this.translator.translate("home_page_command_exit")); // Override default command (0 -> Esci)
 
@@ -30,6 +31,7 @@ public class HomePageController extends CliPageController {
             case Utente.Ruolo.CONFIGURATORE:
                 this.commands.put('1', this.translator.translate("home_page_command_comprensori")); // Aggiungi comando (1 -> Comprensori)
                 this.commands.put('2', this.translator.translate("home_page_command_gerarchie")); // Aggiungi comando (2 -> Gerarchie)
+                this.commands.put('3', this.translator.translate("home_page_command_system_info")); // Aggiungi comando (3 -> Info sistema)
                 break;
             case Utente.Ruolo.FRUITORE:
                 break;
@@ -56,6 +58,9 @@ public class HomePageController extends CliPageController {
                 break;
             case '2':
                 this.app.navigateTo(this.pageFactory.generatePage(NodoPageController.class));
+                break;
+            case '3':
+                this.app.navigateTo(this.pageFactory.generatePage(SystemInfoPageController.class));
                 break;
         }
     }

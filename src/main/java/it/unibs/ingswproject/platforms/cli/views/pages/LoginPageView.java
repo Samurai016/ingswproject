@@ -9,6 +9,7 @@ import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.views.CliPageView;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.router.PageFactory;
+import it.unibs.ingswproject.utils.ProjectUtils;
 
 /**
  * Pagina di login dell'applicazione
@@ -22,8 +23,8 @@ public class LoginPageView extends CliPageView {
     protected final StorageService storageService;
     protected final PageFactory pageFactory;
 
-    public LoginPageView(CliApp app, LoginPageController controller, Translator translator, AuthService authService, StorageService storageService, PageFactory pageFactory, CliUtils cliUtils) {
-        super(app, controller, translator, cliUtils, authService);
+    public LoginPageView(CliApp app, LoginPageController controller, Translator translator, AuthService authService, StorageService storageService, PageFactory pageFactory, CliUtils cliUtils, ProjectUtils projectUtils) {
+        super(app, controller, translator, cliUtils, projectUtils, authService);
         this.storageService = storageService;
         this.pageFactory = pageFactory;
     }

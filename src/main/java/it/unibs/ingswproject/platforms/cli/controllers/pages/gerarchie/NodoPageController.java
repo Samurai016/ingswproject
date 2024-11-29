@@ -8,6 +8,7 @@ import it.unibs.ingswproject.models.entities.Nodo;
 import it.unibs.ingswproject.router.PageConstructor;
 import it.unibs.ingswproject.router.PageFactory;
 import it.unibs.ingswproject.translations.Translator;
+import it.unibs.ingswproject.utils.ProjectUtils;
 import it.unibs.ingswproject.utils.Utils;
 import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
@@ -25,12 +26,12 @@ public class NodoPageController extends CliPageController {
     protected final HashMap<Character, Nodo> nodi = new HashMap<>();
 
     @PageConstructor
-    public NodoPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, StorageService storageService) {
+    public NodoPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService) {
         super(app, translator);
         this.authService = authService;
         this.pageFactory = pageFactory;
         this.storageService = storageService;
-        this.view = new NodoPageView(app, this, translator, cliUtils, authService);
+        this.view = new NodoPageView(app, this, translator, cliUtils, projectUtils, authService);
     }
 
     public NodoPageController setRoot(Nodo root) {

@@ -11,6 +11,7 @@ import it.unibs.ingswproject.platforms.cli.views.pages.gerarchie.ViewFdcsPageVie
 import it.unibs.ingswproject.router.PageConstructor;
 import it.unibs.ingswproject.router.PageFactory;
 import it.unibs.ingswproject.translations.Translator;
+import it.unibs.ingswproject.utils.ProjectUtils;
 
 public class ViewFdcsPageController  extends CliPageController {
     protected final AuthService authService;
@@ -18,11 +19,11 @@ public class ViewFdcsPageController  extends CliPageController {
     protected Nodo root;
 
     @PageConstructor
-    public ViewFdcsPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, StorageService storageService, ErrorHandler errorHandler) {
+    public ViewFdcsPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService, ErrorHandler errorHandler) {
         super(app, translator);
         this.authService = authService;
         this.pageFactory = pageFactory;
-        this.view = new ViewFdcsPageView(app, this, translator, cliUtils, storageService, errorHandler, authService);
+        this.view = new ViewFdcsPageView(app, this, translator, cliUtils, projectUtils, storageService, errorHandler, authService);
     }
 
     public ViewFdcsPageController setRoot(Nodo root) {
