@@ -1,4 +1,6 @@
 target/
+!target/*.jar
+
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -16,6 +18,7 @@ dataSources.*
 *.iws
 *.iml
 *.ipr
+dependency-reduced-pom.xml
 
 ### Eclipse ###
 .apt_generated

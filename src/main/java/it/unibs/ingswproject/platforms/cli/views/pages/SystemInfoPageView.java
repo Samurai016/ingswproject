@@ -1,5 +1,6 @@
 package it.unibs.ingswproject.platforms.cli.views.pages;
 
+import io.ebeaninternal.server.core.DefaultServer;
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.platforms.cli.CliApp;
@@ -23,8 +24,12 @@ public class SystemInfoPageView extends CliPageView {
 
         System.out.printf(this.translator.translate("system_info_page_version"), this.projectUtils.getProjectVersion());
         System.out.println();
-        System.out.printf(this.translator.translate("system_info_page_database"), this.storageService.getDatabase().name());
+
+        String dbName = this.storageService.getDatabase().name();
+        String dbUrl = ((DefaultServer) this.storageService.getDatabase()).config().getDataSourceConfig().getUrl();
+        System.out.printf(this.translator.translate("system_info_page_database"), String.format("%s (%s)", dbName, dbUrl));
         System.out.println();
+
         System.out.printf(this.translator.translate("system_info_page_authors"), this.projectUtils.get("authors"));
         System.out.println();
         System.out.printf(this.translator.translate("system_info_page_copyright"), this.projectUtils.get("copyright"));
