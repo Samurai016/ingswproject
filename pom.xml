@@ -6,7 +6,7 @@
 
     <groupId>it.unibs</groupId>
     <artifactId>ingswproject</artifactId>
-    <version>0.9.0</version>
+    <version>1.0.0</version>
 
     <organization>
         <name>Università degli Studi di Brescia</name>
@@ -15,19 +15,22 @@
 
     <developers>
         <developer>
-            <id>nicolo.rebaioli</id>
-            <name>Nicolo' Rebaioli</name>
-            <email>n.rebaioli@studenti.unibs.it</email>
+            <id>pierpaolo.bonalda</id>
+            <name>Pierpaolo Bonalda</name>
+            <email>p.bonalda@studenti.unibs.it</email>
+            <url>https://github.com/PierpaoloBonalda</url>
         </developer>
         <developer>
             <id>shpetim.daiu</id>
             <name>Shpetim Daiu</name>
             <email>s.daiu@studenti.unibs.it</email>
+            <url>https://github.com/shpetimdaiu</url>
         </developer>
         <developer>
-            <id>pierpaolo.bonalda</id>
-            <name>Pierpaolo Bonalda</name>
-            <email>p.bonalda@studenti.unibs.it</email>
+            <id>nicolo.rebaioli</id>
+            <name>Nicolo' Rebaioli</name>
+            <email>n.rebaioli@studenti.unibs.it</email>
+            <url>https://github.com/Samurai016</url>
         </developer>
     </developers>
 
