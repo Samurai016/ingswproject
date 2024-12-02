@@ -16,8 +16,6 @@ import java.util.List;
 
 /**
  * @author Nicolò Rebaioli
- * @created 02/12/2024 - 17:14
- * @project Progetto
  */
 public class UtentiPageView extends CliPageView {
     protected final StorageService storageService;

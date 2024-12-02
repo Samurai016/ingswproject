@@ -14,8 +14,6 @@ import it.unibs.ingswproject.utils.ProjectUtils;
 
 /**
  * @author Nicolò Rebaioli
- * @created 02/12/2024 - 17:20
- * @project Progetto
  */
 public class AddUtentePageController extends CliPageController {
     protected final AuthService authService;

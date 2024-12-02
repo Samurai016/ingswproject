@@ -3,7 +3,6 @@ package it.unibs.ingswproject.platforms.cli.views.pages.gerarchie;
 import io.ebean.Transaction;
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.errors.ErrorManager;
-import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.logic.FattoreDiConversioneStrategy;
 import it.unibs.ingswproject.logic.weight.WeightComputationStrategy;
 import it.unibs.ingswproject.models.EntityRepository;

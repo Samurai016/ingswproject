@@ -12,8 +12,6 @@ import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.utils.ProjectUtils;
 
 /**
- * @created 02/12/2024 - 17:13
- * @project Progetto
  * @author Nicolò Rebaioli
  */
 public class UtentiPageController extends CliPageController {
