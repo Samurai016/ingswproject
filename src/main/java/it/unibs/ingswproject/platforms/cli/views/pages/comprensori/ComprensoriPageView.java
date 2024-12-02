@@ -31,21 +31,25 @@ public class ComprensoriPageView extends CliPageView {
         super.beforeRender();
 
         // Show comprensori
-        System.out.printf("%s:", Utils.capitalize(this.translator.translate("comprensorio_plural")));
+        renderComprensori(this.translator, this.storageService);
+
         System.out.println();
-        List<Comprensorio> comprensori = this.storageService.getRepository(Comprensorio.class).findAll();
+    }
+
+    public static void renderComprensori(Translator translator, StorageService storageService) {
+        System.out.printf("%s:", Utils.capitalize(translator.translate("comprensorio_plural")));
+        System.out.println();
+        List<Comprensorio> comprensori = storageService.getRepository(Comprensorio.class).findAll();
 
         if (comprensori.isEmpty()) {
-            System.out.printf("\t%s", this.translator.translate("no_items_found"));
+            System.out.printf("\t%s", translator.translate("no_items_found"));
             System.out.println();
         } else {
             for (int i = 0; i < comprensori.size(); i++) {
                 Comprensorio comprensorio = comprensori.get(i);
-                System.out.printf(this.translator.translate("comprensori_page_comprensorio_pattern"), i + 1, comprensorio.getNome());
+                System.out.printf(translator.translate("comprensori_page_comprensorio_pattern"), i + 1, comprensorio.getNome());
                 System.out.println();
             }
         }
-
-        System.out.println();
     }
 }

@@ -2,7 +2,8 @@ package it.unibs.ingswproject.platforms.cli.views.pages.gerarchie;
 
 import io.ebean.Transaction;
 import it.unibs.ingswproject.auth.AuthService;
-import it.unibs.ingswproject.errors.ErrorHandler;
+import it.unibs.ingswproject.errors.ErrorManager;
+import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.logic.FattoreDiConversioneStrategy;
 import it.unibs.ingswproject.logic.weight.WeightComputationStrategy;
 import it.unibs.ingswproject.models.EntityRepository;
@@ -26,15 +27,15 @@ import java.util.List;
  */
 public class AddNodoPageView extends CliPageView {
     protected final StorageService storageService;
-    protected final ErrorHandler errorHandler;
+    protected final ErrorManager errorManager;
     protected final FattoreDiConversioneStrategy fattoreDiConversioneStrategy;
     protected final WeightComputationStrategy weightComputationStrategy;
 
     @PageConstructor
-    public AddNodoPageView(CliApp app, AddNodoPageController controller, Translator translator, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService, ErrorHandler errorHandler, FattoreDiConversioneStrategy fattoreDiConversioneStrategy, WeightComputationStrategy weightComputationStrategy, AuthService authService) {
+    public AddNodoPageView(CliApp app, AddNodoPageController controller, Translator translator, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService, ErrorManager errorManager, FattoreDiConversioneStrategy fattoreDiConversioneStrategy, WeightComputationStrategy weightComputationStrategy, AuthService authService) {
         super(app, controller, translator, cliUtils, projectUtils, authService);
         this.storageService = storageService;
-        this.errorHandler = errorHandler;
+        this.errorManager = errorManager;
         this.fattoreDiConversioneStrategy = fattoreDiConversioneStrategy;
         this.weightComputationStrategy = weightComputationStrategy;
     }
@@ -81,7 +82,7 @@ public class AddNodoPageView extends CliPageView {
         } catch (CliQuitException e) {
             // Non fare nulla, l'utente ha deciso di uscire
         } catch (Throwable e) {
-            this.errorHandler.handle(e);
+            this.errorManager.handle(e);
         }
     }
 

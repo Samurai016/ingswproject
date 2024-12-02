@@ -2,7 +2,7 @@ package it.unibs.ingswproject.platforms.cli.controllers.pages.comprensori;
 
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.platforms.cli.controllers.CliPageController;
-import it.unibs.ingswproject.errors.ErrorHandler;
+import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.router.PageConstructor;
 import it.unibs.ingswproject.router.PageFactory;
@@ -17,11 +17,11 @@ public class AddComprensorioPageController extends CliPageController {
     protected final PageFactory pageFactory;
 
     @PageConstructor
-    public AddComprensorioPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, StorageService storageService, ErrorHandler errorHandler, CliUtils cliUtils, ProjectUtils projectUtils) {
+    public AddComprensorioPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, StorageService storageService, ErrorManager errorManager, CliUtils cliUtils, ProjectUtils projectUtils) {
         super(app, translator);
         this.authService = authService;
         this.pageFactory = pageFactory;
-        this.view = new AddComprensorioPageView(app, this, translator, storageService, errorHandler, cliUtils, projectUtils, authService);
+        this.view = new AddComprensorioPageView(app, this, translator, storageService, errorManager, cliUtils, projectUtils, authService);
 
         this.commands.put('1', this.translator.translate("comprensori_page_command_add"));
     }

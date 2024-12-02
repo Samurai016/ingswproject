@@ -4,7 +4,7 @@ import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.logic.weight.SimpleWeightComputation;
 import it.unibs.ingswproject.logic.weight.WeightComputationStrategy;
 import it.unibs.ingswproject.platforms.cli.controllers.CliPageController;
-import it.unibs.ingswproject.errors.ErrorHandler;
+import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.logic.BaseFattoreDiConversioneStrategy;
 import it.unibs.ingswproject.logic.FattoreDiConversioneStrategy;
 import it.unibs.ingswproject.models.StorageService;
@@ -24,7 +24,7 @@ public class AddNodoPageController extends CliPageController {
     protected Nodo root;
 
     @PageConstructor
-    public AddNodoPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService, ErrorHandler errorHandler) {
+    public AddNodoPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService, ErrorManager errorHandler) {
         super(app, translator);
         this.authService = authService;
         this.pageFactory = pageFactory;

@@ -1,14 +1,16 @@
 package it.unibs.ingswproject.platforms.cli.views.pages;
 
 import it.unibs.ingswproject.auth.AuthService;
-import it.unibs.ingswproject.platforms.cli.controllers.pages.LoginPageController;
 import it.unibs.ingswproject.models.StorageService;
+import it.unibs.ingswproject.models.entities.Comprensorio;
 import it.unibs.ingswproject.models.entities.Utente;
-import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.platforms.cli.CliApp;
-import it.unibs.ingswproject.platforms.cli.views.CliPageView;
+import it.unibs.ingswproject.platforms.cli.controllers.pages.LoginPageController;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
+import it.unibs.ingswproject.platforms.cli.views.CliPageView;
+import it.unibs.ingswproject.platforms.cli.views.pages.comprensori.ComprensoriPageView;
 import it.unibs.ingswproject.router.PageFactory;
+import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.utils.ProjectUtils;
 
 /**
@@ -47,36 +49,108 @@ public class LoginPageView extends CliPageView {
             }
         } while (!loggedIn);
 
+        System.out.println();
+        System.out.printf((this.translator.translate("login_page_login_success")) + "\n", this.authService.getCurrentUser().getUsername());
+
         // Controllo se devo cambiare password
-        if (!this.authService.getCurrentUser().hasMadeFirstLogin()) {
-            System.out.println();
-            System.out.printf((this.translator.translate("login_page_login_success")) + "\n", this.authService.getCurrentUser().getUsername());
-            System.out.println(this.translator.translate("login_page_change_password_alert"));
+        // Il cambio password è obbligatorio solo per i CONFIGURATORI
+        Utente currentUser = this.authService.getCurrentUser();
+        if (currentUser.isConfiguratore() && !currentUser.hasMadeFirstLogin()) {
+            this.askForNewPassword();
+        }
 
-            boolean passwordChanged = false;
-            do {
-                String newPassword = this.cliUtils.readFromConsole(this.translator.translate("login_page_insert_new_password"), false);
-
-                if (newPassword.isEmpty()) {
-                    System.out.println();
-                    System.out.println(this.translator.translate("login_page_password_empty"));
-                    continue;
-                }
-
-                String confirmPassword = this.cliUtils.readFromConsole(this.translator.translate("login_page_insert_new_password_confirm"), false);
+        // Controllo se deve impostare l'indirizzo email
+        // L'indirizzo email è obbligatorio solo per i FRUITORI
+        if (currentUser.isFruitore()) {
+            if (currentUser.getComprensorio() == null) {
+                this.askForComprensorio();
                 System.out.println();
-                if (newPassword.equals(confirmPassword)) {
-                    this.authService.getCurrentUser().changePassword(newPassword);
-                    this.storageService.getRepository(Utente.class).save(this.authService.getCurrentUser());
-                    System.out.println(this.translator.translate("login_page_password_changed"));
-                    passwordChanged = true;
-                } else {
-                    System.out.println(this.translator.translate("login_page_password_mismatch"));
-                }
-            } while (!passwordChanged);
+            }
+
+            if (currentUser.getEmailAddress() == null || currentUser.getEmailAddress().isEmpty()) {
+                this.askForEmailAddress();
+                System.out.println();
+            }
         }
 
         // Reindirizzo alla home
         ((LoginPageController) this.controller).checkLogin();
+    }
+
+    private void askForNewPassword() {
+        System.out.println(this.translator.translate("login_page_change_password_alert"));
+
+        boolean passwordChanged = false;
+        do {
+            String newPassword = this.cliUtils.readFromConsole(this.translator.translate("login_page_insert_new_password"), false);
+
+            if (newPassword.isEmpty()) {
+                System.out.println();
+                System.out.println(this.translator.translate("login_page_password_empty"));
+                continue;
+            }
+
+            String confirmPassword = this.cliUtils.readFromConsole(this.translator.translate("login_page_insert_new_password_confirm"), false);
+            System.out.println();
+            if (newPassword.equals(confirmPassword)) {
+                this.authService.getCurrentUser().changePassword(newPassword);
+                this.storageService.getRepository(Utente.class).save(this.authService.getCurrentUser());
+                System.out.println(this.translator.translate("login_page_password_changed"));
+                passwordChanged = true;
+            } else {
+                System.out.println(this.translator.translate("login_page_password_mismatch"));
+            }
+        } while (!passwordChanged);
+    }
+
+    private void askForEmailAddress() {
+        System.out.println(this.translator.translate("login_page_set_email_alert"));
+
+        boolean emailSet = false;
+        do {
+            try {
+                String newEmail = this.cliUtils.readFromConsole(this.translator.translate("login_page_insert_email"), false);
+
+                if (newEmail.isEmpty()) {
+                    System.out.println(this.translator.translate("login_page_email_empty"));
+                    continue;
+                }
+
+                this.authService.getCurrentUser().setEmailAddress(newEmail);
+                this.storageService.getRepository(Utente.class).save(this.authService.getCurrentUser());
+                System.out.println(this.translator.translate("login_page_email_changed"));
+                emailSet = true;
+            } catch (IllegalArgumentException e) {
+                System.out.println(this.translator.translate(e.getMessage()));
+            }
+        } while (!emailSet);
+    }
+
+    private void askForComprensorio() {
+        System.out.println(this.translator.translate("login_page_set_comprensorio_alert"));
+
+        // Show all comprensori
+        ComprensoriPageView.renderComprensori(this.translator, this.storageService);
+
+        boolean comprensorioSet = false;
+        do {
+            String nomeComprensorio = this.cliUtils.readFromConsole(this.translator.translate("login_page_insert_comprensorio"), false);
+
+            if (nomeComprensorio.isEmpty()) {
+                System.out.println(this.translator.translate("login_page_comprensorio_empty"));
+                continue;
+            }
+
+            Comprensorio comprensorio = this.storageService.getRepository(Comprensorio.class).findByLike("nome", nomeComprensorio);
+            if (comprensorio == null) {
+                System.out.println(this.translator.translate("login_page_comprensorio_not_found"));
+                continue;
+            }
+
+            this.authService.getCurrentUser().setComprensorio(comprensorio);
+            this.storageService.getRepository(Utente.class).save(this.authService.getCurrentUser());
+            System.out.println(this.translator.translate("login_page_comprensorio_changed"));
+            comprensorioSet = true;
+        } while (!comprensorioSet);
     }
 }

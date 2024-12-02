@@ -1,16 +1,17 @@
 package it.unibs.ingswproject.platforms.cli.controllers.pages;
 
 import it.unibs.ingswproject.auth.AuthService;
+import it.unibs.ingswproject.models.entities.Utente;
+import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.controllers.CliPageController;
 import it.unibs.ingswproject.platforms.cli.controllers.pages.comprensori.ComprensoriPageController;
 import it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie.NodoPageController;
-import it.unibs.ingswproject.models.entities.Utente;
+import it.unibs.ingswproject.platforms.cli.controllers.pages.utenti.UtentiPageController;
+import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
+import it.unibs.ingswproject.platforms.cli.views.pages.HomePageView;
 import it.unibs.ingswproject.router.PageConstructor;
 import it.unibs.ingswproject.router.PageFactory;
 import it.unibs.ingswproject.translations.Translator;
-import it.unibs.ingswproject.platforms.cli.CliApp;
-import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
-import it.unibs.ingswproject.platforms.cli.views.pages.HomePageView;
 import it.unibs.ingswproject.utils.ProjectUtils;
 
 public class HomePageController extends CliPageController {
@@ -31,9 +32,12 @@ public class HomePageController extends CliPageController {
             case Utente.Ruolo.CONFIGURATORE:
                 this.commands.put('1', this.translator.translate("home_page_command_comprensori")); // Aggiungi comando (1 -> Comprensori)
                 this.commands.put('2', this.translator.translate("home_page_command_gerarchie")); // Aggiungi comando (2 -> Gerarchie)
-                this.commands.put('3', this.translator.translate("home_page_command_system_info")); // Aggiungi comando (3 -> Info sistema)
+                this.commands.put('3', this.translator.translate("home_page_command_utenti")); // Aggiungi comando (2 -> Gerarchie)
+                this.commands.put('4', this.translator.translate("home_page_command_system_info")); // Aggiungi comando (3 -> Info sistema)
                 break;
             case Utente.Ruolo.FRUITORE:
+                this.commands.put('1', this.translator.translate("home_page_command_gerarchie")); // Aggiungi comando (2 -> Gerarchie)
+                this.commands.put('2', this.translator.translate("home_page_command_system_info")); // Aggiungi comando (3 -> Info sistema)
                 break;
         }
     }
@@ -52,16 +56,35 @@ public class HomePageController extends CliPageController {
     public void handleInput(char input) {
         super.handleInput(input); // Handle default commands
 
-        switch (input) {
-            case '1':
-                this.app.navigateTo(this.pageFactory.generatePage(ComprensoriPageController.class));
-                break;
-            case '2':
-                this.app.navigateTo(this.pageFactory.generatePage(NodoPageController.class));
-                break;
-            case '3':
-                this.app.navigateTo(this.pageFactory.generatePage(SystemInfoPageController.class));
-                break;
+        // Check if input is a valid command
+        if (!this.commands.containsKey(input)) {
+            return;
+        }
+
+        if (this.authService.getCurrentUser().isConfiguratore()) {
+            switch (input) {
+                case '1':
+                    this.app.navigateTo(this.pageFactory.generatePage(ComprensoriPageController.class));
+                    break;
+                case '2':
+                    this.app.navigateTo(this.pageFactory.generatePage(NodoPageController.class));
+                    break;
+                case '3':
+                    this.app.navigateTo(this.pageFactory.generatePage(UtentiPageController.class));
+                    break;
+                case '4':
+                    this.app.navigateTo(this.pageFactory.generatePage(SystemInfoPageController.class));
+                    break;
+            }
+        } else {
+            switch (input) {
+                case '1':
+                    this.app.navigateTo(this.pageFactory.generatePage(NodoPageController.class));
+                    break;
+                case '2':
+                    this.app.navigateTo(this.pageFactory.generatePage(SystemInfoPageController.class));
+                    break;
+            }
         }
     }
 }

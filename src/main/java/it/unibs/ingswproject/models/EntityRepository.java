@@ -68,6 +68,29 @@ public class EntityRepository<T> {
     }
 
     /**
+     * Cerca un'entità in base a una chiave e un valore.
+     *
+     * @param key   La chiave
+     * @param value Il valore
+     * @return L'entità trovata
+     */
+    public T findBy(String key, Object value) {
+        return this.database.find(this.entityClass).where().eq(key, value).findOne();
+    }
+
+    /**
+     * Cerca un'entità in base a una chiave e un valore.
+     * La ricerca viene effettuata in modo case-insensitive.
+     *
+     * @param key   La chiave
+     * @param value Il valore
+     * @return L'entità trovata
+     */
+    public T findByLike(String key, String value) {
+        return this.database.find(this.entityClass).where().ilike(key, value).findOne();
+    }
+
+    /**
      * Trova tutte le entità.
      *
      * @return La lista di entità trovate
