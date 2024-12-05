@@ -40,7 +40,7 @@ public class FullTreeRenderer extends TreeRenderer {
         if (deepLevel == SELECTABLE_LEVEL) { // Se è il livello selezionabile, posso selezionare il nodo
             System.out.printf(prefix + this.translator.translate("tree_renderer_selectable_pattern"), index, node.getNome(), nomeAttributo);
         } else {
-            System.out.printf(prefix + this.translator.translate("tree_renderer_child_pattern"), node.getNome(), nomeAttributo);
+            System.out.printf(prefix + this.translator.translate("tree_renderer_child_pattern"), node.getNome(), nomeAttributo, node.getDescrizione());
         }
         System.out.println();
 
