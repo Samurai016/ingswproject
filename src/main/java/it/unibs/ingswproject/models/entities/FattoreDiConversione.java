@@ -42,12 +42,12 @@ public class FattoreDiConversione {
     protected FattoreDiConversioneId id;
 
     @MapsId("nodo1")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "nodo1", nullable = false)
     protected Nodo nodo1;
 
     @MapsId("nodo2")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "nodo2", nullable = false)
     protected Nodo nodo2;
 

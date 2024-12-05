@@ -24,9 +24,9 @@ public class Nodo {
     protected Nodo parent;
     @OneToMany(mappedBy = "parent")
     protected List<Nodo> figli = new ArrayList<>();
-    @OneToMany(mappedBy = "nodo1")
+    @OneToMany(mappedBy = "nodo1", cascade = CascadeType.ALL)
     protected List<FattoreDiConversione> fattoriDiConversione1 = new ArrayList<>();
-    @OneToMany(mappedBy = "nodo2")
+    @OneToMany(mappedBy = "nodo2", cascade = CascadeType.ALL)
     protected List<FattoreDiConversione> fattoriDiConversione2 = new ArrayList<>();
 
     public Nodo() {
