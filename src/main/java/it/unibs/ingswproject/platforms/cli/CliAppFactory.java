@@ -42,7 +42,7 @@ public class CliAppFactory implements ApplicationFactory {
         // Error manager
         ErrorManager errorManager = new ErrorManager();
         errorManager.addErrorHandler(new FileLogErrorHandler());
-        errorManager.addErrorHandler(new CliErrorHandler(translator, cliUtils).setDebugMode(true));
+        errorManager.addErrorHandler(new CliErrorHandler(translator, cliUtils));
         pageFactory.registerDependency(ErrorManager.class, errorManager);
 
         // Persistence
