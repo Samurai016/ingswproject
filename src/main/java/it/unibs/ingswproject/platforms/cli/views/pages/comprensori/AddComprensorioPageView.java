@@ -32,12 +32,21 @@ public class AddComprensorioPageView extends CliPageView {
         try {
             Comprensorio comprensorio = new Comprensorio();
 
-            String nome = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_comprensorio_page_name"), false);
-            comprensorio.setNome(nome);
+            boolean saved = false;
+            do {
+                String nome = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_comprensorio_page_name"), false);
+                comprensorio.setNome(nome);
 
-            System.out.println();
-            System.out.println(this.translator.translate("saving_item"));
-            this.storageService.getRepository(Comprensorio.class).save(comprensorio);
+                System.out.println();
+                System.out.println(this.translator.translate("saving_item"));
+                try {
+                    this.storageService.getRepository(Comprensorio.class).save(comprensorio);
+                    saved = true;
+                } catch (IllegalArgumentException e) {
+                    // Se il comprensorio esiste già, riprova
+                    System.out.println(this.translator.translate(e.getMessage()));
+                }
+            } while (!saved);
 
             System.out.println(this.translator.translate("add_comprensorio_page_success"));
             this.cliUtils.waitForInput();
