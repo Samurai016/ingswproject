@@ -96,5 +96,4 @@ public class BaseFattoreDiConversioneStrategy implements FattoreDiConversioneStr
         FattoreDiConversioneRepository fdcRepository = (FattoreDiConversioneRepository) this.storageService.getRepository(FattoreDiConversione.class);
         return fdcRepository.findByNodo(nodo);
     }
-
 }

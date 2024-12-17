@@ -1,7 +1,6 @@
 package it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie;
 
 import it.unibs.ingswproject.auth.AuthService;
-import it.unibs.ingswproject.logic.weight.SimpleWeightComputation;
 import it.unibs.ingswproject.logic.weight.WeightComputationStrategy;
 import it.unibs.ingswproject.platforms.cli.controllers.CliPageController;
 import it.unibs.ingswproject.errors.ErrorManager;
@@ -21,15 +20,16 @@ import it.unibs.ingswproject.utils.ProjectUtils;
 public class AddNodoPageController extends CliPageController {
     protected final AuthService authService;
     protected final PageFactory pageFactory;
+    protected final WeightComputationStrategy weightComputationStrategy;
     protected Nodo root;
 
     @PageConstructor
-    public AddNodoPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService, ErrorManager errorHandler) {
+    public AddNodoPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, ProjectUtils projectUtils, WeightComputationStrategy weightComputationStrategy, StorageService storageService, ErrorManager errorHandler) {
         super(app, translator);
         this.authService = authService;
         this.pageFactory = pageFactory;
+        this.weightComputationStrategy = weightComputationStrategy;
         FattoreDiConversioneStrategy fdcStrategy = new BaseFattoreDiConversioneStrategy(storageService);
-        WeightComputationStrategy weightComputationStrategy = new SimpleWeightComputation();
         this.view = new AddNodoPageView(app, this, translator, cliUtils, projectUtils, storageService, errorHandler, fdcStrategy, weightComputationStrategy, authService);
 
         this.commands.put(CliPageController.COMMAND_BACK, this.translator.translate("home_page_command_exit")); // Override default command (0 -> Esci)

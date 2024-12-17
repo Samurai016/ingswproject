@@ -11,6 +11,7 @@ import java.util.UUID;
 public class FattoreDiConversione {
     public static final double MIN_WEIGHT = 0.5;
     public static final double MAX_WEIGHT = 2.0;
+    public static final double MAX_TRESHOLD_BEFORE_INFINITE = Math.pow(MAX_WEIGHT, 16);
 
     @Embeddable
     public static class FattoreDiConversioneId implements Serializable {
@@ -111,9 +112,9 @@ public class FattoreDiConversione {
     }
 
     public FattoreDiConversione setFattore(Double fattore) {
-        if (fattore != null && (fattore < MIN_WEIGHT || fattore > MAX_WEIGHT)) {
-            throw new IllegalArgumentException("fdc_fattore_range");
-        }
+        //if (fattore != null && (fattore < MIN_WEIGHT || fattore > MAX_WEIGHT)) {
+        //    throw new IllegalArgumentException("fdc_fattore_range");
+        //}
 
         this.fattore = fattore;
         return this;
