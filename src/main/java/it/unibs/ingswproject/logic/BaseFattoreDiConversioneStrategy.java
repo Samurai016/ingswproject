@@ -4,6 +4,7 @@ import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.FattoreDiConversione;
 import it.unibs.ingswproject.models.entities.Nodo;
 import it.unibs.ingswproject.models.repositories.FattoreDiConversioneRepository;
+import it.unibs.ingswproject.models.repositories.NodoRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ public class BaseFattoreDiConversioneStrategy implements FattoreDiConversioneStr
 
     /**
      * Costruttore del gestore dei fattori di conversione.
+     *
      * @param storageService Il servizio di storage
      */
     public BaseFattoreDiConversioneStrategy(StorageService storageService) {
@@ -45,7 +47,7 @@ public class BaseFattoreDiConversioneStrategy implements FattoreDiConversioneStr
         // Aggiungo i fattori di conversione tra le foglie aggiunte
         // Per ogni coppia di foglie aggiunte, aggiungo un fattore di conversione se non esiste già
         List<Nodo> foglie = nodo.getFigli().stream().filter(Nodo::isFoglia).toList();
-        for (int i = 0; i < foglie.size() - 1;  i++) {
+        for (int i = 0; i < foglie.size() - 1; i++) {
             Nodo nodo1 = foglie.get(i);
             Nodo nodo2 = foglie.get(i + 1);
             FattoreDiConversione fdc = fdcRepository.findByNodi(nodo1, nodo2);
@@ -64,6 +66,21 @@ public class BaseFattoreDiConversioneStrategy implements FattoreDiConversioneStr
         for (FattoreDiConversione fdc : fdcInCuiParentEraIncluso) {
             Nodo destinatario = fdc.getNodo1().equals(nodo) ? fdc.getNodo2() : fdc.getNodo1();
             fattoriDaAggiungere.add(new FattoreDiConversione(primoFiglio, destinatario));
+        }
+
+        // Se è una nuova gerarchia, e non è la prima gerarchia,
+        // aggiungo un fattore di conversione tra una delle foglie e una foglia di un'altra gerarchia
+        NodoRepository nodoRepository = (NodoRepository) this.storageService.getRepository(Nodo.class);
+        List<Nodo> gerarchie = nodoRepository.findGerarchie();
+        if (nodo.isRoot() && !gerarchie.isEmpty()) {
+            Nodo altraGerarchiaConFoglie = gerarchie.stream().filter(g -> !g.getFoglie().isEmpty()).findFirst().orElse(null);
+            if (altraGerarchiaConFoglie != null) {
+                Nodo fogliaAltraGerarchia = altraGerarchiaConFoglie.getFigli().stream().filter(Nodo::isFoglia).findFirst().orElse(null);
+                Nodo foglia = foglie.stream().findFirst().orElse(null);
+                if (fogliaAltraGerarchia != null && foglia != null) {
+                    fattoriDaAggiungere.add(new FattoreDiConversione(foglia, fogliaAltraGerarchia));
+                }
+            }
         }
 
         return fattoriDaAggiungere;

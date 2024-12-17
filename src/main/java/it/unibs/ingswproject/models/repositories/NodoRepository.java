@@ -47,7 +47,7 @@ public class NodoRepository extends EntityRepository<Nodo> {
             query.eq("parent", entity.getParent());
         }
 
-        return query.findOneOrEmpty().isPresent();
+        return query.exists();
     }
 
     /**
@@ -58,6 +58,10 @@ public class NodoRepository extends EntityRepository<Nodo> {
      * @return true se esiste un nodo con lo stesso attributo, false altrimenti
      */
     public boolean existsWithSameAttributeValue(Nodo entity) {
+        if (entity.getValoreAttributo() == null) {
+            return false;
+        }
+
         ExpressionList<Nodo> query = this.database
                 .find(Nodo.class)
                 .where()
@@ -72,7 +76,7 @@ public class NodoRepository extends EntityRepository<Nodo> {
             query.eq("parent", entity.getParent());
         }
 
-        return query.findOneOrEmpty().isPresent();
+        return query.exists();
     }
 
     @Override
@@ -98,7 +102,7 @@ public class NodoRepository extends EntityRepository<Nodo> {
         }
 
         // Controllo se esiste già un nodo con lo stesso valore di attributo
-        if (this.existsWithSameAttributeValue(entity)) {
+        if (!entity.isRoot() && this.existsWithSameAttributeValue(entity)) {
             throw new IllegalArgumentException("nodo_same_attribute_value_not_allowed");
         }
     }
