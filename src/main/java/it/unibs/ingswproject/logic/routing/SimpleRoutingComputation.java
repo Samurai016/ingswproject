@@ -27,50 +27,15 @@ public class SimpleRoutingComputation implements RoutingComputationStrategy {
         this.weightComputationStrategy = weightComputationStrategy;
     }
 
-    public void regenerateGraph() {
-        this.graph = null;
-        this.generateGraph();
+    private static <T, E> Set<E> getValueByKeyValue(Map<T, E> map, T value) {
+        return map.entrySet()
+                .stream()
+                .filter(entry -> Objects.equals(entry.getKey(), value))
+                .map(Map.Entry::getValue)
+                .collect(Collectors.toSet());
     }
 
-    @Override
-    public HashMap<Nodo, Double> getRoutingCostsFrom(Nodo nodo1) {
-        if (this.graph == null) {
-            this.generateGraph();
-        }
-
-        int indexOfNodo1 = getValueByKeyValue(this.nodeIndexMap, nodo1).stream().findFirst().orElseThrow();
-
-        // Calcolo il percorso minimo
-        DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(this.graph, this.weightComputationStrategy);
-        double[] weights = dijkstraAlgorithm.getDistancesFrom(indexOfNodo1);
-
-        HashMap<Nodo, Double> result = new HashMap<>();
-        for (Map.Entry<Nodo, Integer> entry : this.nodeIndexMap.entrySet()) {
-            result.put(entry.getKey(), weights[entry.getValue()]);
-        }
-
-        return result;
-    }
-
-    @Override
-    public double getRoutingCost(Nodo nodo1, Nodo nodo2) {
-        // Ottengo i costi
-        HashMap<Nodo, Double> costs = this.getRoutingCostsFrom(nodo1);
-
-        // Ritorno il peso del percorso minimo
-        return getValueByKeyValue(costs, nodo2).stream().findFirst().orElseThrow();
-    }
-
-    private List<Nodo> getNodi(Nodo startingNode) {
-        if (startingNode.isFoglia()) {
-            return List.of(startingNode);
-        }
-
-        //noinspection unchecked
-        return (List<Nodo>) Utils.flatten(startingNode.getFigli().stream().map(this::getNodi).toList());
-    }
-
-    private void generateGraph() {
+    public void generateGraph() {
         NodoRepository nodoRepository = (NodoRepository) this.storageService.getRepository(Nodo.class);
         List<Nodo> gerarchie = nodoRepository.findGerarchie();
 
@@ -103,11 +68,39 @@ public class SimpleRoutingComputation implements RoutingComputationStrategy {
         }
     }
 
-    private static <T, E> Set<E> getValueByKeyValue(Map<T, E> map, T value) {
-        return map.entrySet()
-                .stream()
-                .filter(entry -> Objects.equals(entry.getKey(), value))
-                .map(Map.Entry::getValue)
-                .collect(Collectors.toSet());
+    @Override
+    public HashMap<Nodo, Double> getRoutingCostsFrom(Nodo nodo1) {
+        this.generateGraph();
+
+        int indexOfNodo1 = getValueByKeyValue(this.nodeIndexMap, nodo1).stream().findFirst().orElseThrow();
+
+        // Calcolo il percorso minimo
+        DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(this.graph, this.weightComputationStrategy);
+        double[] weights = dijkstraAlgorithm.getDistancesFrom(indexOfNodo1);
+
+        HashMap<Nodo, Double> result = new HashMap<>();
+        for (Map.Entry<Nodo, Integer> entry : this.nodeIndexMap.entrySet()) {
+            result.put(entry.getKey(), weights[entry.getValue()]);
+        }
+
+        return result;
+    }
+
+    @Override
+    public double getRoutingCost(Nodo nodo1, Nodo nodo2) {
+        // Ottengo i costi
+        HashMap<Nodo, Double> costs = this.getRoutingCostsFrom(nodo1);
+
+        // Ritorno il peso del percorso minimo
+        return getValueByKeyValue(costs, nodo2).stream().findFirst().orElseThrow();
+    }
+
+    private List<Nodo> getNodi(Nodo startingNode) {
+        if (startingNode.isFoglia()) {
+            return List.of(startingNode);
+        }
+
+        //noinspection unchecked
+        return (List<Nodo>) Utils.flatten(startingNode.getFigli().stream().map(this::getNodi).toList());
     }
 }
