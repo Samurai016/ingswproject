@@ -49,14 +49,25 @@ public class OneLevelTreeRenderer extends TreeRenderer {
         for (int i = 0; i < tree.size(); i++) {
             Nodo figlio = tree.get(i);
             String descrizioneFiglio = this.getDescrizione(figlio);
+            String valoreAttributo = this.getValoreAttributo(figlio);
 
             System.out.print("\t");
-            System.out.printf(this.translator.translate("tree_renderer_selectable_pattern"), i + 1, figlio.getNome(), descrizioneFiglio);
+            System.out.printf(
+                    this.translator.translate("tree_renderer_selectable_pattern"),
+                    i + 1,
+                    figlio.getNome(),
+                    valoreAttributo,
+                    descrizioneFiglio
+            );
             System.out.println();
         }
     }
 
     private String getDescrizione(Nodo nodo) {
         return (nodo.getDescrizione() == null || nodo.getDescrizione().isBlank()) ? "" : String.format(this.translator.translate("tree_renderer_description_pattern"), nodo.getDescrizione());
+    }
+
+    private String getValoreAttributo(Nodo nodo) {
+        return (nodo.getValoreAttributo() == null || nodo.getValoreAttributo().isBlank()) ? "" : String.format(this.translator.translate("tree_renderer_attribute_value_pattern"), nodo.getValoreAttributo());
     }
 }

@@ -9,6 +9,7 @@ import it.unibs.ingswproject.models.EntityRepository;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.FattoreDiConversione;
 import it.unibs.ingswproject.models.entities.Nodo;
+import it.unibs.ingswproject.models.repositories.NodoRepository;
 import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie.AddNodoPageController;
 import it.unibs.ingswproject.platforms.cli.errors.exceptions.CliQuitException;
@@ -86,13 +87,21 @@ public class AddNodoPageView extends CliPageView {
     }
 
     protected Nodo enterGerarchia() throws CliQuitException {
+        NodoRepository repository = (NodoRepository) this.storageService.getRepository(Nodo.class);
         Nodo gerarchia = new Nodo();
 
         System.out.println(this.translator.translate("add_node_page_gerarchia_step1"));
 
         // Nome
-        String nome = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_gerarchia_name"));
-        gerarchia.setNome(nome);
+        boolean isNomeOk;
+        do {
+            String nome = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_gerarchia_name"));
+            gerarchia.setNome(nome);
+            isNomeOk = !repository.existsWithSameName(gerarchia);
+            if (!isNomeOk) {
+                System.out.println(this.translator.translate("nodo_same_name_not_allowed"));
+            }
+        } while (!isNomeOk);
 
         // Descrizione
         String descrizione = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_gerarchia_description"), true);
@@ -129,6 +138,7 @@ public class AddNodoPageView extends CliPageView {
     }
 
     protected Nodo enterFoglia(Nodo root, Nodo foglia) throws CliQuitException {
+        NodoRepository repository = (NodoRepository) this.storageService.getRepository(Nodo.class);
         foglia.setParent(root);
 
         if (root != null && root.getNomeAttributo() == null) {
@@ -138,12 +148,26 @@ public class AddNodoPageView extends CliPageView {
         }
 
         if (foglia.getValoreAttributo() == null) {
-            String valoreAttributo = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_foglia_valore"));
-            foglia.setValoreAttributo(valoreAttributo);
+            boolean isValoreOk;
+            do {
+                String valoreAttributo = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_foglia_valore"));
+                foglia.setValoreAttributo(valoreAttributo);
+                isValoreOk = !repository.existsWithSameAttributeValue(foglia);
+                if (!isValoreOk) {
+                    System.out.println(this.translator.translate("nodo_same_attribute_value_not_allowed"));
+                }
+            } while (!isValoreOk);
         }
 
-        String nomeFoglia = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_foglia_name"));
-        foglia.setNome(nomeFoglia);
+        boolean isNomeOk;
+        do {
+            String nomeFoglia = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_foglia_name"));
+            foglia.setNome(nomeFoglia);
+            isNomeOk = !repository.existsWithSameName(foglia);
+            if (!isNomeOk) {
+                System.out.println(this.translator.translate("nodo_same_name_not_allowed"));
+            }
+        } while (!isNomeOk);
 
         String descrizioneFoglia = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_foglia_description"), true);
         foglia.setDescrizione(descrizioneFoglia);

@@ -54,6 +54,9 @@ public class CliAppFactory implements ApplicationFactory {
         // Authentication
         AuthService authService = new AuthService(storageService);
         pageFactory.registerDependency(AuthService.class, authService);
+        if (arguments.hasOption("username") && arguments.hasOption("password")) {
+            authService.login(arguments.getOptionValue("username"), arguments.getOptionValue("password"));
+        }
 
         // Cli setup
         CliRouter router = new CliRouter();

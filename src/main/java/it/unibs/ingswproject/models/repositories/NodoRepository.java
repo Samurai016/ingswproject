@@ -6,7 +6,6 @@ import it.unibs.ingswproject.models.EntityRepository;
 import it.unibs.ingswproject.models.entities.Nodo;
 
 import java.util.List;
-import java.util.Optional;
 
 public class NodoRepository extends EntityRepository<Nodo> {
     public NodoRepository(Database db) {
@@ -26,6 +25,56 @@ public class NodoRepository extends EntityRepository<Nodo> {
                 .findList();
     }
 
+    /**
+     * Controllo se esiste un nodo con lo stesso nome.
+     * I nodi controllati sono quelli con lo stesso nome (case insensitive) e lo stesso parent.
+     *
+     * @param entity L'entità da controllare
+     * @return true se esiste un nodo con lo stesso nome, false altrimenti
+     */
+    public boolean existsWithSameName(Nodo entity) {
+        ExpressionList<Nodo> query = this.database
+                .find(Nodo.class)
+                .where()
+                .ieq("nome", entity.getNome())
+                .and()
+                .ne("id", entity.getId())
+                .and();
+
+        if (entity.isRoot()) {
+            query.isNull("parent");
+        } else {
+            query.eq("parent", entity.getParent());
+        }
+
+        return query.findOneOrEmpty().isPresent();
+    }
+
+    /**
+     * Controllo se esiste un nodo con lo stesso attributo.
+     * I nodi controllati sono quelli con lo stesso attributo (case insensitive) e lo stesso parent.
+     *
+     * @param entity L'entità da controllare
+     * @return true se esiste un nodo con lo stesso attributo, false altrimenti
+     */
+    public boolean existsWithSameAttributeValue(Nodo entity) {
+        ExpressionList<Nodo> query = this.database
+                .find(Nodo.class)
+                .where()
+                .ieq("valoreAttributo", entity.getValoreAttributo())
+                .and()
+                .ne("id", entity.getId())
+                .and();
+
+        if (entity.isRoot()) {
+            query.isNull("parent");
+        } else {
+            query.eq("parent", entity.getParent());
+        }
+
+        return query.findOneOrEmpty().isPresent();
+    }
+
     @Override
     public void save(Nodo entity) {
         // Generate the parent
@@ -43,23 +92,14 @@ public class NodoRepository extends EntityRepository<Nodo> {
     protected void validate(Nodo entity) {
         super.validate(entity);
 
-        ExpressionList<Nodo> query = this.database
-                .find(Nodo.class)
-                .where()
-                .eq("nome", entity.getNome())
-                .and()
-                .ne("id", entity.getId())
-                .and();
-
-        if (entity.isRoot()) {
-            query.isNull("parent");
-        } else {
-            query.eq("parent", entity.getParent());
+        // Controllo se esiste già un nodo con lo stesso nome
+        if (this.existsWithSameName(entity)) {
+            throw new IllegalArgumentException("nodo_same_name_not_allowed");
         }
 
-        Optional<Nodo> existsRoot = query.findOneOrEmpty();
-        if (existsRoot.isPresent()) {
-            throw new IllegalArgumentException("nodo_same_name_not_allowed");
+        // Controllo se esiste già un nodo con lo stesso valore di attributo
+        if (this.existsWithSameAttributeValue(entity)) {
+            throw new IllegalArgumentException("nodo_same_attribute_value_not_allowed");
         }
     }
 }
