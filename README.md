@@ -1,8 +1,8 @@
+![Ingegneria del Software - Progetto 2023/24](docs/banner.png)
 # Ingegneria del Software - Progetto 2023/24
 
 ![Java](https://img.shields.io/badge/language-Java-brightgreen)
 ![Version](https://img.shields.io/badge/version-2.0.0-blue)
-![Build Status](https://img.shields.io/github/actions/workflow/status/Samurai016/ingswproject/build.yml)
 
 ## Descrizione del Progetto
 
