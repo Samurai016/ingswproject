@@ -55,7 +55,7 @@ jobs:
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: ${{ github.workspace }}/target/ingswproject-setup.exe,${{ github.workspace }}/target/ingswproject.jar
+          artifacts: ${{ github.workspace }}/target/ingswproject-setup.exe,${{ github.workspace }}/target/ingswproject.exe,${{ github.workspace }}/target/ingswproject.jar
           artifactErrorsFailBuild: true
           allowUpdates: true
           makeLatest: true
