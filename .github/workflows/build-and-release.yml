@@ -14,10 +14,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Extract Maven project version
+        run: echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+        id: maven_version
+
+      - name: Extract Maven project JDK version
+        run: echo "jdk=$(mvn -q -Dexec.executable=echo -Dexec.args='${maven.compiler.source}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+        id: maven_jdk
+
+      - name: Get current date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        id: date
+
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
-          java-version: '21'
+          java-version: ${{ steps.maven_jdk.outputs.jdk }}
           distribution: 'temurin'
 
       - name: Cache Maven repository
@@ -30,10 +42,6 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean package
-
-      - name: Extract Maven project version
-        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
-        id: maven_version
 
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
