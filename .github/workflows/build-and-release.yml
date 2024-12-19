@@ -42,7 +42,7 @@ jobs:
         if: steps.check_version.outputs.is_major == 'true'
         uses: ncipollo/release-action@v1
         with:
-          artifacts: target/ingswproject-${{ github.ref_name#v }}.jar
+          artifacts: target/ingswproject-${{ github.ref_name }}.jar
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
