@@ -31,20 +31,15 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
 
-      - name: Verify version for release
-        id: check_version
-        run: |
-          echo "##[set-output name=is_major;]false"
-          if [[ "${GITHUB_REF_NAME}" =~ ^v([0-9]+)(\.0+)?$ ]]; then
-            echo "##[set-output name=is_major;]true"
-          fi
-
       - name: Create GitHub Release
-        if: steps.check_version.outputs.is_major == 'true'
         uses: ncipollo/release-action@v1
         with:
-          artifacts: target/ingswproject-${{ github.ref_name }}.jar
           token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: target/ingswproject-${{ github.ref_name }}.jar
+          artifactErrorsFailBuild: true
+          allowUpdates: true
+          makeLatest: true
+          removeArtifacts: true
           tag: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
           body: |
