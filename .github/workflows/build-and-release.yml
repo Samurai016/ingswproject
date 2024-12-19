@@ -34,7 +34,6 @@ jobs:
       - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: target/ingswproject-${{ github.ref_name }}.jar
           artifactErrorsFailBuild: true
           allowUpdates: true
