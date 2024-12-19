@@ -1,0 +1,8 @@
+!! Note prima di avviare il software !!
+
+Prima di avviare il software, assicurati di aver configurato correttamente la connessione al database.  
+Per maggiori informazioni, consulta la sezione "Configurazione della connessione al database" della wiki:
+https://github.com/Samurai016/ingswproject#configurazione-della-connessione-al-database
+
+---------------------------------
+Made with ❤️ by Bonny, Tim e Reba

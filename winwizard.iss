@@ -7,7 +7,7 @@
 #define MyAppURL "https://github.com/Samurai016/ingswproject/"
 #define MyAppExeName "ingswproject.exe"
 #define MyAppId "ingswproject"
-#define AppdataFolder "ingsw_project2"
+#define AppdataFolder "ingsw_project"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -32,9 +32,10 @@ SetupIconFile=docs\logo.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-WizardImageFile=docs\wizard\wizard-image-250.bmp
-WizardSmallImageFile=docs\wizard\wizard-smallimage-250.bmp
+WizardImageFile=wizard\images\wizard-image-250.bmp
+WizardSmallImageFile=wizard\images\wizard-smallimage-250.bmp
 DisableWelcomePage=no
+InfoAfterFile=wizard\infoafter.txt
 
 [Languages]
 Name: "italian"; MessagesFile: "compiler:Languages\Italian.isl"
@@ -53,4 +54,3 @@ Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: de
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
-
