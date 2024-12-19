@@ -44,3 +44,6 @@ build/
 
 ### Maven ###
 /target
+
+### Launch4j ###
+launch4j-config.xml
