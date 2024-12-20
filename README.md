@@ -1,8 +1,9 @@
 <picture>
   <source media="(min-width: 769px)" srcset="docs/banner.png">
   <source media="(max-width: 768px)" srcset="docs/banner-mobile.png">
-  <img src="docs/banner.png" title="Ingegneria del Software - Progetto 2023/24" alt="Ingegneria del Software - Progetto 2023/24" alt="Ingegneria del Software - Progetto 2023/24">
+  <img src="docs/banner.png" title="Ingegneria del Software - Progetto 2023/24">
 </picture>
+
 # Ingegneria del Software - Progetto 2023/24
 
 ![Java](https://img.shields.io/badge/language-Java-brightgreen)
