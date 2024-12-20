@@ -1,4 +1,8 @@
-![Ingegneria del Software - Progetto 2023/24](docs/banner.png)
+<picture>
+  <source media="(min-width: 769px)" srcset="docs/banner.png">
+  <source media="(max-width: 768px)" srcset="docs/banner-mobile.png">
+  <img src="docs/banner.png" title="Ingegneria del Software - Progetto 2023/24" alt="Ingegneria del Software - Progetto 2023/24" alt="Ingegneria del Software - Progetto 2023/24">
+</picture>
 # Ingegneria del Software - Progetto 2023/24
 
 ![Java](https://img.shields.io/badge/language-Java-brightgreen)
@@ -9,17 +13,17 @@ Questo progetto è stato sviluppato come parte del corso di **Ingegneria del Sof
 L'applicazione permette a organizzazioni di gestire categorie di attività scambiabili e supporta un processo incrementale, a partire dalla prima versione che include funzionalità di configurazione.
 
 ### 🎯 Funzionalità chiave 
-* **[Versione 1.0.0](/releases/tag/v1.0.0)**
+* **[Versione 1.0.0](https://github.com/Samurai016/ingswproject/releases/tag/v1.0.0)**
   - Gestione delle gerarchie di categorie.
   - Configurazione di fattori di conversione tra categorie foglia.
   - Gestione persistente dei dati.
   - Interfaccia CLI per configuratori.
-* **[Versione 2.0.0](/releases/tag/v2.0.0)**
+* **[Versione 2.0.0](https://github.com/Samurai016/ingswproject/releases/tag/v2.0.0)**
     - Interfaccia CLI per fruitori.
 
 ## 🚀 Installazione
 
-* Scaricare il file `ingswproject-setup.exe` dalla sezione [Releases](/releases/latest).  
+* Scaricare il file `ingswproject-setup.exe` dalla sezione [Releases](https://github.com/Samurai016/ingswproject/releases/latest).  
 * Eseguire il file di setup e seguire le istruzioni a schermo.
 * Prima di lanciare il programma, assicurarsi di avere configurato la connessione al database nel file `application.yaml` nella directory:
   - **Windows**: `%APPDATA%/ingsw_project`
