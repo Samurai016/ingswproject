@@ -2,10 +2,7 @@ package it.unibs.ingswproject.models;
 
 import io.ebean.DB;
 import io.ebean.Database;
-import it.unibs.ingswproject.models.entities.Comprensorio;
-import it.unibs.ingswproject.models.entities.FattoreDiConversione;
-import it.unibs.ingswproject.models.entities.Nodo;
-import it.unibs.ingswproject.models.entities.Utente;
+import it.unibs.ingswproject.models.entities.*;
 import it.unibs.ingswproject.models.repositories.ComprensorioRepository;
 import it.unibs.ingswproject.models.repositories.FattoreDiConversioneRepository;
 import it.unibs.ingswproject.models.repositories.NodoRepository;
@@ -35,6 +32,7 @@ public class StorageService {
         this.repositories.put(Nodo.class, new NodoRepository(this.database));
         this.repositories.put(FattoreDiConversione.class, new FattoreDiConversioneRepository(this.database));
         this.repositories.put(Utente.class, new EntityRepository<>(Utente.class, this.database));
+        this.repositories.put(Scambio.class, new EntityRepository<>(Scambio.class, this.database));
     }
 
     /**

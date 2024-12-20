@@ -6,6 +6,7 @@ import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.controllers.CliPageController;
 import it.unibs.ingswproject.platforms.cli.controllers.pages.comprensori.ComprensoriPageController;
 import it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie.NodoPageController;
+import it.unibs.ingswproject.platforms.cli.controllers.pages.scambi.ScambiPageController;
 import it.unibs.ingswproject.platforms.cli.controllers.pages.utenti.UtentiPageController;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.platforms.cli.views.pages.HomePageView;
@@ -36,8 +37,9 @@ public class HomePageController extends CliPageController {
                 this.commands.put('4', this.translator.translate("home_page_command_system_info")); // Aggiungi comando (3 -> Info sistema)
                 break;
             case Utente.Ruolo.FRUITORE:
-                this.commands.put('1', this.translator.translate("home_page_command_gerarchie")); // Aggiungi comando (2 -> Gerarchie)
-                this.commands.put('2', this.translator.translate("home_page_command_system_info")); // Aggiungi comando (3 -> Info sistema)
+                this.commands.put('1', this.translator.translate("home_page_command_gerarchie")); // Aggiungi comando (1 -> Gerarchie)
+                this.commands.put('2', this.translator.translate("home_page_command_scambi")); // Aggiungi comando (2 -> Scambi)
+                this.commands.put('3', this.translator.translate("home_page_command_system_info")); // Aggiungi comando (3 -> Info sistema)
                 break;
         }
     }
@@ -82,6 +84,9 @@ public class HomePageController extends CliPageController {
                     this.app.navigateTo(this.pageFactory.generatePage(NodoPageController.class));
                     break;
                 case '2':
+                    this.app.navigateTo(this.pageFactory.generatePage(ScambiPageController.class));
+                    break;
+                case '3':
                     this.app.navigateTo(this.pageFactory.generatePage(SystemInfoPageController.class));
                     break;
             }
