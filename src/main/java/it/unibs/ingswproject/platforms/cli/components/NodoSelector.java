@@ -1,8 +1,8 @@
-package it.unibs.ingswproject.platforms.cli.views.components;
+package it.unibs.ingswproject.platforms.cli.components;
 
 import it.unibs.ingswproject.models.entities.Nodo;
 import it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie.NodoPageController;
-import it.unibs.ingswproject.platforms.cli.elements.TreeRenderer;
+import it.unibs.ingswproject.platforms.cli.errors.exceptions.CliQuitException;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.translations.Translator;
 
@@ -19,13 +19,20 @@ public class NodoSelector {
     private final TreeRenderer treeRenderer;
     private final CliUtils cliUtils;
     private final Translator translator;
-    private Predicate<Nodo> validator = (nodo) -> true;
 
-    public NodoSelector(Nodo root, TreeRenderer treeRenderer, CliUtils cliUtils, Translator translator) {
+    private Predicate<Nodo> validator = (nodo) -> true;
+    private final boolean quittable;
+    private String initialPromptMessage;
+
+
+    public NodoSelector(Nodo root, TreeRenderer treeRenderer, CliUtils cliUtils, Translator translator, boolean quittable) {
         this.root = root;
         this.treeRenderer = treeRenderer;
         this.cliUtils = cliUtils;
         this.translator = translator;
+        this.quittable = quittable;
+
+        this.setInitialPromptMessage(this.translator.translate("nodo_selector_select_nodo"));
     }
 
     public NodoSelector setValidator(Predicate<Nodo> validator) {
@@ -33,10 +40,16 @@ public class NodoSelector {
         return this;
     }
 
-    public Nodo select() {
+    public NodoSelector setInitialPromptMessage(String initialPromptMessage) {
+        this.initialPromptMessage = initialPromptMessage;
+        return this;
+    }
+
+    public Nodo select() throws CliQuitException {
         Nodo currentNode = this.root;
         Nodo selectedNode = null;
         boolean hasChosen = false;
+        boolean isFirstIteration = true;
 
         do {
             // Creo mappa comandi
@@ -45,7 +58,7 @@ public class NodoSelector {
                 commands.put(NodoPageController.COMMAND_BACK, this.translator.translate("command_back"));
             }
             if (this.validator.test(currentNode)) {
-                commands.put(COMMAND_CHOOSE, "Conferma selezione");
+                commands.put(COMMAND_CHOOSE, this.translator.translate("nodo_selector_command_select"));
             }
 
             // Creo mappa nodi
@@ -55,9 +68,16 @@ public class NodoSelector {
                 nodi.put((char) ('1' + i), figli.get(i));
             }
 
-            System.out.println("Seleziona nodo:");
+            // Stampo una nuova linea solo se non è la prima iterazione
+            if (!isFirstIteration) {
+                System.out.println();
+            } else {
+                isFirstIteration = false;
+            }
+            System.out.println(this.initialPromptMessage);
             this.renderNodi(currentNode);
 
+            // Stampo i comandi
             if (!commands.isEmpty()) {
                 System.out.println();
                 System.out.println(this.translator.translate("available_commands"));
@@ -72,38 +92,43 @@ public class NodoSelector {
             String input;
             boolean isValidInput;
             do {
+                // Genero il prompt
                 String prompt = currentNode.getFigli().isEmpty()
                         ? this.translator.translate("insert_command")
-                        : this.translator.translate("gerarchie_page_insert_command");
+                        : this.translator.translate("nodo_insert_command_or_select_nodo");
                 if (commands.isEmpty()) {
-                    prompt = "Inserisci un numero per accedere al nodo";
+                    prompt = this.translator.translate("nodo_selector_access_node_request");
                 }
 
-                input = this.cliUtils.readFromConsole(prompt, false);
+                // Leggo l'input
+                if (this.quittable) {
+                    input = this.cliUtils.readFromConsoleQuittable(prompt, false);
+                } else {
+                    input = this.cliUtils.readFromConsole(prompt);
+                }
+
                 char inputChar = input.charAt(0);
                 isValidInput = nodi.containsKey(inputChar) || commands.containsKey(inputChar);
-
-                boolean printLine = true;
-                if (inputChar == COMMAND_CHOOSE) {
+                if (!commands.containsKey(inputChar) && !nodi.containsKey(inputChar)) {
+                    System.out.println(this.translator.translate("invalid_command"));
+                } else if (inputChar == COMMAND_CHOOSE) {
                     hasChosen = true;
                 } else if (inputChar == NodoPageController.COMMAND_BACK) {
                     currentNode = currentNode.getParent();
                 } else if (!nodi.containsKey(inputChar)) {
                     System.out.println(this.translator.translate("invalid_command"));
-                    printLine = false;
-                } else if (!this.validator.test(nodi.get(inputChar))) {
-                    System.out.println(this.translator.translate("invalid_node"));
-                    printLine = false;
                 } else {
-                    selectedNode = nodi.get(input.charAt(0));
-                    currentNode = selectedNode;
-                }
-
-                if (printLine) {
-                    System.out.println();
+                    currentNode = nodi.get(input.charAt(0));
+                    if (this.validator.test(nodi.get(inputChar))) {
+                        selectedNode = currentNode;
+                    }
                 }
             } while (!isValidInput);
         } while (!hasChosen);
+
+        // Stampo il nodo selezionato
+        assert selectedNode != null;
+        System.out.println(this.translator.translate("nodo_selector_select_summary", selectedNode.getNome()));
 
         return selectedNode;
     }

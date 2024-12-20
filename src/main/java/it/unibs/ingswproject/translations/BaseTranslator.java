@@ -128,4 +128,9 @@ public class BaseTranslator implements Translator {
         }
         return key;
     }
+
+    @Override
+    public String translate(String key, Object... args) {
+        return String.format(this.translate(key), args);
+    }
 }

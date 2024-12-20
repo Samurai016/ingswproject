@@ -1,4 +1,4 @@
-package it.unibs.ingswproject.platforms.cli.elements;
+package it.unibs.ingswproject.platforms.cli.components;
 
 import it.unibs.ingswproject.models.entities.Nodo;
 import it.unibs.ingswproject.translations.Translator;

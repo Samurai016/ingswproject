@@ -8,12 +8,12 @@ import it.unibs.ingswproject.models.entities.Nodo;
 import it.unibs.ingswproject.models.entities.Scambio;
 import it.unibs.ingswproject.models.repositories.NodoRepository;
 import it.unibs.ingswproject.platforms.cli.CliApp;
+import it.unibs.ingswproject.platforms.cli.components.NodoSelector;
+import it.unibs.ingswproject.platforms.cli.components.TreeRenderer;
 import it.unibs.ingswproject.platforms.cli.controllers.pages.scambi.AddPropostaDiScambioPageController;
-import it.unibs.ingswproject.platforms.cli.elements.TreeRenderer;
 import it.unibs.ingswproject.platforms.cli.errors.exceptions.CliQuitException;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.platforms.cli.views.CliPageView;
-import it.unibs.ingswproject.platforms.cli.views.components.NodoSelector;
 import it.unibs.ingswproject.router.PageConstructor;
 import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.utils.ProjectUtils;
@@ -42,9 +42,10 @@ public class AddPropostaDiScambioPageView extends CliPageView {
     @Override
     public void renderContent() {
         try {
-            Scambio scambio = new Scambio();
+            Scambio scambio = new Scambio(this.authService.getCurrentUser());
 
-            scambio.setRichiesta(this.askForRichiesta());
+            scambio.setRichiesta(this.askForNodo(this.translator.translate("add_proposta_di_scambio_page_select_richiesta")));
+            System.out.println();
 
             boolean isValidQuantita = false;
             int quantitaRichiesta = 0;
@@ -61,18 +62,16 @@ public class AddPropostaDiScambioPageView extends CliPageView {
                 }
             } while (!isValidQuantita);
 
-            scambio.setOfferta(this.askForOfferta());
+            System.out.println();
+            scambio.setOfferta(this.askForNodo(this.translator.translate("add_proposta_di_scambio_page_select_offerta")));
             scambio.setQuantitaRichiesta(quantitaRichiesta, this.routingComputationStrategy);
 
             // Notifico all'utente la quantità di offerta
             System.out.println();
-            System.out.printf(
-                    this.translator.translate("add_proposta_di_scambio_page_quantita_offerta"),
-                    scambio.getQuantitaOfferta(),
-                    scambio.getOfferta().getNome()
-            );
+            System.out.println(this.translator.translate("add_proposta_di_scambio_page_quantita_offerta", scambio.getQuantitaOfferta(), scambio.getOfferta().getNome()));
 
             // Chiedo se l'utente vuole confermare
+            System.out.println();
             boolean conferma = this.cliUtils.askForConfirmation(this.translator.translate("add_proposta_di_scambio_page_confirm"));
 
             if (!conferma) {
@@ -92,19 +91,25 @@ public class AddPropostaDiScambioPageView extends CliPageView {
         }
     }
 
-    private Nodo askForRichiesta() throws CliQuitException {
-        // Chiedo all'utente di scegliere il nodo che vuole richiedere
+    /**
+     * Chiede all'utente di selezionare un nodo
+     *
+     * @return Nodo selezionato
+     * @throws CliQuitException Eccezione lanciata quando l'utente decide di uscire
+     */
+    private Nodo askForNodo(String prompt) throws CliQuitException {
+        // Ottengo le varie gerarchie
         List<Nodo> gerarchie = ((NodoRepository) this.storageService.getRepository(Nodo.class)).findGerarchie();
         Nodo root = new Nodo();
         gerarchie.forEach(gerarchia -> gerarchia.setParent(root));
         root.setNome(Utils.capitalize(this.translator.translate("gerarchia_plural")));
         root.setFigli(gerarchie);
-        NodoSelector nodoSelector = new NodoSelector(root, this.treeRenderer, this.cliUtils, this.translator);
-        nodoSelector.setValidator(Nodo::isFoglia);
-        return nodoSelector.select();
-    }
 
-    private Nodo askForOfferta() throws CliQuitException {
-        return null;
+        // Seleziono il nodo, possono essere selezionati solo i nodi foglia
+        NodoSelector nodoSelector = new NodoSelector(root, this.treeRenderer, this.cliUtils, this.translator, true);
+        nodoSelector.setValidator(Nodo::isFoglia);
+        nodoSelector.setInitialPromptMessage(prompt);
+
+        return nodoSelector.select();
     }
 }

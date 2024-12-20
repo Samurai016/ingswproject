@@ -6,6 +6,7 @@ import it.unibs.ingswproject.models.entities.*;
 import it.unibs.ingswproject.models.repositories.ComprensorioRepository;
 import it.unibs.ingswproject.models.repositories.FattoreDiConversioneRepository;
 import it.unibs.ingswproject.models.repositories.NodoRepository;
+import it.unibs.ingswproject.models.repositories.ScambioRepository;
 
 import java.util.HashMap;
 
@@ -32,7 +33,7 @@ public class StorageService {
         this.repositories.put(Nodo.class, new NodoRepository(this.database));
         this.repositories.put(FattoreDiConversione.class, new FattoreDiConversioneRepository(this.database));
         this.repositories.put(Utente.class, new EntityRepository<>(Utente.class, this.database));
-        this.repositories.put(Scambio.class, new EntityRepository<>(Scambio.class, this.database));
+        this.repositories.put(Scambio.class, new ScambioRepository(this.database));
     }
 
     /**
