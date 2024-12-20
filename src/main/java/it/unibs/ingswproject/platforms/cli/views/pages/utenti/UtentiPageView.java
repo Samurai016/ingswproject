@@ -42,22 +42,19 @@ public class UtentiPageView extends CliPageView {
             for (int i = 0; i < utenti.size(); i++) {
                 Utente utente = utenti.get(i);
                 if (utente.isConfiguratore()) {
-                    System.out.printf(
-                            this.translator.translate("utenti_page_configuratore_pattern"),
+                    System.out.println(this.translator.translate("utenti_page_configuratore_pattern",
                             i + 1,
                             utente.getUsername(),
                             utente.getRuolo().name()
-                    );
+                    ));
                 } else {
-                    System.out.printf(
-                            this.translator.translate("utenti_page_fruitore_pattern"),
+                    System.out.println(this.translator.translate("utenti_page_fruitore_pattern",
                             i + 1,
                             utente.getUsername(),
                             utente.getEmailAddress() != null ? utente.getEmailAddress() : this.translator.translate("utenti_page_email_not_set"),
                             utente.getRuolo().name()
-                    );
+                    ));
                 }
-                System.out.println();
             }
         }
 

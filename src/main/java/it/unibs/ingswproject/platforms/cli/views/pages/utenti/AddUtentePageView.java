@@ -42,8 +42,7 @@ public class AddUtentePageView extends CliPageView {
             System.out.println(this.translator.translate("saving_item"));
             this.storageService.getRepository(Utente.class).save(utente);
 
-            System.out.printf((this.translator.translate("add_utente_page_success")) + "%n", password);
-            System.out.println();
+            System.out.println(this.translator.translate("add_utente_page_success", password));
 
             this.cliUtils.waitForInput();
         } catch (CliQuitException e) {

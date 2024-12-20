@@ -122,7 +122,7 @@ public class AddNodoPageView extends CliPageView {
                 System.out.println();
                 System.out.println(this.translator.translate("add_node_page_gerarchia_step2"));
                 for (String valore : valoriAttributo.split(",")) {
-                    System.out.printf(this.translator.translate("add_node_page_gerarchia_foglia_header"), valore);
+                    System.out.print(this.translator.translate("add_node_page_gerarchia_foglia_header", valore));
                     Nodo foglia = this.enterFoglia(gerarchia, new Nodo().setValoreAttributo(valore));
                     gerarchia.getFigli().add(foglia);
                 }

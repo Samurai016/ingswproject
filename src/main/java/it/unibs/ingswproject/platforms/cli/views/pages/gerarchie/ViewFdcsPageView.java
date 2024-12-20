@@ -64,8 +64,7 @@ public class ViewFdcsPageView extends CliPageView {
                         altroNodo.getRoot().getNome()
                     );
 
-                System.out.printf(this.translator.translate("view_fdcs_page_fdc_pattern"), root.getNome(), nomeAltroNodo, fattore);
-                System.out.println();
+                System.out.println(this.translator.translate("view_fdcs_page_fdc_pattern", root.getNome(), nomeAltroNodo, fattore));
             }
         }
 

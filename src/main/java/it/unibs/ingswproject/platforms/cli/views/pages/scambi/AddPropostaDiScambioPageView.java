@@ -81,8 +81,7 @@ public class AddPropostaDiScambioPageView extends CliPageView {
             System.out.println(this.translator.translate("saving_item"));
             this.storageService.getRepository(Scambio.class).save(scambio);
 
-            System.out.printf((this.translator.translate("add_proposta_di_scambio_page_success")) + "%n");
-            System.out.println();
+            System.out.println((this.translator.translate("add_proposta_di_scambio_page_success")));
             this.cliUtils.waitForInput();
         } catch (CliQuitException e) {
             // Non fare nulla, l'utente ha deciso di uscire

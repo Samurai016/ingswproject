@@ -50,7 +50,7 @@ public class LoginPageView extends CliPageView {
         } while (!loggedIn);
 
         System.out.println();
-        System.out.printf((this.translator.translate("login_page_login_success")) + "\n", this.authService.getCurrentUser().getUsername());
+        System.out.println(this.translator.translate("login_page_login_success", this.authService.getCurrentUser().getUsername()));
 
         // Controllo se devo cambiare password
         // Il cambio password è obbligatorio solo per i CONFIGURATORI

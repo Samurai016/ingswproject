@@ -65,16 +65,14 @@ public class ScambiPageView extends CliPageView {
         } else {
             for (int i = 0; i < scambi.size(); i++) {
                 Scambio scambio = scambi.get(i);
-                System.out.printf(
-                        this.translator.translate("scambi_page_scambio_pattern"),
+                System.out.println(this.translator.translate("scambi_page_scambio_pattern",
                         i + 1,
                         scambio.getRichiesta().getNome(),
                         scambio.getQuantitaRichiesta(),
                         scambio.getOfferta().getNome(),
                         scambio.getQuantitaOfferta(),
                         scambio.getStato().name()
-                );
-                System.out.println();
+                ));
             }
         }
     }

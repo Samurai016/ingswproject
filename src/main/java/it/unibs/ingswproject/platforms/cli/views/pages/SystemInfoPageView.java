@@ -22,18 +22,14 @@ public class SystemInfoPageView extends CliPageView {
     protected void beforeRender() {
         super.beforeRender();
 
-        System.out.printf(this.translator.translate("system_info_page_version"), this.projectUtils.getProjectVersion());
-        System.out.println();
+        System.out.println(this.translator.translate("system_info_page_version", this.projectUtils.getProjectVersion()));
 
         String dbName = this.storageService.getDatabase().name();
         String dbUrl = ((DefaultServer) this.storageService.getDatabase()).config().getDataSourceConfig().getUrl();
-        System.out.printf(this.translator.translate("system_info_page_database"), String.format("%s (%s)", dbName, dbUrl));
-        System.out.println();
+        System.out.println(this.translator.translate("system_info_page_database", String.format("%s (%s)", dbName, dbUrl)));
 
-        System.out.printf(this.translator.translate("system_info_page_authors"), this.projectUtils.get("authors"));
-        System.out.println();
-        System.out.printf(this.translator.translate("system_info_page_copyright"), this.projectUtils.get("copyright"));
-        System.out.println();
+        System.out.println(this.translator.translate("system_info_page_authors", this.projectUtils.get("authors")));
+        System.out.println(this.translator.translate("system_info_page_copyright", this.projectUtils.get("copyright")));
 
         System.out.println();
     }
