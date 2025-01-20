@@ -86,7 +86,7 @@ public class Scambio {
     public int getQuantitaRichiesta() {
         return this.quantitaRichiesta;
     }
-    
+
     public int getQuantitaOfferta() {
         return this.quantitaOfferta;
     }
@@ -113,6 +113,17 @@ public class Scambio {
         this.stato = Stato.CHIUSO;
         this.dataChiusura = DateTime.now();
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "%s [%d] -> %s [%d]",
+                this.getRichiesta().getNome(),
+                this.getQuantitaRichiesta(),
+                this.getOfferta().getNome(),
+                this.getQuantitaOfferta()
+        );
     }
 
     public enum Stato {
