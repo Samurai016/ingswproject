@@ -18,6 +18,7 @@ import it.unibs.ingswproject.utils.Utils;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ViewFdcsPageView extends CliPageView {
     protected final StorageService storageService;
@@ -77,7 +78,7 @@ public class ViewFdcsPageView extends CliPageView {
         List<FattoreDiConversione> fdcs = repository.findByNodo(root);
 
         // Calcolo tutti gli altri
-        HashMap<Nodo, Double> distances = this.routingComputationStrategy.getRoutingCostsFrom(root);
+        Map<Nodo, Double> distances = this.routingComputationStrategy.getRoutingCostsFrom(root);
         for (Nodo nodo : distances.keySet()) {
             if (nodo.equals(root)) {
                 continue;

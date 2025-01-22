@@ -6,9 +6,7 @@ import it.unibs.ingswproject.models.entities.Nodo;
 import it.unibs.ingswproject.models.entities.Scambio;
 import org.junit.jupiter.api.*;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Nicolò Rebaioli
@@ -53,8 +51,8 @@ public class BaseScambioStrategyTest {
     @BeforeEach
     void setUp() {
         this.nodi = new HashMap<>();
-        this.nodi.put(1, createFoglia("Ripetizioni di matematica per scuola superiore"));
-        this.nodi.put(2, createFoglia("Lezioni di pianoforte per principianti"));
+        this.nodi.put(1, createFoglia("Matematica"));
+        this.nodi.put(2, createFoglia("Pianoforte"));
         this.nodi.put(3, createFoglia("Stiratura"));
     }
 
@@ -66,11 +64,13 @@ public class BaseScambioStrategyTest {
                 this.createScambio(1, 2, 10),
                 this.createScambio(3, 1, 15)
         );
-        HashMap<Scambio, Collection<Scambio>> expected = new HashMap<>();
-        expected.put(scambi.get(0), List.of(scambi.get(1)));
-        expected.put(scambi.get(1), List.of(scambi.get(0)));
+        List<LinkedList<Scambio>> expected = new ArrayList<>();
+        LinkedList<Scambio> expected1 = new LinkedList<>();
+        expected1.add(scambi.get(0));
+        expected1.add(scambi.get(1));
+        expected.add(expected1);
 
-        HashMap<Scambio, Collection<Scambio>> result = this.baseScambioStrategy.findScambiChiudibili(scambi);
+        List<LinkedList<Scambio>> result = this.baseScambioStrategy.findScambiChiudibili(scambi);
         Assertions.assertEquals(expected, result);
     }
 
@@ -85,7 +85,7 @@ public class BaseScambioStrategyTest {
         HashMap<Scambio, Collection<Scambio>> expected = new HashMap<>();
         expected.put(scambi.get(0), List.of(scambi.get(1), scambi.get(2)));
 
-        HashMap<Scambio, Collection<Scambio>> result = this.baseScambioStrategy.findScambiChiudibili(scambi);
+        List<LinkedList<Scambio>> result = this.baseScambioStrategy.findScambiChiudibili(scambi);
         Assertions.assertEquals(expected, result);
     }
 }

@@ -1,5 +1,7 @@
 package it.unibs.ingswproject.logic.routing;
 
+import it.unibs.ingswproject.logic.graph.Graph;
+import it.unibs.ingswproject.logic.graph.Path;
 import it.unibs.ingswproject.logic.graph.algorithms.DijkstraAlgorithm;
 import it.unibs.ingswproject.logic.weight.WeightComputationStrategy;
 import it.unibs.ingswproject.models.StorageService;
@@ -19,7 +21,7 @@ public class SimpleRoutingComputation implements RoutingComputationStrategy {
     private final WeightComputationStrategy weightComputationStrategy;
 
     // Salvo il grafo in modo da non doverlo ricreare ogni volta
-    private DijkstraAlgorithm.Graph graph = null;
+    private Graph graph = null;
     private HashMap<Nodo, Integer> nodeIndexMap = null;
 
     public SimpleRoutingComputation(StorageService storageService, WeightComputationStrategy weightComputationStrategy) {
@@ -60,7 +62,7 @@ public class SimpleRoutingComputation implements RoutingComputationStrategy {
         }
 
         // Creo il grafo
-        this.graph = new DijkstraAlgorithm.Graph(vertici.size());
+        this.graph = new Graph(vertici.size());
         for (FattoreDiConversione arco : archi) {
             int index1 = this.nodeIndexMap.get(arco.getNodo1());
             int index2 = this.nodeIndexMap.get(arco.getNodo2());
@@ -69,27 +71,27 @@ public class SimpleRoutingComputation implements RoutingComputationStrategy {
     }
 
     @Override
-    public HashMap<Nodo, Double> getRoutingCostsFrom(Nodo nodo1) {
+    public Map<Nodo, Double> getRoutingCostsFrom(Nodo nodo1) {
         this.generateGraph();
 
         int indexOfNodo1 = getValueByKeyValue(this.nodeIndexMap, nodo1).stream().findFirst().orElseThrow();
 
         // Calcolo il percorso minimo
         DijkstraAlgorithm dijkstraAlgorithm = new DijkstraAlgorithm(this.graph, this.weightComputationStrategy);
-        double[] weights = dijkstraAlgorithm.getDistancesFrom(indexOfNodo1);
+        List<Path> weights = dijkstraAlgorithm.getPathsFrom(indexOfNodo1);
 
-        HashMap<Nodo, Double> result = new HashMap<>();
+        HashMap<Nodo, Path> result = new HashMap<>();
         for (Map.Entry<Nodo, Integer> entry : this.nodeIndexMap.entrySet()) {
-            result.put(entry.getKey(), weights[entry.getValue()]);
+            result.put(entry.getKey(), weights.get(entry.getValue()));
         }
 
-        return result;
+        return result.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getWeight()));
     }
 
     @Override
     public double getRoutingCost(Nodo nodo1, Nodo nodo2) {
         // Ottengo i costi
-        HashMap<Nodo, Double> costs = this.getRoutingCostsFrom(nodo1);
+        Map<Nodo, Double> costs = this.getRoutingCostsFrom(nodo1);
 
         // Ritorno il peso del percorso minimo
         return getValueByKeyValue(costs, nodo2).stream().findFirst().orElseThrow();
@@ -100,7 +102,6 @@ public class SimpleRoutingComputation implements RoutingComputationStrategy {
             return List.of(startingNode);
         }
 
-        //noinspection unchecked
         return (List<Nodo>) Utils.flatten(startingNode.getFigli().stream().map(this::getNodi).toList());
     }
 }
