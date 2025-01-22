@@ -16,7 +16,6 @@ import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.utils.ProjectUtils;
 import it.unibs.ingswproject.utils.Utils;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

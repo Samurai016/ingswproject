@@ -1,8 +1,6 @@
 package it.unibs.ingswproject.logic.graph;
 
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * @author Nicolò Rebaioli

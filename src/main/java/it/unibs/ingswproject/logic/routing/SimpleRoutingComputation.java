@@ -102,6 +102,7 @@ public class SimpleRoutingComputation implements RoutingComputationStrategy {
             return List.of(startingNode);
         }
 
+        //noinspection unchecked
         return (List<Nodo>) Utils.flatten(startingNode.getFigli().stream().map(this::getNodi).toList());
     }
 }
