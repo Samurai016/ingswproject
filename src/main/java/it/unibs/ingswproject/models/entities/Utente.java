@@ -1,6 +1,5 @@
 package it.unibs.ingswproject.models.entities;
 
-import io.ebean.annotation.DbEnumValue;
 import io.ebean.annotation.Length;
 import it.unibs.ingswproject.auth.AuthService;
 import jakarta.persistence.*;
@@ -32,6 +31,37 @@ public class Utente {
         this.setUsername(username)
                 .setPassword(password)
                 .setRuolo(ruolo);
+    }
+
+    private static String generateRandomPassword() {
+        PasswordGenerator gen = new PasswordGenerator();
+        CharacterData lowerCaseChars = EnglishCharacterData.LowerCase;
+        CharacterRule lowerCaseRule = new CharacterRule(lowerCaseChars);
+        lowerCaseRule.setNumberOfCharacters(2);
+
+        CharacterData upperCaseChars = EnglishCharacterData.UpperCase;
+        CharacterRule upperCaseRule = new CharacterRule(upperCaseChars);
+        upperCaseRule.setNumberOfCharacters(2);
+
+        CharacterData digitChars = EnglishCharacterData.Digit;
+        CharacterRule digitRule = new CharacterRule(digitChars);
+        digitRule.setNumberOfCharacters(2);
+
+        CharacterData specialChars = new CharacterData() {
+            public String getErrorCode() {
+                return ERROR_CODE;
+            }
+
+            public String getCharacters() {
+                return "!@#$%^&*()_+";
+            }
+        };
+        CharacterRule splCharRule = new CharacterRule(specialChars);
+        splCharRule.setNumberOfCharacters(2);
+
+        return gen.generatePassword(8, new Rule[]{
+                splCharRule, lowerCaseRule, upperCaseRule, digitRule
+        });
     }
 
     // GETTERS
@@ -114,43 +144,7 @@ public class Utente {
         return password;
     }
 
-    private static String generateRandomPassword() {
-        PasswordGenerator gen = new PasswordGenerator();
-        CharacterData lowerCaseChars = EnglishCharacterData.LowerCase;
-        CharacterRule lowerCaseRule = new CharacterRule(lowerCaseChars);
-        lowerCaseRule.setNumberOfCharacters(2);
-
-        CharacterData upperCaseChars = EnglishCharacterData.UpperCase;
-        CharacterRule upperCaseRule = new CharacterRule(upperCaseChars);
-        upperCaseRule.setNumberOfCharacters(2);
-
-        CharacterData digitChars = EnglishCharacterData.Digit;
-        CharacterRule digitRule = new CharacterRule(digitChars);
-        digitRule.setNumberOfCharacters(2);
-
-        CharacterData specialChars = new CharacterData() {
-            public String getErrorCode() {
-                return ERROR_CODE;
-            }
-
-            public String getCharacters() {
-                return "!@#$%^&*()_+";
-            }
-        };
-        CharacterRule splCharRule = new CharacterRule(specialChars);
-        splCharRule.setNumberOfCharacters(2);
-
-        return gen.generatePassword(8, new Rule[]{
-                splCharRule, lowerCaseRule, upperCaseRule, digitRule
-        });
-    }
-
     public enum Ruolo {
-        CONFIGURATORE, FRUITORE;
-
-        @DbEnumValue
-        public String getDbValue() {
-            return this.name().toLowerCase();
-        }
+        CONFIGURATORE, FRUITORE
     }
 }

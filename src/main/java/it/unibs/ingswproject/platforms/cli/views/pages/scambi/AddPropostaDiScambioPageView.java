@@ -2,6 +2,7 @@ package it.unibs.ingswproject.platforms.cli.views.pages.scambi;
 
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.errors.ErrorManager;
+import it.unibs.ingswproject.logic.ScambioStrategy;
 import it.unibs.ingswproject.logic.routing.RoutingComputationStrategy;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Nodo;
@@ -19,6 +20,7 @@ import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.utils.ProjectUtils;
 import it.unibs.ingswproject.utils.Utils;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -29,14 +31,16 @@ public class AddPropostaDiScambioPageView extends CliPageView {
     protected final ErrorManager errorManager;
     protected final RoutingComputationStrategy routingComputationStrategy;
     protected final TreeRenderer treeRenderer;
+    protected final ScambioStrategy scambioStrategy;
 
     @PageConstructor
-    public AddPropostaDiScambioPageView(CliApp app, AddPropostaDiScambioPageController controller, Translator translator, StorageService storageService, ErrorManager errorManager, CliUtils cliUtils, ProjectUtils projectUtils, AuthService authService, RoutingComputationStrategy routingComputationStrategy, TreeRenderer treeRenderer) {
+    public AddPropostaDiScambioPageView(CliApp app, AddPropostaDiScambioPageController controller, Translator translator, StorageService storageService, ErrorManager errorManager, CliUtils cliUtils, ProjectUtils projectUtils, AuthService authService, RoutingComputationStrategy routingComputationStrategy, TreeRenderer treeRenderer, ScambioStrategy scambioStrategy) {
         super(app, controller, translator, cliUtils, projectUtils, authService);
         this.storageService = storageService;
         this.errorManager = errorManager;
         this.routingComputationStrategy = routingComputationStrategy;
         this.treeRenderer = treeRenderer;
+        this.scambioStrategy = scambioStrategy;
     }
 
     @Override
@@ -44,7 +48,8 @@ public class AddPropostaDiScambioPageView extends CliPageView {
         try {
             Scambio scambio = new Scambio(this.authService.getCurrentUser());
 
-            scambio.setRichiesta(this.askForNodo(this.translator.translate("add_proposta_di_scambio_page_select_richiesta")));
+            Nodo nodoRichiesta = this.askForNodo(this.translator.translate("add_proposta_di_scambio_page_select_richiesta"), null);
+            scambio.setRichiesta(nodoRichiesta);
             System.out.println();
 
             boolean isValidQuantita = false;
@@ -63,7 +68,7 @@ public class AddPropostaDiScambioPageView extends CliPageView {
             } while (!isValidQuantita);
 
             System.out.println();
-            scambio.setOfferta(this.askForNodo(this.translator.translate("add_proposta_di_scambio_page_select_offerta")));
+            scambio.setOfferta(this.askForNodo(this.translator.translate("add_proposta_di_scambio_page_select_offerta"), nodoRichiesta));
             scambio.setQuantitaRichiesta(quantitaRichiesta, this.routingComputationStrategy);
 
             // Notifico all'utente la quantità di offerta
@@ -82,6 +87,16 @@ public class AddPropostaDiScambioPageView extends CliPageView {
             this.storageService.getRepository(Scambio.class).save(scambio);
 
             System.out.println((this.translator.translate("add_proposta_di_scambio_page_success")));
+
+            // Chiudo gli scambi
+            List<LinkedList<Scambio>> insiemiChiusi = this.scambioStrategy.chiudiScambi();
+            boolean currentScambioClosed = insiemiChiusi
+                    .stream()
+                    .anyMatch(insieme -> insieme.contains(scambio));
+            if (currentScambioClosed) {
+                System.out.println(this.translator.translate("add_proposta_di_scambio_page_success_closed"));
+            }
+
             this.cliUtils.waitForInput();
         } catch (CliQuitException e) {
             // Non fare nulla, l'utente ha deciso di uscire
@@ -93,10 +108,12 @@ public class AddPropostaDiScambioPageView extends CliPageView {
     /**
      * Chiede all'utente di selezionare un nodo
      *
+     * @param prompt Messaggio da mostrare all'utente
+     * @param nodoNotToBeEqual Nodo che non deve essere selezionato
      * @return Nodo selezionato
      * @throws CliQuitException Eccezione lanciata quando l'utente decide di uscire
      */
-    private Nodo askForNodo(String prompt) throws CliQuitException {
+    private Nodo askForNodo(String prompt, Nodo nodoNotToBeEqual) throws CliQuitException {
         // Ottengo le varie gerarchie
         List<Nodo> gerarchie = ((NodoRepository) this.storageService.getRepository(Nodo.class)).findGerarchie();
         Nodo root = new Nodo();
@@ -106,7 +123,7 @@ public class AddPropostaDiScambioPageView extends CliPageView {
 
         // Seleziono il nodo, possono essere selezionati solo i nodi foglia
         NodoSelector nodoSelector = new NodoSelector(root, this.treeRenderer, this.cliUtils, this.translator, true);
-        nodoSelector.setValidator(Nodo::isFoglia);
+        nodoSelector.setValidator((n) -> n.isFoglia() && !n.isRoot() && (nodoNotToBeEqual == null || !nodoNotToBeEqual.equals(n)));
         nodoSelector.setInitialPromptMessage(prompt);
 
         return nodoSelector.select();

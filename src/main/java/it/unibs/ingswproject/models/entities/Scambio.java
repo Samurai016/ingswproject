@@ -1,10 +1,15 @@
 package it.unibs.ingswproject.models.entities;
 
-import io.ebean.annotation.DbEnumValue;
+import io.ebean.annotation.ConstraintMode;
+import io.ebean.annotation.DbForeignKey;
+import io.ebean.annotation.WhenCreated;
 import it.unibs.ingswproject.logic.routing.RoutingComputationStrategy;
 import jakarta.persistence.*;
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -24,9 +29,16 @@ public class Scambio {
     protected int quantitaOfferta;
     @Enumerated(EnumType.STRING)
     protected Stato stato;
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @WhenCreated
     protected DateTime dataCreazione = DateTime.now();
-    protected DateTime dataChiusura;
+    @ManyToOne()
+    @DbForeignKey(onDelete = ConstraintMode.SET_NULL)
+    protected Scambio chiusoDa;
+    @OneToMany(mappedBy = "chiusoDa")
+    protected List<Scambio> haChiuso = new ArrayList<>();
+    protected boolean hasBeenNotified = false;
+    @OneToMany(mappedBy = "scambio")
+    protected List<StoricoScambio> storico = new ArrayList<>();
 
     public Scambio() {
         // Costruttore vuoto per Ebean
@@ -60,12 +72,20 @@ public class Scambio {
         return this.dataCreazione;
     }
 
-    public DateTime getDataChiusura() {
-        return this.dataChiusura;
-    }
-
     public Nodo getRichiesta() {
         return this.richiesta;
+    }
+
+    public boolean hasBeenNotified() {
+        return this.hasBeenNotified;
+    }
+
+    public Scambio getChiusoDa() {
+        return this.chiusoDa;
+    }
+
+    public List<Scambio> getHaChiuso() {
+        return this.haChiuso;
     }
 
     // SETTERS
@@ -109,16 +129,33 @@ public class Scambio {
         return this;
     }
 
-    public Scambio chiudi() {
+    public List<StoricoScambio> getStorico() {
+        return this.storico
+                .stream()
+                .sorted(Comparator.comparing(StoricoScambio::getData))
+                .toList();
+    }
+
+    public Scambio chiudi(Scambio chiusoDa) {
         this.stato = Stato.CHIUSO;
-        this.dataChiusura = DateTime.now();
+        this.chiusoDa = chiusoDa;
+        return this;
+    }
+
+    public Scambio notifica() {
+        this.hasBeenNotified = true;
+        return this;
+    }
+
+    public Scambio ritira() {
+        this.stato = Stato.RITIRATO;
         return this;
     }
 
     @Override
     public String toString() {
         return String.format(
-                "%s [%d] -> %s [%d]",
+                "r: %s [%d] -> o: %s [%d]",
                 this.getRichiesta().getNome(),
                 this.getQuantitaRichiesta(),
                 this.getOfferta().getNome(),
@@ -126,12 +163,12 @@ public class Scambio {
         );
     }
 
+    /**
+     * @author Nicolò Rebaioli
+     */
     public enum Stato {
-        APERTO, CHIUSO;
-
-        @DbEnumValue
-        public String getDbValue() {
-            return this.name().toLowerCase();
-        }
+        APERTO,
+        CHIUSO,
+        RITIRATO
     }
 }

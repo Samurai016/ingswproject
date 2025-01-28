@@ -110,11 +110,7 @@ public class BaseTranslator implements Translator {
         return this;
     }
 
-    /**
-     * Ottiene la lingua del traduttore
-     *
-     * @return La lingua del traduttore
-     */
+    @Override
     public Locale getLocale() {
         return this.locale;
     }

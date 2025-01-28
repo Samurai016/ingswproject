@@ -25,6 +25,14 @@ public class Graph {
         }
     }
 
+    // Remove an edge between vertices u and v
+    public void removeEdge(int u, int v) {
+        if (u >= 0 && u < this.size && v >= 0 && v < this.size) {
+            this.adjMatrix[u][v] = 0;
+            // adjMatrix[v][u] = 0; // For undirected graph
+        }
+    }
+
     public double[][] getAdjMatrix() {
         return this.adjMatrix;
     }

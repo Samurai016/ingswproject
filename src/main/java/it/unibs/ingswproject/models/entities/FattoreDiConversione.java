@@ -26,8 +26,12 @@ public class FattoreDiConversione {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || this.getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || this.getClass() != o.getClass()) {
+                return false;
+            }
             FattoreDiConversioneId entity = (FattoreDiConversioneId) o;
             return Objects.equals(this.nodo2, entity.nodo2) &&
                    Objects.equals(this.nodo1, entity.nodo1);
@@ -112,9 +116,9 @@ public class FattoreDiConversione {
     }
 
     public FattoreDiConversione setFattore(Double fattore) {
-        //if (fattore != null && (fattore < MIN_WEIGHT || fattore > MAX_WEIGHT)) {
-        //    throw new IllegalArgumentException("fdc_fattore_range");
-        //}
+        if (fattore != null && (fattore < MIN_WEIGHT || fattore > MAX_WEIGHT)) {
+            throw new IllegalArgumentException("fdc_fattore_range");
+        }
 
         this.fattore = fattore;
         return this;

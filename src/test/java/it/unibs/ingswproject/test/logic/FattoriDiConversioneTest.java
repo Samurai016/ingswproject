@@ -14,15 +14,14 @@ import java.util.List;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class FattoriDiConversioneTest {
-    protected static final StorageService storageService = new StorageService(DB.getDefault());
-    protected static final FattoreDiConversioneStrategy FattoreDiConversioneStrategy = new BaseFattoreDiConversioneStrategy(storageService);
-    protected static Nodo root;
+    private static final StorageService storageService = new StorageService(DB.getDefault());
+    private static final FattoreDiConversioneStrategy fattoreDiConversioneStrategy = new BaseFattoreDiConversioneStrategy(storageService);
+    private static Nodo root;
 
     @BeforeAll
     static void setUpAll() {
         // Disabilito il logging di Ebean
         System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "off");
-        System.setProperty("org.slf4j.simpleLogger.log.io.ebean", "off");
 
         root = Nodo.createRoot("Frutta", null, "colore");
         root.getFigli().addAll(List.of(new Nodo[]{
@@ -47,7 +46,7 @@ public class FattoriDiConversioneTest {
             repo.save(pera);
             root = repo.find(root.getId()); // Refresh root
 
-            List<FattoreDiConversione> FDCs = FattoreDiConversioneStrategy.getFattoriDiConversionToSet(root);
+            List<FattoreDiConversione> FDCs = fattoreDiConversioneStrategy.getFattoriDiConversionToSet(root);
             Assertions.assertEquals(2, FDCs.size());
             innerTransaction.rollback();
         }
@@ -84,7 +83,7 @@ public class FattoriDiConversioneTest {
             repoNodi.save(bananaAcerba);
             root = repoNodi.find(root.getId()); // Refresh root
 
-            List<FattoreDiConversione> FDCs = FattoreDiConversioneStrategy.getFattoriDiConversionToSet(banana);
+            List<FattoreDiConversione> FDCs = fattoreDiConversioneStrategy.getFattoriDiConversionToSet(banana);
             Assertions.assertEquals(2, FDCs.size());
             innerTransaction.rollback();
         }
@@ -128,7 +127,7 @@ public class FattoriDiConversioneTest {
             repoNodi.save(bananaMatura);
             repoNodi.save(bananaAcerba);
 
-            List<FattoreDiConversione> FDCs = FattoreDiConversioneStrategy.getFattoriDiConversionToSet(banana);
+            List<FattoreDiConversione> FDCs = fattoreDiConversioneStrategy.getFattoriDiConversionToSet(banana);
             Assertions.assertEquals(3, FDCs.size());
             innerTransaction.rollback();
         }

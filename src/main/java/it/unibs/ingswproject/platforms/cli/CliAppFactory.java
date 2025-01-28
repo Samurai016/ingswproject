@@ -5,6 +5,8 @@ import io.ebean.Database;
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.errors.handlers.FileLogErrorHandler;
+import it.unibs.ingswproject.logic.BaseScambioStrategy;
+import it.unibs.ingswproject.logic.ScambioStrategy;
 import it.unibs.ingswproject.logic.routing.RoutingComputationStrategy;
 import it.unibs.ingswproject.logic.routing.SimpleRoutingComputation;
 import it.unibs.ingswproject.logic.weight.SimpleWeightComputation;
@@ -74,6 +76,9 @@ public class CliAppFactory implements ApplicationFactory {
 
         RoutingComputationStrategy routingComputationStrategy = new SimpleRoutingComputation(storageService, weightComputationStrategy);
         pageFactory.registerDependency(RoutingComputationStrategy.class, routingComputationStrategy);
+
+        ScambioStrategy scambioStrategy = new BaseScambioStrategy(storageService, authService);
+        pageFactory.registerDependency(ScambioStrategy.class, scambioStrategy);
 
         return app;
     }

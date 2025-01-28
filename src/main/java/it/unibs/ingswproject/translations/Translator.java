@@ -1,5 +1,7 @@
 package it.unibs.ingswproject.translations;
 
+import java.util.Locale;
+
 /**
  * Interfaccia che definisce un traduttore
  *
@@ -22,4 +24,11 @@ public interface Translator {
      * @return La stringa tradotta
      */
     String translate(String key, Object... args);
+
+    /**
+     * Restituisce la lingua attuale
+     *
+     * @return La lingua attuale
+     */
+    Locale getLocale();
 }

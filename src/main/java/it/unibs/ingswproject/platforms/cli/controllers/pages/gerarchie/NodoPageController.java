@@ -3,9 +3,12 @@ package it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie;
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Nodo;
+import it.unibs.ingswproject.models.entities.Scambio;
 import it.unibs.ingswproject.models.repositories.NodoRepository;
+import it.unibs.ingswproject.models.repositories.ScambioRepository;
 import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.controllers.CliPageController;
+import it.unibs.ingswproject.platforms.cli.controllers.pages.scambi.ScambiPageController;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.platforms.cli.views.pages.gerarchie.NodoPageView;
 import it.unibs.ingswproject.router.PageConstructor;
@@ -43,6 +46,7 @@ public class NodoPageController extends CliPageController {
         if (this.authService.getCurrentUser().isConfiguratore()) {
             if (this.root.isFoglia()) {
                 this.commands.put('b', this.translator.translate("gerarchie_page_command_view_fdcs"));
+                this.commands.put('c', this.translator.translate("gerarchie_page_command_view_scambi"));
             } else {
                 this.commands.remove('b');
             }
@@ -109,6 +113,10 @@ public class NodoPageController extends CliPageController {
                     break;
                 case 'b':
                     this.app.navigateTo(this.pageFactory.generatePage(ViewFdcsPageController.class).setRoot(this.root));
+                    break;
+                case 'c':
+                    List<Scambio> scambi = ((ScambioRepository) this.storageService.getRepository(Scambio.class)).findByNodo(this.root);
+                    this.app.navigateTo(this.pageFactory.generatePage(ScambiPageController.class).setScambi(scambi));
                     break;
             }
         }

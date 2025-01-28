@@ -19,9 +19,8 @@ public class NodoSelector {
     private final TreeRenderer treeRenderer;
     private final CliUtils cliUtils;
     private final Translator translator;
-
-    private Predicate<Nodo> validator = (nodo) -> true;
     private final boolean quittable;
+    private Predicate<Nodo> validator = (nodo) -> true;
     private String initialPromptMessage;
 
 

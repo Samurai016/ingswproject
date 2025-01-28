@@ -12,7 +12,7 @@ import org.apache.commons.cli.CommandLine;
 public class Main {
     public static void main(String[] args) {
         try {
-            // Disabilito il logging di Ebean
+            // Disabilito il logging di Ebean (imposta a "debug" per abilitarlo)
             System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "off");
 
             // Imposto il file di configurazione
