@@ -2,7 +2,7 @@ package it.unibs.ingswproject;
 
 import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.errors.handlers.FileLogErrorHandler;
-import it.unibs.ingswproject.errors.handlers.StackTraceErrorHandler;
+import it.unibs.ingswproject.errors.handlers.DefaultErrorHandler;
 import it.unibs.ingswproject.platforms.cli.CliAppFactory;
 import it.unibs.ingswproject.utils.CommandLineParser;
 import it.unibs.ingswproject.utils.FileUtils;
@@ -20,8 +20,17 @@ public class Main {
             // https://github.com/avaje/avaje-config?tab=readme-ov-file#loading-properties
             System.setProperty("props.file", FileUtils.getConfigurationFile().toString());
 
+            // Parsing degli argomenti
+            CommandLineParser parser = new CommandLineParser();
+            CommandLine arguments = parser.parse(args);
+
+            // Display the help message if the user asks for it
+            if (arguments.hasOption("help")) {
+                parser.printHelp();
+                return;
+            }
+
             // Creo la factory per l'applicazione
-            CommandLine arguments = new CommandLineParser().parse(args);
             ApplicationFactory factory;
             if (arguments.getOptionValue("platform", "cli").equals("cli")) {
                 factory = new CliAppFactory();
@@ -33,7 +42,7 @@ public class Main {
             factory.createApp(arguments).run();
         } catch (Throwable e) {
             ErrorManager errorManager = new ErrorManager();
-            errorManager.addErrorHandler(new StackTraceErrorHandler());
+            errorManager.addErrorHandler(new DefaultErrorHandler());
             errorManager.addErrorHandler(new FileLogErrorHandler());
             errorManager.handle(e);
         }

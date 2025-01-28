@@ -22,6 +22,8 @@ import it.unibs.ingswproject.utils.ProjectUtils;
 import it.unibs.ingswproject.view.ApplicationFactory;
 import org.apache.commons.cli.CommandLine;
 
+import java.util.Locale;
+
 /**
  * Factory per la creazione di un'applicazione CLI
  *
@@ -37,6 +39,10 @@ public class CliAppFactory implements ApplicationFactory {
                     .addResourceBundle("i18n/models")
                     .addResourceBundle("i18n/cli");
         pageFactory.registerDependency(Translator.class, translator);
+
+        if (arguments.hasOption("language")) {
+            translator.setLocale(Locale.of(arguments.getOptionValue("language")));
+        }
 
         // Utils
         CliUtils cliUtils = new CliUtils(translator);
