@@ -92,10 +92,10 @@ public class SimpleRoutingComputation implements RoutingComputationStrategy {
 
         HashMap<Nodo, Double> result = new HashMap<>();
         for (Path path : paths) {
-            int nodoArrivoIndex = path.getVertices().getLast();
+            int nodoArrivoIndex = path.vertices().getLast();
             Nodo nodoArrivo = getKeyByValue(this.nodeIndexMap, nodoArrivoIndex);
             if (nodoArrivo != null) {
-                result.put(nodoArrivo, path.getWeight());
+                result.put(nodoArrivo, path.weight());
             }
         }
 

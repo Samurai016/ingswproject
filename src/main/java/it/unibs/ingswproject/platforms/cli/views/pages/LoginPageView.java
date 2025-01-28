@@ -11,7 +11,6 @@ import it.unibs.ingswproject.platforms.cli.controllers.pages.LoginPageController
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.platforms.cli.views.CliPageView;
 import it.unibs.ingswproject.platforms.cli.views.pages.comprensori.ComprensoriPageView;
-import it.unibs.ingswproject.router.PageFactory;
 import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.utils.ProjectUtils;
 
@@ -27,12 +26,10 @@ import java.util.List;
  */
 public class LoginPageView extends CliPageView {
     protected final StorageService storageService;
-    protected final PageFactory pageFactory;
 
-    public LoginPageView(CliApp app, LoginPageController controller, Translator translator, AuthService authService, StorageService storageService, PageFactory pageFactory, CliUtils cliUtils, ProjectUtils projectUtils) {
+    public LoginPageView(CliApp app, LoginPageController controller, Translator translator, AuthService authService, StorageService storageService, CliUtils cliUtils, ProjectUtils projectUtils) {
         super(app, controller, translator, cliUtils, projectUtils, authService);
         this.storageService = storageService;
-        this.pageFactory = pageFactory;
     }
 
     @Override

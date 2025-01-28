@@ -8,7 +8,6 @@ import it.unibs.ingswproject.platforms.cli.controllers.CliPageController;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.platforms.cli.views.pages.scambi.RitiraPropostaPageView;
 import it.unibs.ingswproject.router.PageConstructor;
-import it.unibs.ingswproject.router.PageFactory;
 import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.utils.ProjectUtils;
 
@@ -17,14 +16,12 @@ import it.unibs.ingswproject.utils.ProjectUtils;
  */
 public class RitiraPropostaPageController extends CliPageController {
     protected final AuthService authService;
-    protected final PageFactory pageFactory;
     protected Scambio scambio;
 
     @PageConstructor
-    public RitiraPropostaPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, StorageService storageService, CliUtils cliUtils, ProjectUtils projectUtils) {
+    public RitiraPropostaPageController(CliApp app, Translator translator, AuthService authService, StorageService storageService, CliUtils cliUtils, ProjectUtils projectUtils) {
         super(app, translator);
         this.authService = authService;
-        this.pageFactory = pageFactory;
         this.view = new RitiraPropostaPageView(app, this, translator, cliUtils, projectUtils, authService, storageService);
     }
 

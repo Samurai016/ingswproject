@@ -1,7 +1,6 @@
 package it.unibs.ingswproject.platforms.cli.controllers.pages.scambi;
 
 import it.unibs.ingswproject.auth.AuthService;
-import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Scambio;
 import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.controllers.CliPageController;
@@ -18,15 +17,13 @@ import it.unibs.ingswproject.utils.ProjectUtils;
 public class ScambioPageController extends CliPageController {
     protected final AuthService authService;
     protected final PageFactory pageFactory;
-    protected final StorageService storageService;
     protected Scambio scambio;
 
     @PageConstructor
-    public ScambioPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService) {
+    public ScambioPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, ProjectUtils projectUtils) {
         super(app, translator);
         this.authService = authService;
         this.pageFactory = pageFactory;
-        this.storageService = storageService;
         this.view = new ScambioPageView(app, this, translator, cliUtils, projectUtils, authService);
     }
 

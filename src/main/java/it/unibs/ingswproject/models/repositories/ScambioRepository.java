@@ -56,7 +56,7 @@ public class ScambioRepository extends EntityRepository<Scambio> {
     }
 
     /**
-     * Trova gli scambi in un cui un determinato nodo è richiesto o offerto
+     * Trova gli scambi in un cui un determinato nodo è richiesto od offerto
      *
      * @param nodo Nodo richiesto o offerto
      * @return Lista di scambi

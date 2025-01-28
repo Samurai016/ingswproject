@@ -14,25 +14,14 @@ import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 public class CliErrorHandler implements ErrorHandler {
     protected final Translator translator;
     protected final CliUtils cliUtils;
-    private boolean isDebugModeEnabled = false;
 
     public CliErrorHandler(Translator translator, CliUtils cliUtils) {
         this.translator = translator;
         this.cliUtils = cliUtils;
     }
 
-    @SuppressWarnings("CallToPrintStackTrace")
     public void handle(Throwable e) {
-        if (this.isDebugModeEnabled) {
-            e.printStackTrace();
-        } else {
-            System.out.println(this.translator.translate("error_pattern", Utils.getErrorMessage(this.translator, e)));
-        }
+        System.out.println(this.translator.translate("error_pattern", Utils.getErrorMessage(this.translator, e)));
         this.cliUtils.waitForInput();
-    }
-
-    public ErrorHandler setDebugMode(boolean isDebugModeEnabled) {
-        this.isDebugModeEnabled = isDebugModeEnabled;
-        return this;
     }
 }

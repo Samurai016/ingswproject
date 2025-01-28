@@ -15,10 +15,6 @@ public class DefaultErrorHandler implements ErrorHandler {
         this.printStackTrace = printStackTrace;
     }
 
-    public DefaultErrorHandler() {
-        this(false);
-    }
-
     public void handle(Throwable e) {
         if (this.printStackTrace) {
             e.printStackTrace();

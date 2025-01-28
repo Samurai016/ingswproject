@@ -10,7 +10,6 @@ import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Nodo;
 import it.unibs.ingswproject.models.entities.Utente;
 import it.unibs.ingswproject.router.PageConstructor;
-import it.unibs.ingswproject.router.PageFactory;
 import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
@@ -19,16 +18,12 @@ import it.unibs.ingswproject.utils.ProjectUtils;
 
 public class AddNodoPageController extends CliPageController {
     protected final AuthService authService;
-    protected final PageFactory pageFactory;
-    protected final WeightComputationStrategy weightComputationStrategy;
     protected Nodo root;
 
     @PageConstructor
-    public AddNodoPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, ProjectUtils projectUtils, WeightComputationStrategy weightComputationStrategy, StorageService storageService, ErrorManager errorHandler) {
+    public AddNodoPageController(CliApp app, Translator translator, AuthService authService, CliUtils cliUtils, ProjectUtils projectUtils, WeightComputationStrategy weightComputationStrategy, StorageService storageService, ErrorManager errorHandler) {
         super(app, translator);
         this.authService = authService;
-        this.pageFactory = pageFactory;
-        this.weightComputationStrategy = weightComputationStrategy;
         FattoreDiConversioneStrategy fdcStrategy = new BaseFattoreDiConversioneStrategy(storageService);
         this.view = new AddNodoPageView(app, this, translator, cliUtils, projectUtils, storageService, errorHandler, fdcStrategy, weightComputationStrategy, authService);
 

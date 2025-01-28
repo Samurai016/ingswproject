@@ -37,11 +37,11 @@ L'applicazione permette a organizzazioni di gestire categorie di attività scamb
 * Prima di lanciare il programma, assicurarsi di avere configurato la connessione al database nel file `application.yaml` nella directory:
   - **Windows**: `%APPDATA%/ingsw_project`
   - **Mac/Linux**: `$HOME/.ingsw_project`
-  Per fare questo, fare riferimento alla [prossima sezione](#configurazione-della-connessione-al-database).
+  Per fare questo, fare riferimento alla [prossima sezione](#-configurazione-della-connessione-al-database).
 
 ### 🔧 Configurazione della connessione al database
 Nel file di configurazione `application.yaml` disponibile nella cartella `%APPDATA%/ingsw_project` (Windows) o `$HOME/.ingsw_project` (Mac/Linux) è possibile specificare i datasource da utilizzare, seguendo la sintassi supportata da [Ebean ORM](https://ebean.io/docs).  
-Il programma utilizzerà il database di default indicato nel file, se non specificato diversamente utilizzando l'opzione `-db` (vedi [Parametri opzionali](#parametri-opzionali)).
+Il programma utilizzerà il database di default indicato nel file, se non specificato diversamente utilizzando l'opzione `-db` (vedi [Parametri opzionali](#-parametri-opzionali)).
 
 ### 📚 Parametri opzionali
 Il programma accetta i seguenti parametri in input opzionali:

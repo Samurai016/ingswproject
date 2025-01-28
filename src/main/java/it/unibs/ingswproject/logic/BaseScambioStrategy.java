@@ -5,12 +5,10 @@ import it.unibs.ingswproject.logic.graph.Graph;
 import it.unibs.ingswproject.logic.graph.Path;
 import it.unibs.ingswproject.logic.graph.algorithms.DijkstraAlgorithm;
 import it.unibs.ingswproject.logic.weight.WeightComputationStrategy;
-import it.unibs.ingswproject.models.EntityRepository;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Scambio;
 import it.unibs.ingswproject.models.entities.Utente;
 import it.unibs.ingswproject.models.repositories.ScambioRepository;
-import org.h2.engine.User;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -99,7 +97,7 @@ public class BaseScambioStrategy implements ScambioStrategy {
             }
 
             // Rimuovo i cammini banali (quelli composti da un solo vertice)
-            distanze.removeIf(p -> p.getVertices().size() == 1);
+            distanze.removeIf(p -> p.vertices().size() == 1);
 
             // Per ogni vertice del grafo (scambio)
             // Cerco se c'è un cammino minimo che ritorna al vertice stesso
@@ -109,10 +107,10 @@ public class BaseScambioStrategy implements ScambioStrategy {
 
             int uIndex = i;
             List<Path> camminiChePartonoDaU = distanze.stream()
-                    .filter(p -> p.getVertices().getFirst() == uIndex)
+                    .filter(p -> p.vertices().getFirst() == uIndex)
                     .toList();
             List<Path> camminiCheArrivanoAU = distanze.stream()
-                    .filter(p -> p.getVertices().getLast() == uIndex)
+                    .filter(p -> p.vertices().getLast() == uIndex)
                     .toList();
 
             // Se non ci sono cammini che partono da u o che arrivano a u
@@ -155,8 +153,8 @@ public class BaseScambioStrategy implements ScambioStrategy {
      * @return Il cammino totale
      */
     private LinkedList<Integer> getCamminoTotale(List<Path> camminiChePartonoDaU, List<Path> camminiCheArrivanoAU) {
-        LinkedList<Integer> camminoPartenza = camminiChePartonoDaU.getFirst().getVertices();
-        LinkedList<Integer> camminoArrivo = camminiCheArrivanoAU.getFirst().getVertices();
+        LinkedList<Integer> camminoPartenza = camminiChePartonoDaU.getFirst().vertices();
+        LinkedList<Integer> camminoArrivo = camminiCheArrivanoAU.getFirst().vertices();
 
         LinkedList<Integer> camminoArrivoSoloIntermedi = new LinkedList<>(camminoArrivo);
         camminoArrivoSoloIntermedi.removeFirst();

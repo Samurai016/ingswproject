@@ -130,6 +130,7 @@ public abstract class CliPageView {
      * Metodo che esegue del codice dopo aver renderizzato i comandi disponibili
      * Il comportamento di default è vuoto
      */
+    @SuppressWarnings("EmptyMethod")
     protected void afterRender() {
         // Override this method to execute code before rendering the page
     }

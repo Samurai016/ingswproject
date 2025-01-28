@@ -19,11 +19,6 @@ public class FullTreeRenderer extends TreeRenderer {
         this.translator = translator;
     }
 
-    public FullTreeRenderer(Translator translator, Nodo root) {
-        this(translator);
-        this.setRoot(root);
-    }
-
     public void render() {
         if (this.root == null) {
             throw new IllegalStateException("root_cannot_be_null");

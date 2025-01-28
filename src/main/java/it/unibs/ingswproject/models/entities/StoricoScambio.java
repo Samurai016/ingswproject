@@ -46,10 +46,6 @@ public class StoricoScambio {
         this(scambio, data, scambio.getStato());
     }
 
-    public StoricoScambio(Scambio scambio, Scambio.Stato stato) {
-        this(scambio, new Date(), stato);
-    }
-
     public StoricoScambio(Scambio scambio) {
         this(scambio, new Date());
     }

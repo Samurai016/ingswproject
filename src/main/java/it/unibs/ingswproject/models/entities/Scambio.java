@@ -15,6 +15,7 @@ import java.util.UUID;
 /**
  * @author Nicolò Rebaioli
  */
+@SuppressWarnings("CanBeFinal")
 @Entity
 public class Scambio {
     @Id
@@ -143,6 +144,9 @@ public class Scambio {
     }
 
     public Scambio notifica() {
+        if (!this.stato.equals(Stato.CHIUSO)) {
+            throw new IllegalStateException("scambio_not_closed_error");
+        }
         this.hasBeenNotified = true;
         return this;
     }

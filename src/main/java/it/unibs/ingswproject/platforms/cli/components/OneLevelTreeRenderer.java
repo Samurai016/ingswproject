@@ -18,11 +18,6 @@ public class OneLevelTreeRenderer extends TreeRenderer {
         this.translator = translator;
     }
 
-    public OneLevelTreeRenderer(Translator translator, Nodo root) {
-        this(translator);
-        this.setRoot(root);
-    }
-
     @Override
     public void render() {
         if (this.root == null) {

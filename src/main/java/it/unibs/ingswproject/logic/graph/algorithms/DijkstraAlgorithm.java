@@ -53,6 +53,10 @@ public class DijkstraAlgorithm {
         }
 
         // Reconstruct paths for all vertices
+        return rebuildPaths(size, distances, predecessors);
+    }
+
+    private static List<Path> rebuildPaths(int size, double[] distances, int[] predecessors) {
         List<Path> paths = new ArrayList<>();
         for (int v = 0; v < size; v++) {
             if (distances[v] != Integer.MAX_VALUE) { // If the vertex is reachable
@@ -64,7 +68,6 @@ public class DijkstraAlgorithm {
                 paths.add(new Path(path, weight));
             }
         }
-
         return paths;
     }
 

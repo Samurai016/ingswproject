@@ -18,8 +18,4 @@ public class ProjectUtils extends Properties {
     public String getProjectVersion() {
         return this.getProperty("version");
     }
-
-    public String getProjectArtifactId() {
-        return this.getProperty("artifactId");
-    }
 }

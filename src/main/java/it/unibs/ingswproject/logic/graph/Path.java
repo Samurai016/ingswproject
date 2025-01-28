@@ -5,23 +5,7 @@ import java.util.LinkedList;
 /**
  * @author Nicolò Rebaioli
  */
-public class Path {
-    private final LinkedList<Integer> vertices;
-    private final double weight;
-
-    public Path(LinkedList<Integer> vertices, double weight) {
-        this.vertices = vertices;
-        this.weight = weight;
-    }
-
-    public LinkedList<Integer> getVertices() {
-        return this.vertices;
-    }
-
-    public double getWeight() {
-        return this.weight;
-    }
-
+public record Path(LinkedList<Integer> vertices, double weight) {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

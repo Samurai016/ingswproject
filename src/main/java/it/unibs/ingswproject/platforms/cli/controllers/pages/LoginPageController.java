@@ -20,7 +20,7 @@ public class LoginPageController extends CliPageController {
         super(app, translator);
         this.authService = authService;
         this.pageFactory = pageFactory;
-        this.view = new LoginPageView(app, this, translator, authService, storageService, pageFactory, cliUtils, projectUtils);
+        this.view = new LoginPageView(app, this, translator, authService, storageService, cliUtils, projectUtils);
     }
 
     @Override

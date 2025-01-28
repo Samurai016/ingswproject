@@ -1,12 +1,9 @@
 package it.unibs.ingswproject.platforms.cli.views.pages.gerarchie;
 
 import it.unibs.ingswproject.auth.AuthService;
-import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.logic.routing.RoutingComputationStrategy;
-import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.FattoreDiConversione;
 import it.unibs.ingswproject.models.entities.Nodo;
-import it.unibs.ingswproject.models.repositories.FattoreDiConversioneRepository;
 import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie.ViewFdcsPageController;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
@@ -21,15 +18,11 @@ import java.util.List;
 import java.util.Map;
 
 public class ViewFdcsPageView extends CliPageView {
-    protected final StorageService storageService;
-    protected final ErrorManager errorManager;
     protected final RoutingComputationStrategy routingComputationStrategy;
 
     @PageConstructor
-    public ViewFdcsPageView(CliApp app, ViewFdcsPageController controller, Translator translator, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService, ErrorManager errorManager, AuthService authService, RoutingComputationStrategy routingComputationStrategy) {
+    public ViewFdcsPageView(CliApp app, ViewFdcsPageController controller, Translator translator, CliUtils cliUtils, ProjectUtils projectUtils, AuthService authService, RoutingComputationStrategy routingComputationStrategy) {
         super(app, controller, translator, cliUtils, projectUtils, authService);
-        this.storageService = storageService;
-        this.errorManager = errorManager;
         this.routingComputationStrategy = routingComputationStrategy;
     }
 
