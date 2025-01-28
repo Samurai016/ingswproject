@@ -1,6 +1,7 @@
 package it.unibs.ingswproject.platforms.cli.views.pages;
 
 import it.unibs.ingswproject.auth.AuthService;
+import it.unibs.ingswproject.auth.UserAlreadyExistsException;
 import it.unibs.ingswproject.models.EntityRepository;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Comprensorio;
@@ -36,6 +37,15 @@ public class LoginPageView extends CliPageView {
 
     @Override
     public void renderContent() {
+        // Aggiungo utente di default se non esiste
+        try {
+            Utente defaultUser = this.authService.createDefaultUser();
+            System.out.println(this.translator.translate("default_user_notification", defaultUser.getUsername(), AuthService.DEFAULT_PASSWORD));
+            System.out.println();
+        } catch (UserAlreadyExistsException e) {
+            // Ignore
+        }
+
         System.out.println(this.translator.translate("login_page_welcome"));
 
         // Effettua il login

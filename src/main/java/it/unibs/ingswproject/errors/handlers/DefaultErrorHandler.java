@@ -6,6 +6,11 @@ import it.unibs.ingswproject.errors.ErrorHandler;
 public class DefaultErrorHandler implements ErrorHandler {
     private final boolean printStackTrace;
 
+    /**
+     * Costruttore
+     *
+     * @param printStackTrace Se true, verrà stampato lo stack trace dell'errore
+     */
     public DefaultErrorHandler(boolean printStackTrace) {
         this.printStackTrace = printStackTrace;
     }

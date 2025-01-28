@@ -45,14 +45,17 @@ Il programma utilizzerà il database di default indicato nel file, se non specif
 
 ### 📚 Parametri opzionali
 Il programma accetta i seguenti parametri in input opzionali:
+- `-h` o `--help`: Mostra l'elenco dei parametri supportati.
 - `-p` o `--platform`: Specifica il frontend da utilizzare. Valori supportati: `cli` (default).
 - `-db` o `--database`: Specifica il database da utilizzare (nome specificato in `application.yaml`).
 - `-u` o `--username`: Se specificato, insieme al parametro `-pw`, permette di autenticarsi automaticamente al software in fase di avvio.
 - `-pw` o `--password`: Password per l'autenticazione automatica.
+- `-l` o `--language`: Specifica la lingua da utilizzare per l'interfaccia utente (codici ISO 639). Se non specificato oppure se la lingua non è supportata, verrà utilizzata la lingua di sistema.
+- `-v` o `--verbose`: Abilita la modalità di logging avanzata degli errori.
 
 Esempio di esecuzione tramite riga di comando:
 ```bash
-ingswproject.exe -p cli -db my_database -u admin -pw admin
+ingswproject.exe -p cli -db my_database -u admin -pw admin -l en -v
 ```
 
 ## 💡 Requisiti

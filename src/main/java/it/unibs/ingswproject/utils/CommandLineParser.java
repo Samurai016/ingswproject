@@ -15,6 +15,8 @@ public class CommandLineParser {
         this.options.addOption("pw", "password", true, "Password for authentication");
 
         this.options.addOption("l", "language", true, "Interface language (ISO 639 code). If not specified or the language is not supported, the default language is used");
+
+        this.options.addOption("v", "verbose", false, "Enable verbose mode for error messages");
     }
 
     public CommandLine parse(String[] args) throws ParseException {

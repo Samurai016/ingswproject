@@ -1,6 +1,6 @@
 package it.unibs.ingswproject.auth;
 
-import io.ebean.config.CurrentUserProvider;
+import it.unibs.ingswproject.models.EntityRepository;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Utente;
 
@@ -19,6 +19,8 @@ import java.util.Objects;
 public class AuthService {
     private static final String HASH_ALGORITHM = "PBKDF2WithHmacSHA1";
     private static final String SALT = "PBKDF2WithHmacSHA1";
+    public static final String DEFAULT_USERNAME = "admin";
+    public static final String DEFAULT_PASSWORD = "admin";
     protected Utente currentUser;
     protected final StorageService storageService;
     
@@ -67,5 +69,32 @@ public class AuthService {
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             return null;
         }
+    }
+
+    /**
+     * Questo metodo permette di creare un utente configuratore di default.
+     * Se un utente configuratore esiste già, lancia un'eccezione.
+     *
+     * @return L'utente creato
+     * @throws UserAlreadyExistsException Se un utente configuratore esiste già
+     */
+    public Utente createDefaultUser() throws UserAlreadyExistsException {
+        EntityRepository<Utente> utenteRepository = this.storageService.getRepository(Utente.class);
+        boolean utenteConfiguratoreExists = utenteRepository.findBy("ruolo", Utente.Ruolo.CONFIGURATORE) != null;
+        if (utenteConfiguratoreExists) {
+            throw new UserAlreadyExistsException("Default user already exists");
+        }
+
+        // Find a valid username
+        String username = DEFAULT_USERNAME;
+        int i = 1;
+        while (utenteRepository.find(username) != null) {
+            username = DEFAULT_USERNAME + i++;
+        }
+
+        Utente user = new Utente(username, DEFAULT_PASSWORD, Utente.Ruolo.CONFIGURATORE);
+        utenteRepository.save(user);
+
+        return user;
     }
 }
