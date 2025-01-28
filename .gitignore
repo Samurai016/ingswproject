@@ -4,6 +4,8 @@
 
 *.lnk
 
+winwizard.nsi
+
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
