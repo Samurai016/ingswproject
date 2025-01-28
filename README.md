@@ -7,7 +7,7 @@
 # Ingegneria del Software - Progetto 2023/24
 
 ![Java](https://img.shields.io/badge/language-Java-brightgreen)
-![Version](https://img.shields.io/badge/version-3.0.0-blue)
+![Version](https://img.shields.io/badge/version-4.0.0-blue)
 
 
 Questo progetto è stato sviluppato come parte del corso di **Ingegneria del Software** (Anno Accademico 2023/24) ed è volto a supportare lo **scambio di prestazioni d’opera** senza utilizzo di denaro.  
@@ -20,7 +20,15 @@ L'applicazione permette a organizzazioni di gestire categorie di attività scamb
   - Gestione persistente dei dati.
   - Interfaccia CLI per configuratori.
 * **[Versione 2.0.0](https://github.com/Samurai016/ingswproject/releases/tag/v2.0.0)**
-    - Interfaccia CLI per fruitori.
+  - Interfaccia CLI per fruitori.
+* **[Versione 3.0.0](https://github.com/Samurai016/ingswproject/releases/tag/v3.0.0)**
+  - Possibilità di inserire nuove proposte di scambio per i fruitori.
+* **[Versione 4.0.0](https://github.com/Samurai016/ingswproject/releases/tag/v4.0.0)**
+  - Sistema di chiusura automatico delle proposte di scambio.
+  - Sistema di notifica delle proposte di scambio chiuse ai configuratori.
+  - Visualizzazione avanzate delle proposte.
+  - Possibilità di ritirare le proposte di scambio.
+  - Storico delle modifiche delle proposte di scambio.
 
 ## 🚀 Installazione
 
@@ -49,7 +57,7 @@ ingswproject.exe -p cli -db my_database -u admin -pw admin
 
 ## 💡 Requisiti
 
-- **Java** 21 o superiore.
+- **Java** 23 o superiore.
  
 Per lo sviluppo:
 - **Ebean ORM** per la gestione del database.
@@ -67,4 +75,4 @@ Questo progetto è concesso in licenza sotto la licenza **GNU General Public Lic
 
 ---
 
-© 2024 Progetto realizzato per il corso di Ingegneria del Software, corso di laurea in Ing. Informatica, Università degli Studi di Brescia.
+© 2025 Progetto realizzato per il corso di Ingegneria del Software, corso di laurea in Ing. Informatica, Università degli Studi di Brescia.

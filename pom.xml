@@ -6,7 +6,7 @@
 
     <groupId>it.unibs</groupId>
     <artifactId>ingswproject</artifactId>
-    <version>3.1.0</version>
+    <version>4.0.0</version>
     <packaging>jar</packaging>
     <licenses>
         <license>
@@ -16,7 +16,7 @@
     </licenses>
 
     <name>Progetto Ingegneria del Software</name>
-    <inceptionYear>2024</inceptionYear>
+    <inceptionYear>2025</inceptionYear>
     <description>Progetto universitario per il corso di Ingegneria del Software (A.A. 2023/24)</description>
     <url>https://github.com/Samurai016/ingswproject/</url>
 
