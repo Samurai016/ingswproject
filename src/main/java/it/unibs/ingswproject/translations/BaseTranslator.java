@@ -110,11 +110,7 @@ public class BaseTranslator implements Translator {
         return this;
     }
 
-    /**
-     * Ottiene la lingua del traduttore
-     *
-     * @return La lingua del traduttore
-     */
+    @Override
     public Locale getLocale() {
         return this.locale;
     }
@@ -127,5 +123,10 @@ public class BaseTranslator implements Translator {
             }
         }
         return key;
+    }
+
+    @Override
+    public String translate(String key, Object... args) {
+        return String.format(this.translate(key), args);
     }
 }

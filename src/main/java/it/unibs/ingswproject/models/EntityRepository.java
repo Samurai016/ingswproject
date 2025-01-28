@@ -46,6 +46,7 @@ public class EntityRepository<T> {
     public void save(T entity) {
         this.validate(entity);
         this.database.save(entity);
+        this.database.refresh(entity);
     }
 
     /**
@@ -55,6 +56,7 @@ public class EntityRepository<T> {
      */
     public void delete(T entity) {
         this.database.delete(entity);
+        this.database.refresh(entity);
     }
 
     /**

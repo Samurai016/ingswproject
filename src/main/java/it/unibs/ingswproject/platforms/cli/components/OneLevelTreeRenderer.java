@@ -1,4 +1,4 @@
-package it.unibs.ingswproject.platforms.cli.elements;
+package it.unibs.ingswproject.platforms.cli.components;
 
 import it.unibs.ingswproject.models.entities.Nodo;
 import it.unibs.ingswproject.translations.Translator;
@@ -34,8 +34,7 @@ public class OneLevelTreeRenderer extends TreeRenderer {
                 ? ""
                 : String.format(this.translator.translate("tree_renderer_attribute_pattern"), this.root.getNomeAttributo());
         String descrizione = this.getDescrizione(this.root);
-        System.out.printf(this.translator.translate("tree_renderer_child_pattern"), this.root.getNome(), descrizione, nomeAttributo);
-        System.out.println();
+        System.out.println(this.translator.translate("tree_renderer_child_pattern", this.root.getNome(), descrizione, nomeAttributo));
 
         // No items
         List<Nodo> tree = this.root.getFigli();
@@ -52,14 +51,12 @@ public class OneLevelTreeRenderer extends TreeRenderer {
             String valoreAttributo = this.getValoreAttributo(figlio);
 
             System.out.print("\t");
-            System.out.printf(
-                    this.translator.translate("tree_renderer_selectable_pattern"),
+            System.out.println(this.translator.translate("tree_renderer_selectable_pattern",
                     i + 1,
                     figlio.getNome(),
                     valoreAttributo,
                     descrizioneFiglio
-            );
-            System.out.println();
+            ));
         }
     }
 

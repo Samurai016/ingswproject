@@ -1,6 +1,7 @@
 package it.unibs.ingswproject.platforms.cli.views.pages;
 
 import it.unibs.ingswproject.auth.AuthService;
+import it.unibs.ingswproject.models.EntityRepository;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Comprensorio;
 import it.unibs.ingswproject.models.entities.Utente;
@@ -12,6 +13,8 @@ import it.unibs.ingswproject.platforms.cli.views.pages.comprensori.ComprensoriPa
 import it.unibs.ingswproject.router.PageFactory;
 import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.utils.ProjectUtils;
+
+import java.util.List;
 
 /**
  * Pagina di login dell'applicazione
@@ -50,7 +53,7 @@ public class LoginPageView extends CliPageView {
         } while (!loggedIn);
 
         System.out.println();
-        System.out.printf((this.translator.translate("login_page_login_success")) + "\n", this.authService.getCurrentUser().getUsername());
+        System.out.println(this.translator.translate("login_page_login_success", this.authService.getCurrentUser().getUsername()));
 
         // Controllo se devo cambiare password
         // Il cambio password è obbligatorio solo per i CONFIGURATORI
@@ -132,6 +135,8 @@ public class LoginPageView extends CliPageView {
         // Show all comprensori
         ComprensoriPageView.renderComprensori(this.translator, this.storageService);
 
+        EntityRepository<Comprensorio> comprensoriRepo = this.storageService.getRepository(Comprensorio.class);
+        List<Comprensorio> comprensori = comprensoriRepo.findAll();
         boolean comprensorioSet = false;
         do {
             String nomeComprensorio = this.cliUtils.readFromConsole(this.translator.translate("login_page_insert_comprensorio"), false);
@@ -141,7 +146,18 @@ public class LoginPageView extends CliPageView {
                 continue;
             }
 
-            Comprensorio comprensorio = this.storageService.getRepository(Comprensorio.class).findByLike("nome", nomeComprensorio);
+            Comprensorio comprensorio = comprensoriRepo.findByLike("nome", nomeComprensorio);
+            if (comprensorio == null) {
+                // Try to find by index
+                try {
+                    int index = Integer.parseInt(nomeComprensorio) + 1;
+                    if (index >= 0 && index < comprensori.size()) {
+                        comprensorio = comprensori.get(index);
+                    }
+                } catch (NumberFormatException e) {
+                    // Not a number
+                }
+            }
             if (comprensorio == null) {
                 System.out.println(this.translator.translate("login_page_comprensorio_not_found"));
                 continue;

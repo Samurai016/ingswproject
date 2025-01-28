@@ -47,8 +47,7 @@ public class ComprensoriPageView extends CliPageView {
         } else {
             for (int i = 0; i < comprensori.size(); i++) {
                 Comprensorio comprensorio = comprensori.get(i);
-                System.out.printf(translator.translate("comprensori_page_comprensorio_pattern"), i + 1, comprensorio.getNome());
-                System.out.println();
+                System.out.println(translator.translate("comprensori_page_comprensorio_pattern", i + 1, comprensorio.getNome()));
             }
         }
     }

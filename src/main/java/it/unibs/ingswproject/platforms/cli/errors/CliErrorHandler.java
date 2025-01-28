@@ -26,7 +26,7 @@ public class CliErrorHandler implements ErrorHandler {
         if (this.isDebugModeEnabled) {
             e.printStackTrace();
         } else {
-            System.out.printf((this.translator.translate("error_pattern")) + "\n", Utils.getErrorMessage(this.translator, e));
+            System.out.println(this.translator.translate("error_pattern", Utils.getErrorMessage(this.translator, e)));
         }
         this.cliUtils.waitForInput();
     }

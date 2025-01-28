@@ -1,5 +1,6 @@
 package it.unibs.ingswproject.auth;
 
+import io.ebean.config.CurrentUserProvider;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.Utente;
 

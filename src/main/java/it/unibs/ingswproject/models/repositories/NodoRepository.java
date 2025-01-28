@@ -1,9 +1,10 @@
 package it.unibs.ingswproject.models.repositories;
 
 import io.ebean.Database;
-import io.ebean.ExpressionList;
+import io.ebean.Transaction;
 import it.unibs.ingswproject.models.EntityRepository;
 import it.unibs.ingswproject.models.entities.Nodo;
+import it.unibs.ingswproject.models.entities.query.QNodo;
 
 import java.util.List;
 
@@ -18,10 +19,8 @@ public class NodoRepository extends EntityRepository<Nodo> {
      * @return La lista di entità trovate
      */
     public List<Nodo> findGerarchie() {
-        return this.database
-                .find(this.entityClass)
-                .where()
-                .isNull("parent")
+        return new QNodo()
+                .parent.isNull()
                 .findList();
     }
 
@@ -33,19 +32,18 @@ public class NodoRepository extends EntityRepository<Nodo> {
      * @return true se esiste un nodo con lo stesso nome, false altrimenti
      */
     public boolean existsWithSameName(Nodo entity) {
-        ExpressionList<Nodo> query = this.database
-                .find(Nodo.class)
-                .where()
-                .ieq("nome", entity.getNome())
+        QNodo query = new QNodo()
                 .and()
-                .ne("id", entity.getId())
-                .and();
+                    .nome.ieq(entity.getNome())
+                    .id.ne(entity.getId());
 
         if (entity.isRoot()) {
-            query.isNull("parent");
+            query = query.parent.isNull();
         } else {
-            query.eq("parent", entity.getParent());
+            query = query.parent.eq(entity.getParent());
         }
+
+        query = query.endAnd();
 
         return query.exists();
     }
@@ -62,34 +60,40 @@ public class NodoRepository extends EntityRepository<Nodo> {
             return false;
         }
 
-        ExpressionList<Nodo> query = this.database
-                .find(Nodo.class)
-                .where()
-                .ieq("valoreAttributo", entity.getValoreAttributo())
+        QNodo query = new QNodo()
                 .and()
-                .ne("id", entity.getId())
-                .and();
+                    .valoreAttributo.ieq(entity.getValoreAttributo())
+                    .id.ne(entity.getId());
 
         if (entity.isRoot()) {
-            query.isNull("parent");
+            query = query.parent.isNull();
         } else {
-            query.eq("parent", entity.getParent());
+            query = query.parent.eq(entity.getParent());
         }
+
+        query = query.endAnd();
 
         return query.exists();
     }
 
     @Override
     public void save(Nodo entity) {
-        // Generate the parent
-        super.save(entity);
+        try (Transaction transaction = this.database.beginTransaction()) {
+            // Generate the parent
+            this.validate(entity);
+            this.database.save(entity);
 
-        // Generate all children
-        Nodo[] figli = entity.getFigli().toArray(Nodo[]::new);
-        for (Nodo figlio : figli) {
-            figlio.setParent(entity);
-            super.save(figlio);
+            // Generate all children
+            List<Nodo> figli = entity.getFigli();
+            for (Nodo figlio : figli) {
+                figlio.setParent(entity);
+                this.validate(figlio);
+                this.database.save(figlio);
+            }
+
+            transaction.commit();
         }
+        this.database.refresh(entity);
     }
 
     @Override

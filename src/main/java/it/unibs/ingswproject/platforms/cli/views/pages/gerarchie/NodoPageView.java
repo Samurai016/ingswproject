@@ -3,8 +3,8 @@ package it.unibs.ingswproject.platforms.cli.views.pages.gerarchie;
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.models.entities.Nodo;
 import it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie.NodoPageController;
-import it.unibs.ingswproject.platforms.cli.elements.OneLevelTreeRenderer;
-import it.unibs.ingswproject.platforms.cli.elements.TreeRenderer;
+import it.unibs.ingswproject.platforms.cli.components.OneLevelTreeRenderer;
+import it.unibs.ingswproject.platforms.cli.components.TreeRenderer;
 import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.views.CliPageView;
@@ -63,7 +63,7 @@ public class NodoPageView extends CliPageView {
         String input;
         boolean isValidInput = false;
         do {
-            input = this.cliUtils.readFromConsole(this.translator.translate("gerarchie_page_insert_command"), false);
+            input = this.cliUtils.readFromConsole(this.translator.translate("nodo_insert_command_or_select_nodo"), false);
             if (!((NodoPageController)this.controller).isValidInput(input.charAt(0))) {
                 System.out.println(this.translator.translate("invalid_command"));
             } else {

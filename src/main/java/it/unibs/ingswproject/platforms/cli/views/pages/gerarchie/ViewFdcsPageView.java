@@ -16,8 +16,9 @@ import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.utils.ProjectUtils;
 import it.unibs.ingswproject.utils.Utils;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ViewFdcsPageView extends CliPageView {
     protected final StorageService storageService;
@@ -64,8 +65,7 @@ public class ViewFdcsPageView extends CliPageView {
                         altroNodo.getRoot().getNome()
                     );
 
-                System.out.printf(this.translator.translate("view_fdcs_page_fdc_pattern"), root.getNome(), nomeAltroNodo, fattore);
-                System.out.println();
+                System.out.println(this.translator.translate("view_fdcs_page_fdc_pattern", root.getNome(), nomeAltroNodo, fattore));
             }
         }
 
@@ -73,12 +73,10 @@ public class ViewFdcsPageView extends CliPageView {
     }
 
     private List<FattoreDiConversione> getFDCsToView(Nodo root) {
-        // Prendo gli FDC a cui son direttamente connesso
-        FattoreDiConversioneRepository repository = (FattoreDiConversioneRepository) this.storageService.getRepository(FattoreDiConversione.class);
-        List<FattoreDiConversione> fdcs = repository.findByNodo(root);
+        List<FattoreDiConversione> fdcs = new ArrayList<>();
 
-        // Calcolo tutti gli altri
-        HashMap<Nodo, Double> distances = this.routingComputationStrategy.getRoutingCostsFrom(root);
+        // Calcolo tutti gli FDC
+        Map<Nodo, Double> distances = this.routingComputationStrategy.getRoutingCostsFrom(root);
         for (Nodo nodo : distances.keySet()) {
             if (nodo.equals(root)) {
                 continue;
