@@ -6,6 +6,7 @@ import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.errors.handlers.FileLogErrorHandler;
 import it.unibs.ingswproject.installation.DatabaseConfigurator;
+import it.unibs.ingswproject.platforms.cli.installation.CliDatabaseConfigurator;
 import it.unibs.ingswproject.logic.BaseScambioStrategy;
 import it.unibs.ingswproject.logic.ScambioStrategy;
 import it.unibs.ingswproject.logic.routing.RoutingComputationStrategy;
@@ -59,17 +60,15 @@ public class CliAppFactory implements ApplicationFactory {
         errorManager.addErrorHandler(new CliErrorHandler(translator, cliUtils));
         pageFactory.registerDependency(ErrorManager.class, errorManager);
 
-        // Persistence
         // Configurazione del database
-        DatabaseConfigurator databaseConfigurator = new DatabaseConfigurator();
-        if (!databaseConfigurator.isDatabaseConfigured()) {
-            try {
-                databaseConfigurator.configureConnection();
-                cliUtils.waitForInput();
-                System.exit(0);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        DatabaseConfigurator databaseConfigurator = new CliDatabaseConfigurator(translator, cliUtils, projectUtils);
+        pageFactory.registerDependency(DatabaseConfigurator.class, databaseConfigurator);
+
+        // Database configuration tool
+        if (arguments.hasOption("dbtool") || !databaseConfigurator.isDatabaseConfigured()) {
+            databaseConfigurator.configureConnection();
+            cliUtils.waitForInput();
+            System.exit(0);
         }
 
         // Database
@@ -77,6 +76,8 @@ public class CliAppFactory implements ApplicationFactory {
         StorageService storageService = new StorageService(database);
         pageFactory.registerDependency(Database.class, database);
         pageFactory.registerDependency(StorageService.class, storageService);
+
+        databaseConfigurator.disableDdlGeneration();
 
         // Authentication
         AuthService authService = new AuthService(storageService);

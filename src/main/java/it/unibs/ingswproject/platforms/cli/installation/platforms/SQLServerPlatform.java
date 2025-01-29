@@ -1,4 +1,4 @@
-package it.unibs.ingswproject.installation.platforms;
+package it.unibs.ingswproject.platforms.cli.installation.platforms;
 
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.translations.Translator;
@@ -6,28 +6,28 @@ import it.unibs.ingswproject.translations.Translator;
 /**
  * @author Nicolò Rebaioli
  */
-public class ClickHousePlatform extends HostedPlatform {
-    public ClickHousePlatform(Translator translator, CliUtils cliUtils) {
+public class SQLServerPlatform extends HostedPlatform {
+    public SQLServerPlatform(Translator translator, CliUtils cliUtils) {
         super(translator, cliUtils);
     }
 
     @Override
     public String getPlatformName() {
-        return "ClickHouse";
+        return "SQL Server";
     }
 
     @Override
     protected int getDefaultPort() {
-        return 8123;
+        return 1433;
     }
 
     @Override
     protected String getUrl(String host, int port, String databaseName) {
-        return String.format("jdbc:clickhouse://%s:%d/%s", host, port, databaseName);
+        return String.format("jdbc:sqlserver://%s:%d;databaseName=%s", host, port, databaseName);
     }
 
     @Override
     protected String getDriver() {
-        return "ru.yandex.clickhouse.ClickHouseDriver";
+        return "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     }
 }

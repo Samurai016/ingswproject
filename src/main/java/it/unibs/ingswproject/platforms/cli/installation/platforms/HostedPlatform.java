@@ -1,4 +1,4 @@
-package it.unibs.ingswproject.installation.platforms;
+package it.unibs.ingswproject.platforms.cli.installation.platforms;
 
 import io.ebean.datasource.DataSourceConfig;
 import it.unibs.ingswproject.installation.DatabasePlatform;

@@ -6,7 +6,7 @@
 
     <groupId>it.unibs</groupId>
     <artifactId>ingswproject</artifactId>
-    <version>4.1.0</version>
+    <version>4.1.1</version>
     <packaging>jar</packaging>
     <licenses>
         <license>
@@ -67,6 +67,11 @@
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
             <version>1.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.13.0</version>
         </dependency>
 
         <!-- Passay -->

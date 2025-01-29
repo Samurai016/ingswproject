@@ -66,6 +66,7 @@ public class CliUtils {
 
     private boolean askForConfirmation(String message, boolean quittable) throws CliQuitException {
         do {
+            message += " " + this.translator.translate("confirmation_option");
             String input = this.readFromConsole(message, false, quittable);
             if (YES_VALUES.stream().anyMatch(input::equalsIgnoreCase)) {
                 return true;

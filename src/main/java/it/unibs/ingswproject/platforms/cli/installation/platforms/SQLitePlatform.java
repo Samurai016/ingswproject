@@ -1,12 +1,10 @@
-package it.unibs.ingswproject.installation.platforms;
+package it.unibs.ingswproject.platforms.cli.installation.platforms;
 
 import io.ebean.datasource.DataSourceConfig;
-import it.unibs.ingswproject.installation.DatabaseConfigurator;
 import it.unibs.ingswproject.installation.DatabasePlatform;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.translations.Translator;
 
-import javax.xml.crypto.Data;
 import java.io.File;
 
 /**

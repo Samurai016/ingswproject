@@ -3,15 +3,12 @@ package it.unibs.ingswproject;
 import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.errors.handlers.FileLogErrorHandler;
 import it.unibs.ingswproject.errors.handlers.DefaultErrorHandler;
-import it.unibs.ingswproject.installation.DatabaseConfigurator;
 import it.unibs.ingswproject.platforms.cli.CliAppFactory;
 import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.utils.CommandLineParser;
 import it.unibs.ingswproject.utils.FileUtils;
 import it.unibs.ingswproject.view.ApplicationFactory;
 import org.apache.commons.cli.CommandLine;
-
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -35,13 +32,6 @@ public class Main {
             // Display the help message if the user asks for it
             if (arguments.hasOption("help")) {
                 parser.printHelp();
-                return;
-            }
-
-            // Database configuration tool
-            if (arguments.hasOption("dbtool")) {
-                DatabaseConfigurator configurator = new DatabaseConfigurator();
-                configurator.configureConnection();
                 return;
             }
 

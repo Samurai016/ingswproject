@@ -96,7 +96,7 @@ public abstract class CliPageView {
         // 1. Stampa del header, del nome utente e dei breadcrumb
         System.out.printf(HEADER, this.projectUtils.getProjectVersion());
         System.out.println();
-        if (this.authService.isLoggedIn()) {
+        if (this.authService!=null && this.authService.isLoggedIn()) {
             String ruolo = this.translator.translate(this.authService.getCurrentUser().getRuolo().toString().toLowerCase());
             String userMessage = String.format(this.translator.translate("user_header_pattern"), this.authService.getCurrentUser().getUsername(), ruolo);
             System.out.println(userMessage);
