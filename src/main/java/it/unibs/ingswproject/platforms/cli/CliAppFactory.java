@@ -24,7 +24,6 @@ import it.unibs.ingswproject.utils.ProjectUtils;
 import it.unibs.ingswproject.view.ApplicationFactory;
 import org.apache.commons.cli.CommandLine;
 
-import java.io.IOException;
 import java.util.Locale;
 
 /**
