@@ -7,7 +7,7 @@
 # Ingegneria del Software - Progetto 2023/24
 
 ![Java](https://img.shields.io/badge/language-Java-brightgreen)
-![Version](https://img.shields.io/badge/version-4.0.0-blue)
+![Version](https://img.shields.io/badge/version-4.1.0-blue)
 
 
 Questo progetto è stato sviluppato come parte del corso di **Ingegneria del Software** (Anno Accademico 2023/24) ed è volto a supportare lo **scambio di prestazioni d’opera** senza utilizzo di denaro.  
@@ -34,13 +34,15 @@ L'applicazione permette a organizzazioni di gestire categorie di attività scamb
 
 * Scaricare il file `ingswproject-setup.exe` dalla sezione [Releases](https://github.com/Samurai016/ingswproject/releases/latest).  
 * Eseguire il file di setup e seguire le istruzioni a schermo.
-* Prima di lanciare il programma, assicurarsi di avere configurato la connessione al database nel file `application.yaml` nella directory:
-  - **Windows**: `%APPDATA%/ingsw_project`
-  - **Mac/Linux**: `$HOME/.ingsw_project`
+* Prima di lanciare il programma, assicurarsi di avere configurato la connessione al database.
   Per fare questo, fare riferimento alla [prossima sezione](#-configurazione-della-connessione-al-database).
 
 ### 🔧 Configurazione della connessione al database
-Nel file di configurazione `application.yaml` disponibile nella cartella `%APPDATA%/ingsw_project` (Windows) o `$HOME/.ingsw_project` (Mac/Linux) è possibile specificare i datasource da utilizzare, seguendo la sintassi supportata da [Ebean ORM](https://ebean.io/docs).  
+Il programma include uno tool per la configurazione automatica del database.
+Lo strumento viene lanciato automaticamente all'avvio del programma, se non è stata ancora configurata una connessione al database.
+In alternativa, è possibile lanciare lo strumento manualmente eseguendo il comando `ingswproject.exe --dbtool`.
+
+In ogni caso, nel file di configurazione `application.yaml` disponibile nella cartella `%APPDATA%/ingsw_project` (Windows) o `$HOME/.ingsw_project` (Mac/Linux) è possibile specificare i datasource da utilizzare, seguendo la sintassi supportata da [Ebean ORM](https://ebean.io/docs).  
 Il programma utilizzerà il database di default indicato nel file, se non specificato diversamente utilizzando l'opzione `-db` (vedi [Parametri opzionali](#-parametri-opzionali)).
 
 ### 📚 Parametri opzionali
@@ -52,6 +54,7 @@ Il programma accetta i seguenti parametri in input opzionali:
 - `-pw` o `--password`: Password per l'autenticazione automatica.
 - `-l` o `--language`: Specifica la lingua da utilizzare per l'interfaccia utente (codici ISO 639). Se non specificato oppure se la lingua non è supportata, verrà utilizzata la lingua di sistema.
 - `-v` o `--verbose`: Abilita la modalità di logging avanzata degli errori.
+- `-dbt` o `--dbtool`: Avvia lo strumento di configurazione del database.
 
 Esempio di esecuzione tramite riga di comando:
 ```bash

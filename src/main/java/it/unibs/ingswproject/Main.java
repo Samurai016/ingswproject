@@ -3,7 +3,9 @@ package it.unibs.ingswproject;
 import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.errors.handlers.FileLogErrorHandler;
 import it.unibs.ingswproject.errors.handlers.DefaultErrorHandler;
+import it.unibs.ingswproject.installation.DatabaseConfigurator;
 import it.unibs.ingswproject.platforms.cli.CliAppFactory;
+import it.unibs.ingswproject.platforms.cli.utils.CliUtils;
 import it.unibs.ingswproject.utils.CommandLineParser;
 import it.unibs.ingswproject.utils.FileUtils;
 import it.unibs.ingswproject.view.ApplicationFactory;
@@ -36,6 +38,13 @@ public class Main {
                 return;
             }
 
+            // Database configuration tool
+            if (arguments.hasOption("dbtool")) {
+                DatabaseConfigurator configurator = new DatabaseConfigurator();
+                configurator.configureConnection();
+                return;
+            }
+
             // Creo la factory per l'applicazione
             ApplicationFactory factory;
             if (arguments.getOptionValue("platform", "cli").equals("cli")) {
@@ -52,8 +61,7 @@ public class Main {
             errorManager.addErrorHandler(new FileLogErrorHandler());
             errorManager.handle(e);
 
-            System.out.println("Press any key to continue...");
-            new Scanner(System.in).nextLine();
+            CliUtils.waitForGeneralInput();
         }
     }
 }

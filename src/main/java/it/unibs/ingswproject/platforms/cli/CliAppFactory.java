@@ -5,6 +5,7 @@ import io.ebean.Database;
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.errors.handlers.FileLogErrorHandler;
+import it.unibs.ingswproject.installation.DatabaseConfigurator;
 import it.unibs.ingswproject.logic.BaseScambioStrategy;
 import it.unibs.ingswproject.logic.ScambioStrategy;
 import it.unibs.ingswproject.logic.routing.RoutingComputationStrategy;
@@ -22,6 +23,7 @@ import it.unibs.ingswproject.utils.ProjectUtils;
 import it.unibs.ingswproject.view.ApplicationFactory;
 import org.apache.commons.cli.CommandLine;
 
+import java.io.IOException;
 import java.util.Locale;
 
 /**
@@ -58,6 +60,19 @@ public class CliAppFactory implements ApplicationFactory {
         pageFactory.registerDependency(ErrorManager.class, errorManager);
 
         // Persistence
+        // Configurazione del database
+        DatabaseConfigurator databaseConfigurator = new DatabaseConfigurator();
+        if (!databaseConfigurator.isDatabaseConfigured()) {
+            try {
+                databaseConfigurator.configureConnection();
+                cliUtils.waitForInput();
+                System.exit(0);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        // Database
         Database database = arguments.hasOption("database") ? DB.byName(arguments.getOptionValue("database")) : DB.getDefault();
         StorageService storageService = new StorageService(database);
         pageFactory.registerDependency(Database.class, database);

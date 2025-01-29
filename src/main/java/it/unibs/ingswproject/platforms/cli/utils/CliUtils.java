@@ -25,6 +25,11 @@ public class CliUtils {
         new Scanner(System.in).nextLine();
     }
 
+    public static void waitForGeneralInput() {
+        System.out.println("Press any key to continue...");
+        new Scanner(System.in).nextLine();
+    }
+
     public String readFromConsole(String message) {
         return this.readFromConsole(message, false);
     }
