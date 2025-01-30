@@ -80,6 +80,9 @@ public class CliDatabaseConfigurator implements DatabaseConfigurator {
             System.out.println(this.translator.translate("db_connection_configuration_tool_description"));
             System.out.println();
 
+            System.out.println(this.translator.translate("db_connection_configuration_tool_file_notice", FileUtils.getConfigurationFile().getAbsolutePath()));
+            System.out.println();
+
             boolean valid = false;
             // noinspection ConstantValue
             do {

@@ -7,7 +7,7 @@
 # Ingegneria del Software - Progetto 2023/24
 
 ![Java](https://img.shields.io/badge/language-Java-brightgreen)
-![Version](https://img.shields.io/badge/version-4.1.1-blue)
+![Version](https://img.shields.io/badge/version-4.1.2-blue)
 
 
 Questo progetto è stato sviluppato come parte del corso di **Ingegneria del Software** (Anno Accademico 2023/24) ed è volto a supportare lo **scambio di prestazioni d’opera** senza utilizzo di denaro.  
@@ -63,11 +63,36 @@ ingswproject.exe -p cli -db my_database -u admin -pw admin -l en -v
 
 ## 💡 Requisiti
 
-- **Java** 23 o superiore.
+- **Java** 21 o superiore.
  
 Per lo sviluppo:
 - **Ebean ORM** per la gestione del database.
 - **Maven** per la gestione del progetto.
+
+## 🔍 FAQ
+
+Qui troverai le risposte alle domande più frequenti.
+Per ulteriori domande, ti invitiamo ad aprire una nuova [issue](https://github.com/Samurai016/ingswproject/issues/new), specificando il problema riscontrato.
+
+### Mi è apparso l'errore `This application requires a Java Runtime Environment.`
+Questo errore si verifica quando non è presente una versione di Java installata sul sistema.
+Per risolvere il problema, è necessario installare Java.
+1. Collegati alla pagina ufficiale per il download di Java: [Java SE Downloads](https://www.java.com/it/download/manual.jsp).
+2. Scarica il file di installazione per la tua piattaforma.
+3. Esegui il file di installazione e segui le istruzioni a schermo.
+4. Riavvia il PC.
+5. Lanciare nuovamente il programma.
+
+### Ho installato Java ma il programma non si avvia.
+Potrebbe capitare che il programma non riesca a trovare la versione di Java installata sul sistema.
+Per risolvere il problema, è necessario specificare manualmente il percorso di Java.
+Per fare questo cerca la cartella di installazione di Java (di solito si trova in `C:\Program Files\Java\` su Windows o `/usr/lib/jvm/` su Linux) e copia il percorso.
+Poi ti consigliamo di seguire le istruzioni presenti in questo [articolo](https://www.java.com/en/download/help/path.html) per impostare il percorso di Java.
+
+### Ogni volta che avvio il programma mi chiede di configurare il database.
+Il programma richiede la configurazione del database quando non rileva una connessione già configurata.
+Per risolvere il problema, assicurati di aver configurato correttamente il file `application.yaml` e di aver specificato il datasource da utilizzare.
+Lo strumento di configurazione del database ti dirà il file dove è possibile modificare le impostazioni.
 
 ## 👤 Autori
 

@@ -6,7 +6,7 @@
 
     <groupId>it.unibs</groupId>
     <artifactId>ingswproject</artifactId>
-    <version>4.1.1</version>
+    <version>4.1.2</version>
     <packaging>jar</packaging>
     <licenses>
         <license>
@@ -47,8 +47,9 @@
     </developers>
 
     <properties>
-        <maven.compiler.source>23</maven.compiler.source>
-        <maven.compiler.target>23</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <ebean.version>15.8.1</ebean.version>
         <slf4j.version>2.0.13</slf4j.version>
@@ -271,7 +272,7 @@
                             <jar>target/${project.artifactId}.jar</jar>
                             <icon>docs/logo.ico</icon>
                             <downloadUrl>${project.url}</downloadUrl>
-                            <supportUrl>${project.url}</supportUrl>
+                            <supportUrl>${project.url}#-faq</supportUrl>
                             <versionInfo>
                                 <fileVersion>${project.version}.0</fileVersion>
                                 <txtFileVersion>${project.version}.0</txtFileVersion>

@@ -28,6 +28,6 @@ public class CommandLineParser {
 
     public void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("ingswproject.exe [options]", this.options);
+        formatter.printHelp("ingswproject.exe [options]", this.options, true);
     }
 }
