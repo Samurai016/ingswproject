@@ -23,7 +23,7 @@ L'applicazione permette a organizzazioni di gestire categorie di attività scamb
   - Interfaccia CLI per fruitori.
 * **[Versione 3.0.0](https://github.com/Samurai016/ingswproject/releases/tag/v3.0.0)**
   - Possibilità di inserire nuove proposte di scambio per i fruitori.
-* **[Versione 4.0.0](https://github.com/Samurai016/ingswproject/releases/tag/v4.0.0)**
+* **[Versione 4.0.0](https://github.com/Samurai016/ingswproject/releases/tag/v4.1.2)**
   - Sistema di chiusura automatico delle proposte di scambio.
   - Sistema di notifica delle proposte di scambio chiuse ai configuratori.
   - Visualizzazione avanzate delle proposte.

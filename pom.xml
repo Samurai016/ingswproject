@@ -270,7 +270,7 @@
                 </executions>
             </plugin>
 
-            <!-- Maven Shade Plugin -->
+            <!-- Maven Shade Plugin: Create a single executable jar -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -295,7 +295,7 @@
                 </executions>
             </plugin>
 
-            <!-- Launch4j Maven Plugin -->
+            <!-- Launch4j Maven Plugin: Create a Windows executable -->
             <plugin>
                 <groupId>com.akathist.maven.plugins.launch4j</groupId>
                 <artifactId>launch4j-maven-plugin</artifactId>
