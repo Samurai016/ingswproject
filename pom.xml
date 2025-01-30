@@ -53,6 +53,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <ebean.version>15.8.1</ebean.version>
         <slf4j.version>2.0.13</slf4j.version>
+        <jre.version>jdk-21.0.6+7-jre</jre.version>
+        <jre.url>https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.6_7.zip</jre.url>
         <app.mainClass>it.unibs.ingswproject.Main</app.mainClass>
         <skipTests>true</skipTests>
     </properties>
@@ -196,14 +198,13 @@
             </resource>
         </resources>
         <plugins>
-            <!-- Ebean Enhancer -->
+            <!-- Ebean Enhancer: Enhance entity beans -->
             <plugin>
                 <groupId>io.ebean</groupId>
                 <artifactId>ebean-maven-plugin</artifactId>
                 <version>${ebean.version}</version>
                 <extensions>true</extensions>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -219,7 +220,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Maven Resources Plugin -->
+            <!-- Maven Resources Plugin: Copy resources -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -227,6 +228,46 @@
                 <configuration>
                     <encoding>UTF-8</encoding>
                 </configuration>
+            </plugin>
+
+            <!-- Maven Download Plugin: Download JRE -->
+            <plugin>
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>download-maven-plugin</artifactId>
+                <version>1.13.0</version>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                        <configuration>
+                            <url>${jre.url}</url>
+                            <outputFileName>jre.zip</outputFileName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Maven Antrun Plugin: Unzip JRE -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <configuration>
+                            <target>
+                                <unzip src="target/jre.zip" dest="target/jre"/>
+                                <delete file="target/jre.zip"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- Maven Shade Plugin -->
@@ -286,6 +327,9 @@
                                 <companyName>${project.organization.name}</companyName>
                                 <language>ITALIAN</language>
                             </versionInfo>
+                            <jre>
+                                <path>./jre/${jre.version};%JAVA_HOME%;%PATH%</path>
+                            </jre>
                         </configuration>
                     </execution>
                 </executions>

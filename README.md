@@ -75,25 +75,25 @@ Qui troverai le risposte alle domande più frequenti.
 Per ulteriori domande, ti invitiamo ad aprire una nuova [issue](https://github.com/Samurai016/ingswproject/issues/new), specificando il problema riscontrato.
 
 ### Mi è apparso l'errore `This application requires a Java Runtime Environment.`
-Questo errore si verifica quando non è presente una versione di Java installata sul sistema.
-Per risolvere il problema, è necessario installare Java.
-1. Collegati alla pagina ufficiale per il download di Java: [Java SE Downloads](https://www.java.com/it/download/manual.jsp).
-2. Scarica il file di installazione per la tua piattaforma.
-3. Esegui il file di installazione e segui le istruzioni a schermo.
-4. Riavvia il PC.
-5. Lanciare nuovamente il programma.
-
-### Ho installato Java ma il programma non si avvia.
-Potrebbe capitare che il programma non riesca a trovare la versione di Java installata sul sistema.
-Per risolvere il problema, è necessario specificare manualmente il percorso di Java.
-Per fare questo cerca la cartella di installazione di Java (di solito si trova in `C:\Program Files\Java\` su Windows o `/usr/lib/jvm/` su Linux) e copia il percorso.
-Poi ti consigliamo di seguire le istruzioni presenti in questo [articolo](https://www.java.com/en/download/help/path.html) per impostare il percorso di Java.
-
+Questo errore si verifica quando non è presente una versione di Java installata sul sistema.  
+Di default, l'installer dell'applicazione installa una versione di Java, quindi per prima cosa assicurati di aver installato il programma tramite l'installer ufficiale.  
+Se il problema persiste, segui queste istruzioni:  
+1. Apri la cartella di installazione dell'applicazione.  
+2. Verifica che sia presente la cartella `jre` all'interno della cartella di installazione.  
+3. Se la cartella `jre` non è presente, reinstalla l'applicazione.  
+4. Altrimenti, copia il percorso della cartella `jre` e segui le istruzioni presenti in questo [articolo](https://www.java.com/en/download/help/path.html) per impostare il percorso di Java.  
+  
+### Ho installato Java ma il programma non si avvia.  
+Potrebbe capitare che il programma non riesca a trovare la versione di Java installata sul sistema.  
+Per risolvere il problema, è necessario specificare manualmente il percorso di Java.  
+Per fare questo cerca la cartella di installazione di Java (di solito si trova in `C:\Program Files\Java\` su Windows o `/usr/lib/jvm/` su Linux) e copia il percorso.  
+Poi ti consigliamo di seguire le istruzioni presenti in questo [articolo](https://www.java.com/en/download/help/path.html) per impostare il percorso di Java.  
+  
 ### Ogni volta che avvio il programma mi chiede di configurare il database.
-Il programma richiede la configurazione del database quando non rileva una connessione già configurata.
-Per risolvere il problema, assicurati di aver configurato correttamente il file `application.yaml` e di aver specificato il datasource da utilizzare.
-Lo strumento di configurazione del database ti dirà il file dove è possibile modificare le impostazioni.
-
+Il programma richiede la configurazione del database quando non rileva una connessione già configurata.  
+Per risolvere il problema, assicurati di aver configurato correttamente il file `application.yaml` e di aver specificato il datasource da utilizzare.  
+Lo strumento di configurazione del database ti dirà il file dove è possibile modificare le impostazioni.  
+  
 ## 👤 Autori
 
 - **Pierpaolo Bonalda** - [p.bonalda@studenti.unibs.it](mailto:p.bonalda@studenti.unibs.it) - [GitHub](https://github.com/PierpaoloBonalda)
