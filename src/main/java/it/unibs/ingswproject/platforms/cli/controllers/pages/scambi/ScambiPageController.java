@@ -23,6 +23,11 @@ public class ScambiPageController extends CliPageController {
     protected final PageFactory pageFactory;
     protected final StorageService storageService;
     protected final HashMap<Character, Scambio> scambi = new HashMap<>();
+    /**
+     * Se impostata a true, ogni volta che si accede alla pagina verranno ricaricati gli scambi
+     * altrimenti verranno mantenuti quelli già presenti
+     */
+    protected boolean shouldRefreshScambi = true;
 
     @PageConstructor
     public ScambiPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, StorageService storageService, CliUtils cliUtils, ProjectUtils projectUtils) {
@@ -38,12 +43,7 @@ public class ScambiPageController extends CliPageController {
         }
 
         // Get default scambi
-        List<Scambio> scambi = ((ScambioRepository) this.storageService.getRepository(Scambio.class))
-                .findByAutore(this.authService.getCurrentUser())
-                .stream()
-                .sorted((s1, s2) -> s2.getDataCreazione().compareTo(s1.getDataCreazione()))
-                .toList();
-        this.setScambi(scambi);
+        this.fetchScambi();
     }
 
     @Override
@@ -61,14 +61,29 @@ public class ScambiPageController extends CliPageController {
     }
 
     public ScambiPageController setScambi(List<Scambio> scambi) {
+        this.scambi.clear();
         for (int i = 0; i < scambi.size(); i++) {
             this.scambi.put((char) ('1' + i), scambi.get(i));
         }
+        this.shouldRefreshScambi = false;
         return this;
     }
 
     public HashMap<Character, Scambio> getScambi() {
+        if (this.shouldRefreshScambi) {
+            this.fetchScambi();
+        }
         return this.scambi;
+    }
+
+    private void fetchScambi() {
+        List<Scambio> scambi = ((ScambioRepository) this.storageService.getRepository(Scambio.class))
+                .findByAutore(this.authService.getCurrentUser())
+                .stream()
+                .sorted((s1, s2) -> s2.getDataCreazione().compareTo(s1.getDataCreazione()))
+                .toList();
+        this.setScambi(scambi);
+        this.shouldRefreshScambi = true;
     }
 
     @Override
