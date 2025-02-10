@@ -7,7 +7,7 @@
 # Ingegneria del Software - Progetto 2023/24
 
 ![Java](https://img.shields.io/badge/language-Java-brightgreen)
-![Version](https://img.shields.io/badge/version-4.1.3-blue)
+![Version](https://img.shields.io/badge/version-4.1.4-blue)
 
 
 Questo progetto è stato sviluppato come parte del corso di **Ingegneria del Software** (Anno Accademico 2023/24) ed è volto a supportare lo **scambio di prestazioni d’opera** senza utilizzo di denaro.  
@@ -23,7 +23,7 @@ L'applicazione permette a organizzazioni di gestire categorie di attività scamb
   - Interfaccia CLI per fruitori.
 * **[Versione 3.0.0](https://github.com/Samurai016/ingswproject/releases/tag/v3.0.0)**
   - Possibilità di inserire nuove proposte di scambio per i fruitori.
-* **[Versione 4.0.0](https://github.com/Samurai016/ingswproject/releases/tag/v4.1.3)**
+* **[Versione 4.0.0](https://github.com/Samurai016/ingswproject/releases/tag/v4.1.4)**
   - Sistema di chiusura automatico delle proposte di scambio.
   - Sistema di notifica delle proposte di scambio chiuse ai configuratori.
   - Visualizzazione avanzate delle proposte.
