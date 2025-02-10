@@ -144,6 +144,14 @@ public class Utente {
         return password;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Utente utente) {
+            return this.username.equals(utente.username);
+        }
+        return false;
+    }
+
     public enum Ruolo {
         CONFIGURATORE, FRUITORE
     }

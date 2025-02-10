@@ -33,10 +33,20 @@ public class ScambioPageController extends CliPageController {
 
     public ScambioPageController setScambio(Scambio scambio) {
         this.scambio = scambio;
-        if (this.scambio.getStato() == Scambio.Stato.APERTO && this.authService.getCurrentUser() == this.scambio.getAutore()) {
-            this.commands.put('1', this.translator.translate("scambio_page_ritira_command"));
-        }
         return this;
+    }
+
+    @Override
+    public void render() {
+        // Prima di renderizzare la pagina, aggiungo, se necessario, i comandi per ritirare la proposta
+        assert this.scambio != null; // Scambio non può essere null
+        if (this.scambio.getStato() == Scambio.Stato.APERTO && this.authService.getCurrentUser().equals(this.scambio.getAutore())) {
+            this.commands.put('1', this.translator.translate("scambio_page_ritira_command"));
+        } else {
+            this.commands.remove('1');
+        }
+
+        super.render();
     }
 
     @Override

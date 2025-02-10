@@ -38,7 +38,7 @@ public class RitiraPropostaPageController extends CliPageController {
         if (this.scambio == null) {
             return false;
         }
-        return this.scambio.getAutore() == this.authService.getCurrentUser();
+        return this.authService.getCurrentUser().equals(this.scambio.getAutore());
     }
 
     public RitiraPropostaPageController setScambio(Scambio scambio) {
