@@ -56,7 +56,6 @@ public class EntityRepository<T> {
      */
     public void delete(T entity) {
         this.database.delete(entity);
-        this.database.refresh(entity);
     }
 
     /**
