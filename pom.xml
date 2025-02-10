@@ -53,8 +53,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <ebean.version>15.8.1</ebean.version>
         <slf4j.version>2.0.13</slf4j.version>
-        <jre.version>jdk-21.0.6+7-jre</jre.version>
-        <jre.url>https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.6%2B7/OpenJDK21U-jre_x64_windows_hotspot_21.0.6_7.zip</jre.url>
         <app.mainClass>it.unibs.ingswproject.Main</app.mainClass>
         <skipTests>true</skipTests>
     </properties>
@@ -230,44 +228,25 @@
                 </configuration>
             </plugin>
 
-            <!-- Maven Download Plugin: Download JRE -->
+            <!-- Maven JRE Plugin: Bundle JRE -->
             <plugin>
-                <groupId>com.googlecode.maven-download-plugin</groupId>
-                <artifactId>download-maven-plugin</artifactId>
-                <version>1.13.0</version>
+                <groupId>io.github.samurai016.plugins</groupId>
+                <artifactId>jre-maven-plugin</artifactId>
+                <version>1.0.0</version>
                 <executions>
                     <execution>
-                        <phase>process-resources</phase>
                         <goals>
-                            <goal>wget</goal>
-                        </goals>
-                        <configuration>
-                            <url>${jre.url}</url>
-                            <outputFileName>jre.zip</outputFileName>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Maven Antrun Plugin: Unzip JRE -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <configuration>
-                            <target>
-                                <unzip src="target/jre.zip" dest="target/jre"/>
-                                <delete file="target/jre.zip"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
+                            <goal>jre-bundler</goal>
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <version>${maven.compiler.release}</version>
+                    <architecture>x64</architecture>
+                    <imagetype>jre</imagetype>
+                    <os>windows</os>
+                    <unzipto>target/jre</unzipto>
+                </configuration>
             </plugin>
 
             <!-- Maven Shade Plugin: Create a single executable jar -->
@@ -328,7 +307,7 @@
                                 <language>ITALIAN</language>
                             </versionInfo>
                             <jre>
-                                <path>./jre/${jre.version};%JAVA_HOME%;%PATH%</path>
+                                <path>./jre;%JAVA_HOME%;%PATH%</path>
                             </jre>
                         </configuration>
                     </execution>
