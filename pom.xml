@@ -6,7 +6,7 @@
 
     <groupId>it.unibs</groupId>
     <artifactId>ingswproject</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
     <packaging>jar</packaging>
     <licenses>
         <license>
@@ -156,7 +156,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
+            <version>5.11.4</version>
             <scope>test</scope>
         </dependency>
 
@@ -178,27 +178,29 @@
             </resource>
         </resources>
         <plugins>
-            <!-- Ebean Enhancer -->
+            <!-- Ebean Enhancer: Enhance entity beans -->
             <plugin>
                 <groupId>io.ebean</groupId>
                 <artifactId>ebean-maven-plugin</artifactId>
                 <version>${ebean.version}</version>
-                <executions>
-                    <!-- enhance main classes -->
-                    <execution>
-                        <id>main</id>
-                        <phase>process-classes</phase>
-                        <configuration>
-                            <transformArgs>debug=1</transformArgs>
-                        </configuration>
-                        <goals>
-                            <goal>enhance</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path> <!-- generate ebean query beans -->
+                            <groupId>io.ebean</groupId>
+                            <artifactId>querybean-generator</artifactId>
+                            <version>${ebean.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
 
-            <!-- Maven Resources Plugin -->
+            <!-- Maven Resources Plugin: Copy resources -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -208,7 +210,28 @@
                 </configuration>
             </plugin>
 
-            <!-- Maven Shade Plugin -->
+            <!-- Maven JRE Plugin: Bundle JRE -->
+            <plugin>
+                <groupId>io.github.samurai016.plugins</groupId>
+                <artifactId>jre-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jre-bundler</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <version>${maven.compiler.release}</version>
+                    <architecture>x64</architecture>
+                    <imagetype>jre</imagetype>
+                    <os>windows</os>
+                    <unzipto>target/jre</unzipto>
+                </configuration>
+            </plugin>
+
+            <!-- Maven Shade Plugin: Create a single executable jar -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -233,7 +256,7 @@
                 </executions>
             </plugin>
 
-            <!-- Launch4j Maven Plugin -->
+            <!-- Launch4j Maven Plugin: Create a Windows executable -->
             <plugin>
                 <groupId>com.akathist.maven.plugins.launch4j</groupId>
                 <artifactId>launch4j-maven-plugin</artifactId>
@@ -251,7 +274,7 @@
                             <jar>target/${project.artifactId}.jar</jar>
                             <icon>docs/logo.ico</icon>
                             <downloadUrl>${project.url}</downloadUrl>
-                            <supportUrl>${project.url}</supportUrl>
+                            <supportUrl>${project.url}#-faq</supportUrl>
                             <versionInfo>
                                 <fileVersion>${project.version}.0</fileVersion>
                                 <txtFileVersion>${project.version}.0</txtFileVersion>
@@ -265,6 +288,9 @@
                                 <companyName>${project.organization.name}</companyName>
                                 <language>ITALIAN</language>
                             </versionInfo>
+                            <jre>
+                                <path>./jre;%JAVA_HOME%;%PATH%</path>
+                            </jre>
                         </configuration>
                     </execution>
                 </executions>
