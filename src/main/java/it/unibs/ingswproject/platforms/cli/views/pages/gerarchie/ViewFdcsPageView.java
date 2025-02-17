@@ -16,6 +16,7 @@ import it.unibs.ingswproject.translations.Translator;
 import it.unibs.ingswproject.utils.ProjectUtils;
 import it.unibs.ingswproject.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -73,9 +74,7 @@ public class ViewFdcsPageView extends CliPageView {
     }
 
     private List<FattoreDiConversione> getFDCsToView(Nodo root) {
-        // Prendo gli FDC a cui son direttamente connesso
-        FattoreDiConversioneRepository repository = (FattoreDiConversioneRepository) this.storageService.getRepository(FattoreDiConversione.class);
-        List<FattoreDiConversione> fdcs = repository.findByNodo(root);
+        List<FattoreDiConversione> fdcs = new ArrayList<>();
 
         // Calcolo tutti gli altri
         HashMap<Nodo, Double> distances = this.routingComputationStrategy.getRoutingCostsFrom(root);
