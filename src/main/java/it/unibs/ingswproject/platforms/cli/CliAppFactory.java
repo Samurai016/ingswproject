@@ -5,6 +5,10 @@ import io.ebean.Database;
 import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.errors.handlers.FileLogErrorHandler;
+import it.unibs.ingswproject.logic.routing.RoutingComputationStrategy;
+import it.unibs.ingswproject.logic.routing.SimpleRoutingComputation;
+import it.unibs.ingswproject.logic.weight.SimpleWeightComputation;
+import it.unibs.ingswproject.logic.weight.WeightComputationStrategy;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.platforms.cli.errors.CliErrorHandler;
 import it.unibs.ingswproject.platforms.cli.router.CliRouter;
@@ -60,6 +64,12 @@ public class CliAppFactory implements ApplicationFactory {
         CliApp app = new CliApp(router, pageFactory, errorManager);
         pageFactory.registerDependency(CliRouter.class, router);
         pageFactory.registerDependency(CliApp.class, app);
+
+        // Logic
+        WeightComputationStrategy weightComputationStrategy = new SimpleWeightComputation();
+        pageFactory.registerDependency(WeightComputationStrategy.class, weightComputationStrategy);
+        RoutingComputationStrategy routingComputationStrategy = new SimpleRoutingComputation(storageService, weightComputationStrategy);
+        pageFactory.registerDependency(RoutingComputationStrategy.class, routingComputationStrategy);
 
         return app;
     }

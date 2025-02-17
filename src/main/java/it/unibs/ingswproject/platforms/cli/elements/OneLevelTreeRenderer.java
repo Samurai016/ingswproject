@@ -17,6 +17,7 @@ public class OneLevelTreeRenderer extends TreeRenderer {
     public OneLevelTreeRenderer(Translator translator) {
         this.translator = translator;
     }
+
     public OneLevelTreeRenderer(Translator translator, Nodo root) {
         this(translator);
         this.setRoot(root);
@@ -32,7 +33,8 @@ public class OneLevelTreeRenderer extends TreeRenderer {
         String nomeAttributo = this.root.getNomeAttributo() == null
                 ? ""
                 : String.format(this.translator.translate("tree_renderer_attribute_pattern"), this.root.getNomeAttributo());
-        System.out.printf(this.translator.translate("tree_renderer_child_pattern"), this.root.getNome(), nomeAttributo);
+        String descrizione = this.getDescrizione(this.root);
+        System.out.printf(this.translator.translate("tree_renderer_child_pattern"), this.root.getNome(), descrizione, nomeAttributo);
         System.out.println();
 
         // No items
@@ -46,8 +48,26 @@ public class OneLevelTreeRenderer extends TreeRenderer {
         // Stampo figli
         for (int i = 0; i < tree.size(); i++) {
             Nodo figlio = tree.get(i);
-            System.out.printf("\t" + this.translator.translate("tree_renderer_selectable_pattern"), i+1, figlio.getNome());
+            String descrizioneFiglio = this.getDescrizione(figlio);
+            String valoreAttributo = this.getValoreAttributo(figlio);
+
+            System.out.print("\t");
+            System.out.printf(
+                    this.translator.translate("tree_renderer_selectable_pattern"),
+                    i + 1,
+                    figlio.getNome(),
+                    valoreAttributo,
+                    descrizioneFiglio
+            );
             System.out.println();
         }
+    }
+
+    private String getDescrizione(Nodo nodo) {
+        return (nodo.getDescrizione() == null || nodo.getDescrizione().isBlank()) ? "" : String.format(this.translator.translate("tree_renderer_description_pattern"), nodo.getDescrizione());
+    }
+
+    private String getValoreAttributo(Nodo nodo) {
+        return (nodo.getValoreAttributo() == null || nodo.getValoreAttributo().isBlank()) ? "" : String.format(this.translator.translate("tree_renderer_attribute_value_pattern"), nodo.getValoreAttributo());
     }
 }

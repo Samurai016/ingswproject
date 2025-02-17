@@ -12,4 +12,14 @@ public class SimpleWeightComputation implements WeightComputationStrategy {
     public double getMinAcceptedWeight() {
         return FattoreDiConversione.MIN_WEIGHT;
     }
+
+    @Override
+    public double getInitialWeight() {
+        return 1.0; // Elemento neutro del prodotto di numeri reali
+    }
+
+    @Override
+    public double computeWeight(double currentWeight, double targetWeight) {
+        return targetWeight * currentWeight;
+    }
 }

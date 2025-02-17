@@ -71,7 +71,7 @@ public class BaseFattoreDiConversioneStrategy implements FattoreDiConversioneStr
         // Se è una nuova gerarchia, e non è la prima gerarchia,
         // aggiungo un fattore di conversione tra una delle foglie e una foglia di un'altra gerarchia
         NodoRepository nodoRepository = (NodoRepository) this.storageService.getRepository(Nodo.class);
-        List<Nodo> gerarchie = nodoRepository.findGerarchie();
+        List<Nodo> gerarchie = nodoRepository.findGerarchie().stream().filter(n -> !n.equals(nodo)).toList();
         if (nodo.isRoot() && !gerarchie.isEmpty()) {
             Nodo altraGerarchiaConFoglie = gerarchie.stream().filter(g -> !g.getFoglie().isEmpty()).findFirst().orElse(null);
             if (altraGerarchiaConFoglie != null) {
@@ -96,5 +96,4 @@ public class BaseFattoreDiConversioneStrategy implements FattoreDiConversioneStr
         FattoreDiConversioneRepository fdcRepository = (FattoreDiConversioneRepository) this.storageService.getRepository(FattoreDiConversione.class);
         return fdcRepository.findByNodo(nodo);
     }
-
 }

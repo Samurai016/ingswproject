@@ -186,7 +186,6 @@ public class AddNodoPageView extends CliPageView {
                     boolean isNodiOfDiverseGerarchie = fdc.getNodo1().getRoot() != fdc.getNodo2().getRoot();
                     String fattoreInput = this.cliUtils.readFromConsoleQuittable(String.format(
                             this.translator.translate("add_node_page_gerarchia_fdc_pattern"),
-                            fdc.getNodo1().getNome(), fdc.getNodo2().getNome(),
                             fdc.getNodo1().getNome() + (isNodiOfDiverseGerarchie ? String.format(" (%s)", fdc.getNodo1().getRoot().getNome()) : ""),
                             fdc.getNodo2().getNome() + (isNodiOfDiverseGerarchie ? String.format(" (%s)", fdc.getNodo2().getRoot().getNome()) : "")
                     ));
