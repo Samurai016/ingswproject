@@ -16,12 +16,12 @@ import it.unibs.ingswproject.router.PageFactory;
 public class CliApp implements Application {
     protected final PageRouter router;
     protected final PageFactory pageFactory;
-    protected final ErrorManager errorHandler;
+    protected final ErrorManager errorManager;
 
-    public CliApp(PageRouter router, PageFactory pageFactory, ErrorManager errorHandler) {
+    public CliApp(PageRouter router, PageFactory pageFactory, ErrorManager errorManager) {
         this.router = router;
         this.pageFactory = pageFactory;
-        this.errorHandler = errorHandler;
+        this.errorManager = errorManager;
     }
 
     /**
@@ -38,7 +38,7 @@ public class CliApp implements Application {
                 // Questo serve a fare si che l'applicazione termini solo quando l'utente esce dall'ultima pagina della cronologia
             }
         } catch (Throwable e) {
-            this.errorHandler.handle(e);
+            this.errorManager.handle(e);
         }
     }
 

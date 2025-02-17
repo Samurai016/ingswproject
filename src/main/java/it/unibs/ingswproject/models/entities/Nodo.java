@@ -1,6 +1,7 @@
 package it.unibs.ingswproject.models.entities;
 
 import io.ebean.annotation.NotNull;
+import it.unibs.ingswproject.utils.Utils;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -100,6 +101,17 @@ public class Nodo {
 
     public List<Nodo> getFigli() {
         return this.figli;
+    }
+
+    public List<Nodo> getFoglie() {
+        if (this.isFoglia()) {
+            return List.of(this);
+        }
+        if (this.figli.isEmpty()) {
+            return List.of();
+        }
+        //noinspection unchecked
+        return (List<Nodo>) Utils.flatten(this.figli.stream().map(Nodo::getFoglie).toList());
     }
 
     public List<FattoreDiConversione> getFattoriDiConversioneAndata() {

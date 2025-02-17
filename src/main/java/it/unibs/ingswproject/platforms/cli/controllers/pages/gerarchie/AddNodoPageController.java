@@ -4,7 +4,7 @@ import it.unibs.ingswproject.auth.AuthService;
 import it.unibs.ingswproject.logic.weight.SimpleWeightComputation;
 import it.unibs.ingswproject.logic.weight.WeightComputationStrategy;
 import it.unibs.ingswproject.platforms.cli.controllers.CliPageController;
-import it.unibs.ingswproject.errors.ErrorHandler;
+import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.logic.BaseFattoreDiConversioneStrategy;
 import it.unibs.ingswproject.logic.FattoreDiConversioneStrategy;
 import it.unibs.ingswproject.models.StorageService;
@@ -24,13 +24,13 @@ public class AddNodoPageController extends CliPageController {
     protected Nodo root;
 
     @PageConstructor
-    public AddNodoPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService, ErrorHandler errorHandler) {
+    public AddNodoPageController(CliApp app, Translator translator, AuthService authService, PageFactory pageFactory, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService, ErrorManager errorManager) {
         super(app, translator);
         this.authService = authService;
         this.pageFactory = pageFactory;
         FattoreDiConversioneStrategy fdcStrategy = new BaseFattoreDiConversioneStrategy(storageService);
         WeightComputationStrategy weightComputationStrategy = new SimpleWeightComputation();
-        this.view = new AddNodoPageView(app, this, translator, cliUtils, projectUtils, storageService, errorHandler, fdcStrategy, weightComputationStrategy, authService);
+        this.view = new AddNodoPageView(app, this, translator, cliUtils, projectUtils, storageService, errorManager, fdcStrategy, weightComputationStrategy, authService);
 
         this.commands.put(CliPageController.COMMAND_BACK, this.translator.translate("home_page_command_exit")); // Override default command (0 -> Esci)
 

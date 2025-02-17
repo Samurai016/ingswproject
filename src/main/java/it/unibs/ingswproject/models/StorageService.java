@@ -6,6 +6,7 @@ import it.unibs.ingswproject.models.entities.Comprensorio;
 import it.unibs.ingswproject.models.entities.FattoreDiConversione;
 import it.unibs.ingswproject.models.entities.Nodo;
 import it.unibs.ingswproject.models.entities.Utente;
+import it.unibs.ingswproject.models.repositories.ComprensorioRepository;
 import it.unibs.ingswproject.models.repositories.FattoreDiConversioneRepository;
 import it.unibs.ingswproject.models.repositories.NodoRepository;
 
@@ -30,7 +31,7 @@ public class StorageService {
      */
     public StorageService(Database database) {
         this.database = database;
-        this.repositories.put(Comprensorio.class, new EntityRepository<>(Comprensorio.class, this.database));
+        this.repositories.put(Comprensorio.class, new ComprensorioRepository(this.database));
         this.repositories.put(Nodo.class, new NodoRepository(this.database));
         this.repositories.put(FattoreDiConversione.class, new FattoreDiConversioneRepository(this.database));
         this.repositories.put(Utente.class, new EntityRepository<>(Utente.class, this.database));

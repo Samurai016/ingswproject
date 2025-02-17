@@ -2,13 +2,14 @@ package it.unibs.ingswproject.platforms.cli.views.pages.gerarchie;
 
 import io.ebean.Transaction;
 import it.unibs.ingswproject.auth.AuthService;
-import it.unibs.ingswproject.errors.ErrorHandler;
+import it.unibs.ingswproject.errors.ErrorManager;
 import it.unibs.ingswproject.logic.FattoreDiConversioneStrategy;
 import it.unibs.ingswproject.logic.weight.WeightComputationStrategy;
 import it.unibs.ingswproject.models.EntityRepository;
 import it.unibs.ingswproject.models.StorageService;
 import it.unibs.ingswproject.models.entities.FattoreDiConversione;
 import it.unibs.ingswproject.models.entities.Nodo;
+import it.unibs.ingswproject.models.repositories.NodoRepository;
 import it.unibs.ingswproject.platforms.cli.CliApp;
 import it.unibs.ingswproject.platforms.cli.controllers.pages.gerarchie.AddNodoPageController;
 import it.unibs.ingswproject.platforms.cli.errors.exceptions.CliQuitException;
@@ -26,15 +27,15 @@ import java.util.List;
  */
 public class AddNodoPageView extends CliPageView {
     protected final StorageService storageService;
-    protected final ErrorHandler errorHandler;
+    protected final ErrorManager errorManager;
     protected final FattoreDiConversioneStrategy fattoreDiConversioneStrategy;
     protected final WeightComputationStrategy weightComputationStrategy;
 
     @PageConstructor
-    public AddNodoPageView(CliApp app, AddNodoPageController controller, Translator translator, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService, ErrorHandler errorHandler, FattoreDiConversioneStrategy fattoreDiConversioneStrategy, WeightComputationStrategy weightComputationStrategy, AuthService authService) {
+    public AddNodoPageView(CliApp app, AddNodoPageController controller, Translator translator, CliUtils cliUtils, ProjectUtils projectUtils, StorageService storageService, ErrorManager errorManager, FattoreDiConversioneStrategy fattoreDiConversioneStrategy, WeightComputationStrategy weightComputationStrategy, AuthService authService) {
         super(app, controller, translator, cliUtils, projectUtils, authService);
         this.storageService = storageService;
-        this.errorHandler = errorHandler;
+        this.errorManager = errorManager;
         this.fattoreDiConversioneStrategy = fattoreDiConversioneStrategy;
         this.weightComputationStrategy = weightComputationStrategy;
     }
@@ -81,18 +82,26 @@ public class AddNodoPageView extends CliPageView {
         } catch (CliQuitException e) {
             // Non fare nulla, l'utente ha deciso di uscire
         } catch (Throwable e) {
-            this.errorHandler.handle(e);
+            this.errorManager.handle(e);
         }
     }
 
     protected Nodo enterGerarchia() throws CliQuitException {
+        NodoRepository repository = (NodoRepository) this.storageService.getRepository(Nodo.class);
         Nodo gerarchia = new Nodo();
 
         System.out.println(this.translator.translate("add_node_page_gerarchia_step1"));
 
         // Nome
-        String nome = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_gerarchia_name"));
-        gerarchia.setNome(nome);
+        boolean isNomeOk;
+        do {
+            String nome = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_gerarchia_name"));
+            gerarchia.setNome(nome);
+            isNomeOk = !repository.existsWithSameName(gerarchia);
+            if (!isNomeOk) {
+                System.out.println(this.translator.translate("nodo_same_name_not_allowed"));
+            }
+        } while (!isNomeOk);
 
         // Descrizione
         String descrizione = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_gerarchia_description"), true);
@@ -129,6 +138,7 @@ public class AddNodoPageView extends CliPageView {
     }
 
     protected Nodo enterFoglia(Nodo root, Nodo foglia) throws CliQuitException {
+        NodoRepository repository = (NodoRepository) this.storageService.getRepository(Nodo.class);
         foglia.setParent(root);
 
         if (root != null && root.getNomeAttributo() == null) {
@@ -138,12 +148,26 @@ public class AddNodoPageView extends CliPageView {
         }
 
         if (foglia.getValoreAttributo() == null) {
-            String valoreAttributo = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_foglia_valore"));
-            foglia.setValoreAttributo(valoreAttributo);
+            boolean isValoreOk;
+            do {
+                String valoreAttributo = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_foglia_valore"));
+                foglia.setValoreAttributo(valoreAttributo);
+                isValoreOk = !repository.existsWithSameAttributeValue(foglia);
+                if (!isValoreOk) {
+                    System.out.println(this.translator.translate("nodo_same_attribute_value_not_allowed"));
+                }
+            } while (!isValoreOk);
         }
 
-        String nomeFoglia = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_foglia_name"));
-        foglia.setNome(nomeFoglia);
+        boolean isNomeOk;
+        do {
+            String nomeFoglia = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_foglia_name"));
+            foglia.setNome(nomeFoglia);
+            isNomeOk = !repository.existsWithSameName(foglia);
+            if (!isNomeOk) {
+                System.out.println(this.translator.translate("nodo_same_name_not_allowed"));
+            }
+        } while (!isNomeOk);
 
         String descrizioneFoglia = this.cliUtils.readFromConsoleQuittable(this.translator.translate("add_node_page_foglia_description"), true);
         foglia.setDescrizione(descrizioneFoglia);
@@ -159,9 +183,12 @@ public class AddNodoPageView extends CliPageView {
 
             do {
                 try {
+                    boolean isNodiOfDiverseGerarchie = fdc.getNodo1().getRoot() != fdc.getNodo2().getRoot();
                     String fattoreInput = this.cliUtils.readFromConsoleQuittable(String.format(
                             this.translator.translate("add_node_page_gerarchia_fdc_pattern"),
-                            fdc.getNodo1().getNome(), fdc.getNodo2().getNome()
+                            fdc.getNodo1().getNome(), fdc.getNodo2().getNome(),
+                            fdc.getNodo1().getNome() + (isNodiOfDiverseGerarchie ? String.format(" (%s)", fdc.getNodo1().getRoot().getNome()) : ""),
+                            fdc.getNodo2().getNome() + (isNodiOfDiverseGerarchie ? String.format(" (%s)", fdc.getNodo2().getRoot().getNome()) : "")
                     ));
                     fattore = Double.parseDouble(fattoreInput);
 
