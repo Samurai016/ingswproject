@@ -65,6 +65,7 @@ public class SimpleRoutingComputation implements RoutingComputationStrategy {
             int index1 = this.nodeIndexMap.get(arco.getNodo1());
             int index2 = this.nodeIndexMap.get(arco.getNodo2());
             this.graph.addEdge(index1, index2, arco.getFattore(arco.getNodo1()));
+            this.graph.addEdge(index2, index1, arco.getFattore(arco.getNodo2()));
         }
     }
 
