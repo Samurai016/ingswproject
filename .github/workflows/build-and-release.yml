@@ -1,0 +1,70 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v[0-9]+\.[0-9]+\.[0-9]+' # Match major version tags
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Extract Maven project version
+        run: echo "version=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+        id: maven_version
+
+      - name: Extract Maven project JDK version
+        run: echo "jdk=$(mvn -q -Dexec.executable=echo -Dexec.args='${maven.compiler.source}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+        id: maven_jdk
+
+      - name: Get current date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+        id: date
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ steps.maven_jdk.outputs.jdk }}
+          distribution: 'temurin'
+
+      - name: Cache Maven repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2-
+
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Build the Windows wizard
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.2
+        with:
+          path: winwizard.iss
+
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: ${{ github.workspace }}/target/ingswproject-setup.exe,${{ github.workspace }}/target/ingswproject.exe,${{ github.workspace }}/target/ingswproject.jar
+          artifactErrorsFailBuild: true
+          allowUpdates: true
+          makeLatest: true
+          removeArtifacts: true
+          tag: v${{ steps.maven_version.outputs.version }}
+          name: v${{ steps.maven_version.outputs.version }}
+          body: |
+            ## [v${{ steps.maven_version.outputs.version }}] - ${{ steps.date.outputs.date }}
+            
+            ---
+            
+            Automated release for version ${{ steps.maven_version.outputs.version }}.
