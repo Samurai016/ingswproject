@@ -7,7 +7,7 @@
 # Ingegneria del Software - Progetto 2023/24
 
 ![Java](https://img.shields.io/badge/language-Java-brightgreen)
-![Version](https://img.shields.io/badge/version-4.1.4-blue)
+![Version](https://img.shields.io/badge/version-4.2.0-blue)
 
 
 Questo progetto è stato sviluppato come parte del corso di **Ingegneria del Software** (Anno Accademico 2023/24) ed è volto a supportare lo **scambio di prestazioni d’opera** senza utilizzo di denaro.  

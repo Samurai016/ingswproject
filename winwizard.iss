@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Progetto Ingegneria del Software"
-#define MyAppVersion "4.1.4"
+#define MyAppVersion "4.2.0"
 #define MyAppPublisher "Università degli Studi di Brescia"
 #define MyAppURL "https://github.com/Samurai016/ingswproject/"
 #define MyAppExeName "ingswproject.exe"
