@@ -7,7 +7,7 @@
 # Ingegneria del Software - Progetto 2023/24
 
 ![Java](https://img.shields.io/badge/language-Java-brightgreen)
-![Version](https://img.shields.io/badge/version-4.2.0-blue)
+![Version](https://img.shields.io/github/v/release/Samurai016/ingswproject?label=version)
 
 
 Questo progetto è stato sviluppato come parte del corso di **Ingegneria del Software** (Anno Accademico 2023/24) ed è volto a supportare lo **scambio di prestazioni d’opera** senza utilizzo di denaro.  
@@ -44,6 +44,9 @@ In alternativa, è possibile lanciare lo strumento manualmente eseguendo il coma
 
 In ogni caso, nel file di configurazione `application.yaml` disponibile nella cartella `%APPDATA%/ingsw_project` (Windows) o `$HOME/.ingsw_project` (Mac/Linux) è possibile specificare i datasource da utilizzare, seguendo la sintassi supportata da [Ebean ORM](https://ebean.io/docs).  
 Il programma utilizzerà il database di default indicato nel file, se non specificato diversamente utilizzando l'opzione `-db` (vedi [Parametri opzionali](#-parametri-opzionali)).
+
+## 📖 Utilizzo
+
 
 ### 📚 Parametri opzionali
 Il programma accetta i seguenti parametri in input opzionali:

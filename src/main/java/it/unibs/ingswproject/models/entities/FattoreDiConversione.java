@@ -116,10 +116,6 @@ public class FattoreDiConversione {
     }
 
     public FattoreDiConversione setFattore(Double fattore) {
-        if (fattore != null && (fattore < MIN_WEIGHT || fattore > MAX_WEIGHT)) {
-            throw new IllegalArgumentException("fdc_fattore_range");
-        }
-
         this.fattore = fattore;
         return this;
     }
