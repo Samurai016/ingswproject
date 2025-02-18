@@ -45,6 +45,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "target\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "target\jre\*"; DestDir: "{app}\jre"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: ".example\*"; DestDir: "{userappdata}\{#AppdataFolder}\"; Flags: createallsubdirs recursesubdirs comparetimestamp
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
