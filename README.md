@@ -13,6 +13,8 @@
 Questo progetto è stato sviluppato come parte del corso di **Ingegneria del Software** (Anno Accademico 2023/24) ed è volto a supportare lo **scambio di prestazioni d’opera** senza utilizzo di denaro.  
 L'applicazione permette a organizzazioni di gestire categorie di attività scambiabili e supporta un processo incrementale, a partire dalla prima versione che include funzionalità di configurazione.
 
+### [🔗📚 Link al manuale utente](https://github.com/Samurai016/ingswproject/wiki)
+
 ### 🎯 Funzionalità chiave 
 * **[Versione 1.0.0](https://github.com/Samurai016/ingswproject/releases/tag/v1.0.0)**
   - Gestione delle gerarchie di categorie.
