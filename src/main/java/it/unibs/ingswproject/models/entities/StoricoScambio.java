@@ -28,7 +28,6 @@ public class StoricoScambio {
     @JoinColumn(name = "data", nullable = false)
     protected Date data;
 
-    @Enumerated(EnumType.STRING)
     protected Scambio.Stato stato;
 
     public StoricoScambio() {

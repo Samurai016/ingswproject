@@ -1,5 +1,6 @@
 package it.unibs.ingswproject.models.entities;
 
+import io.ebean.annotation.DbEnumValue;
 import io.ebean.annotation.Length;
 import it.unibs.ingswproject.auth.AuthService;
 import jakarta.persistence.*;
@@ -16,7 +17,6 @@ public class Utente {
     protected String username;
     protected String password;
     protected String emailAddress;
-    @Enumerated(EnumType.STRING)
     protected Ruolo ruolo;
     protected boolean hasMadeFirstLogin = false;
     @ManyToOne()
@@ -153,6 +153,11 @@ public class Utente {
     }
 
     public enum Ruolo {
-        CONFIGURATORE, FRUITORE
+        CONFIGURATORE, FRUITORE;
+
+        @DbEnumValue
+        public String getDbValue() {
+            return this.name().toLowerCase();
+        }
     }
 }

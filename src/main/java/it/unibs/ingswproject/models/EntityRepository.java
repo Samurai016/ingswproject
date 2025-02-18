@@ -73,10 +73,15 @@ public class EntityRepository<T> {
      *
      * @param key   La chiave
      * @param value Il valore
-     * @return L'entità trovata
+     * @return L'entità trovata, null se non trovata
      */
     public T findBy(String key, Object value) {
-        return this.database.find(this.entityClass).where().eq(key, value).findOne();
+        return this.database
+                .find(this.entityClass)
+                .where().eq(key, value)
+                .findList()
+                .stream()
+                .findAny().orElse(null);
     }
 
     /**
@@ -85,10 +90,16 @@ public class EntityRepository<T> {
      *
      * @param key   La chiave
      * @param value Il valore
-     * @return L'entità trovata
+     * @return L'entità trovata, null se non trovata
      */
     public T findByLike(String key, String value) {
-        return this.database.find(this.entityClass).where().ilike(key, value).findOne();
+        return this.database
+                .find(this.entityClass)
+                .where()
+                .ilike(key, value)
+                .findList()
+                .stream()
+                .findAny().orElse(null);
     }
 
     /**

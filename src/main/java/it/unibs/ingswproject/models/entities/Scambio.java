@@ -1,6 +1,7 @@
 package it.unibs.ingswproject.models.entities;
 
 import io.ebean.annotation.ConstraintMode;
+import io.ebean.annotation.DbEnumValue;
 import io.ebean.annotation.DbForeignKey;
 import io.ebean.annotation.WhenCreated;
 import it.unibs.ingswproject.logic.routing.RoutingComputationStrategy;
@@ -28,7 +29,6 @@ public class Scambio {
     protected Nodo offerta;
     protected int quantitaRichiesta;
     protected int quantitaOfferta;
-    @Enumerated(EnumType.STRING)
     protected Stato stato;
     @WhenCreated
     protected DateTime dataCreazione = DateTime.now();
@@ -173,6 +173,11 @@ public class Scambio {
     public enum Stato {
         APERTO,
         CHIUSO,
-        RITIRATO
+        RITIRATO;
+
+        @DbEnumValue
+        public String getDbValue() {
+            return this.name().toLowerCase();
+        }
     }
 }
