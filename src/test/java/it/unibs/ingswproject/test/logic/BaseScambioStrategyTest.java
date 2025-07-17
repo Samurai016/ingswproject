@@ -82,7 +82,7 @@ public class BaseScambioStrategyTest {
         EntityRepository<Utente> utenteRepository = storageService.getRepository(Utente.class);
         EntityRepository<Nodo> nodoRepository = storageService.getRepository(Nodo.class);
 
-        // Creo comprensorio
+        // Creo comprensori o
         comprensorioRepository.save(comprensorio);
 
         // Creo utenti

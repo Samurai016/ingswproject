@@ -36,11 +36,6 @@ public class BaseFattoreDiConversioneStrategy implements FattoreDiConversioneStr
         // Il numero di archi è dato da:
         // #nodi_to_add = (foglie_aggiunte - 1) + (n_archi_in_cui_parent_era_incluso) + (1 se è una nuova gerarchia e non è la prima gerarchia)
 
-        // Se non ci sono figli non c'è nulla da fare
-        if (nodo.getFigli().isEmpty()) {
-            return new ArrayList<>();
-        }
-
         FattoreDiConversioneRepository fdcRepository = (FattoreDiConversioneRepository) this.storageService.getRepository(FattoreDiConversione.class);
         List<Nodo> foglie = nodo.getFigli().stream().filter(Nodo::isFoglia).toList();
         ArrayList<FattoreDiConversione> fattoriDaAggiungere = new ArrayList<>();
@@ -72,18 +67,23 @@ public class BaseFattoreDiConversioneStrategy implements FattoreDiConversioneStr
     private FattoreDiConversione calcolaFattoriTraGerarchie(Nodo nodo, List<Nodo> foglie) {
         NodoRepository nodoRepository = (NodoRepository) this.storageService.getRepository(Nodo.class);
         List<Nodo> gerarchie = nodoRepository.findGerarchie().stream().filter(n -> !n.equals(nodo)).toList();
-        if (nodo.isRoot() && !gerarchie.isEmpty()) {
-            Nodo altraGerarchiaConFoglie = gerarchie.stream().filter(g -> !g.getFoglie().isEmpty()).findFirst().orElse(null);
-            if (altraGerarchiaConFoglie != null) {
-                Nodo fogliaAltraGerarchia = altraGerarchiaConFoglie.getFigli().stream().filter(Nodo::isFoglia).findFirst().orElse(null);
-                Nodo foglia = foglie.stream().findFirst().orElse(null);
-                if (fogliaAltraGerarchia != null && foglia != null) {
-                    return new FattoreDiConversione(foglia, fogliaAltraGerarchia);
-                }
-            }
+
+        if (!nodo.isRoot() || gerarchie.isEmpty()) {
+            return null; // Se il nodo non è una foglia o non ci sono altre gerarchie, non aggiungo nulla
         }
 
-        return null; // Se non è una nuova gerarchia o non ci sono altre gerarchie con foglie, non aggiungo nulla
+        Nodo altraGerarchiaConFoglie = gerarchie.stream()
+                .filter(g -> !g.getFoglie().isEmpty() || g.isFoglia())
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("Sono presenti gerarchie diverse da quella attuale senza foglie"));
+
+        Nodo fogliaAltraGerarchia = altraGerarchiaConFoglie.getFigli().stream()
+                .filter(Nodo::isFoglia)
+                .findFirst()
+                .orElse(altraGerarchiaConFoglie);
+
+        Nodo foglia = foglie.stream().findFirst().orElse(nodo);
+        return new FattoreDiConversione(foglia, fogliaAltraGerarchia);
     }
 
     /**
@@ -95,6 +95,10 @@ public class BaseFattoreDiConversioneStrategy implements FattoreDiConversioneStr
      * @return Una lista di fattori di conversione da aggiungere
      */
     private List<FattoreDiConversione> calcolaFattoriConParentIncluso(Nodo nodo, FattoreDiConversioneRepository fdcRepository) {
+        if (nodo.isFoglia()) {
+            return List.of(); // Se il nodo è una foglia non sono un parent
+        }
+
         ArrayList<FattoreDiConversione> fattoriDaAggiungere = new ArrayList<>();
         List<FattoreDiConversione> fdcInCuiParentEraIncluso = fdcRepository.findByNodo(nodo);
         Nodo primoFiglio = nodo.getFigli().getFirst();
