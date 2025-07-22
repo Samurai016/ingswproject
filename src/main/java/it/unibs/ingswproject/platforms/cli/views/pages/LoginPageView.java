@@ -157,7 +157,7 @@ public class LoginPageView extends CliPageView {
             if (comprensorio == null) {
                 // Try to find by index
                 try {
-                    int index = Integer.parseInt(nomeComprensorio) + 1;
+                    int index = Integer.parseInt(nomeComprensorio) - 1;
                     if (index >= 0 && index < comprensori.size()) {
                         comprensorio = comprensori.get(index);
                     }

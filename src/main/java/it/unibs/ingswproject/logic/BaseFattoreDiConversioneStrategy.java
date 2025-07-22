@@ -72,15 +72,11 @@ public class BaseFattoreDiConversioneStrategy implements FattoreDiConversioneStr
             return null; // Se il nodo non è una foglia o non ci sono altre gerarchie, non aggiungo nulla
         }
 
-        Nodo altraGerarchiaConFoglie = gerarchie.stream()
-                .filter(g -> !g.getFoglie().isEmpty() || g.isFoglia())
-                .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Sono presenti gerarchie diverse da quella attuale senza foglie"));
-
-        Nodo fogliaAltraGerarchia = altraGerarchiaConFoglie.getFigli().stream()
+        Nodo altraGerarchia = gerarchie.getFirst();
+        Nodo fogliaAltraGerarchia = altraGerarchia.getFigli().stream()
                 .filter(Nodo::isFoglia)
                 .findFirst()
-                .orElse(altraGerarchiaConFoglie);
+                .orElse(altraGerarchia);
 
         Nodo foglia = foglie.stream().findFirst().orElse(nodo);
         return new FattoreDiConversione(foglia, fogliaAltraGerarchia);

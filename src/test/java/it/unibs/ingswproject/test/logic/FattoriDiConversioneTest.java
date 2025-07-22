@@ -58,7 +58,7 @@ public class FattoriDiConversioneTest {
         repoNodi.save(foglia);
 
         root = repoNodi.find(root.getId()); // Ricarico il nodo root per assicurarmi che le modifiche siano visibili
-        List<FattoreDiConversione> FDCs = fattoreDiConversioneStrategy.getFattoriDiConversionToSet(foglia);
+        List<FattoreDiConversione> FDCs = fattoreDiConversioneStrategy.getFattoriDiConversionToSet(root);
         Assertions.assertTrue(FDCs.isEmpty(), "La lista dei fattori di conversione dovrebbe essere vuota");
     }
 
@@ -110,20 +110,26 @@ public class FattoriDiConversioneTest {
 
         Nodo foglia1 = Nodo.createFoglia("N1", null, "attributo", root);
         Nodo exFoglia2 = Nodo.createFoglia("N2", null, "attributo2", root);
+        Nodo foglia3 = Nodo.createFoglia("N3", null, "attributo4", root);
         repoNodi.save(foglia1);
         repoNodi.save(exFoglia2);
+        repoNodi.save(foglia3);
 
         FattoreDiConversione fdc = new FattoreDiConversione(foglia1, exFoglia2, 1.0); // Fattore è un valore non rilevante
         repoFDC.save(fdc);
+
+        FattoreDiConversione fdc2 = new FattoreDiConversione(exFoglia2, foglia3, 1.0); // Fattore è un valore non rilevante
+        repoFDC.save(fdc2);
 
         Nodo nuovaFoglia = Nodo.createFoglia("N1.1", null, "attributo3", exFoglia2);
         repoNodi.save(nuovaFoglia);
 
         FattoreDiConversione expectedFDC = new FattoreDiConversione(foglia1, nuovaFoglia, 1.0); // Fattore è un valore non rilevante
+        FattoreDiConversione expectedFDC2 = new FattoreDiConversione(foglia3, nuovaFoglia, 1.0); // Fattore è un valore non rilevante
 
         exFoglia2 = repoNodi.find(exFoglia2.getId()); // Ricarico l'ex-foglia per assicurarmi che le modifiche siano visibili
         List<FattoreDiConversione> FDCs = fattoreDiConversioneStrategy.getFattoriDiConversionToSet(exFoglia2);
-        List<FattoreDiConversione> expectedFDCs = List.of(expectedFDC);
+        List<FattoreDiConversione> expectedFDCs = List.of(expectedFDC, expectedFDC2);
         Assertions.assertEquals(expectedFDCs.size(), FDCs.size(), "La lista dei fattori di conversione dovrebbe contenere il FDC tra la nuova foglia e l'ex-foglia");
     }
 
