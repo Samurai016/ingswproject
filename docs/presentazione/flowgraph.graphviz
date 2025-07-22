@@ -1,0 +1,60 @@
+digraph getFattoriDiConversionToSet {
+    // Global node styling
+    node [shape=box, fontname="Helvetica"];
+    edge [fontname="Helvetica"];
+
+    // Entry and initialization
+    Entry           [label="INIZIO"];
+    InitAll        [label="fdcRepository = storageService.getRepository(...)\nfoglie = nodo.getFigli().stream().filter(isFoglia).toList()\nfattoriDaAggiungere = new ArrayList<>()"];
+
+    Entry -> InitAll;
+
+    // Loop over foglie
+    Loop1_Init      [label="i = 0"];
+    Loop1_Cond      [shape=diamond, label="i < foglie.size() - 1?"];
+    Loop1_Body      [label="nodo1 = foglie.get(i)\n nodo2 = foglie.get(i+1)\n fdc = fdcRepository.findByNodi(...)"];
+    FdcCheck        [shape=diamond, label="fdc != null?"];
+    AddFdc1         [label="fattoriDaAggiungere.add(new FattoreDiConversione(nodo1, nodo2))"];
+    Loop1_Inc       [label="i++"];
+
+    InitAll -> Loop1_Init -> Loop1_Cond;
+    Loop1_Cond -> Loop1_Body [label="yes"];
+    Loop1_Cond -> CheckNotLeaf [label="no"];
+    Loop1_Body -> FdcCheck;
+    FdcCheck -> Loop1_Inc [label="yes (continue)"];
+    FdcCheck -> AddFdc1  [label="no"];
+    AddFdc1 -> Loop1_Inc;
+    Loop1_Inc -> Loop1_Cond;
+
+    // Conditional: if (!nodo.isFoglia())
+    CheckNotLeaf    [shape=diamond, label="!nodo.isFoglia()?"];
+
+    // Adding conversion factors where parent was included
+    AddFdcInclusions [label="fdcInCuiParentEraIncluso = fdcRepository.findByNodo(nodo)\nprimoFiglio = nodo.getFigli().getFirst()"];
+    Loop2_Init      [label="for each fdc in fdcInCuiParentEraIncluso"];
+    AddFdc2         [label="destinatario = (fdc.nodo1==nodo ? fdc.nodo2 : fdc.nodo1)\nfattoriDaAggiungere.add(new FattoreDiConversione(primoFiglio, destinatario))"];
+    
+    CheckNotLeaf -> AddFdcInclusions [label="yes"];
+    CheckNotLeaf -> ComputeGerarchie [label="no"];
+    AddFdcInclusions -> Loop2_Init;
+    Loop2_Init -> AddFdc2;
+    AddFdc2 -> Loop2_Init [label="next"];
+    Loop2_Init -> ComputeGerarchie [label="done"];
+
+    // Compute other hierarchies
+    ComputeGerarchie [label="gerarchie = nodoRepository.findGerarchie().filter(!equals(nodo))"];
+
+    // Conditional: if (nodo.isRoot() && !gerarchie.isEmpty())
+    CheckNewHierarchy [shape=diamond, label="nodo.isRoot() && !gerarchie.isEmpty()?"];
+    ComputeGerarchie -> CheckNewHierarchy;
+
+    // Adding cross-hierarchy conversion factor
+    AddFdcBetweenHierarchies [label="altraGerarchiaConFoglie = first non-empty hierarchy\nfogliaAltraGerarchia = first leaf of altraGerarchiaConFoglie\nfoglia = foglie.firstOrElse(nodo)\nfattoriDaAggiungere.add(new FattoreDiConversione(foglia, fogliaAltraGerarchia))"];
+    CheckNewHierarchy -> AddFdcBetweenHierarchies [label="yes"];
+    CheckNewHierarchy -> Return [label="no"];
+
+    AddFdcBetweenHierarchies -> Return;
+
+    // Return
+    Return          [shape=ellipse, label="return fattoriDaAggiungere"];
+}
